@@ -1,0 +1,29 @@
+TITLE 'SAMPLE DATASET CREATION';
+DATA EXAMPLE1;
+OLDPRICE = 10;
+RUN;
+
+TITLE 'UPDATING DATASET|NUMERICAL VARIABLE CREATION| CHARACTER VARIABLE CREATION';
+DATA Example1;
+SET Example1;
+NewPrice=2*OldPrice;
+TYPE = 'GOOD';
+RUN;
+
+TITLE 'DATASET CREATION USING EXISTING DATASET';
+DATA WORK.Readin;
+SET WORK.Example1;
+NewPrice=2*OldPrice;
+RUN;
+proc print noobs;
+run;
+
+TITLE 'VARIABLE CREATION/MODIFICATION';
+DATA Readin;
+SET Example1;
+OldPrice=5 + OldPrice;
+NewPrice=OldPrice*2;
+Change= ((NewPrice-OldPrice)/ OldPrice);
+Format Change Percent10.0;
+RUN;
+

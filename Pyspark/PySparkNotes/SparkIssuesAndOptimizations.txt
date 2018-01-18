@@ -1,0 +1,7 @@
+Spark issues
+Can't assign requested address: Service 'sparkDriver' failed after 16 retries! Consider explicitly setting the appropriate port for the service 'sparkDriver' (for example spark.ui.port for SparkUI) to an available port or increasing spark.port.maxRetries
+
+# To solve the problems :
+Step 1. Go to your installed spark directories.
+Step 2. Go into 'bin' directory and then open the filed 'load-spark-env.sh'
+Step 3. After adding  'export SPARK_LOCAL_IP='127.0.0.1' to 'load-spark-env.sh'.

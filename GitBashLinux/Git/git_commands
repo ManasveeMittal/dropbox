@@ -1,0 +1,36 @@
+GIT-source code management system / DVCS Distributed Version Control system
+
+how to learn better?
+Check interview questions and problems
+
+Q-1 How to revert a commit already made pushed?
+Ans: One or more commits can be reverted using '''git revert'''.
+    Subquestion: What does the git revert do?
+       It creates a new commit that effectively cancel the effect of the past commit. 
+
+Q-2 how to git add multiple files?
+Ans: git add . #notice the period 
+     git commit -m 'commit message' #option -a is not needed
+
+Q-3 Squashing last N commits into a single commit?
+Ans: git rebase -i HEAD~{N} #replace N by integer #further explanation @ https://www.toptal.com/git/interview-questions
+
+Q-4 listing of files changed in a particular commit?
+Ans: git diff-tree --no-commit-id --name-only -r {hash} 
+        $ --no-commit-id #supress the commit hashes
+        $ --name-only #only print the file names
+	$ -r #list individual files and not directories alone
+
+Q5. What language is used in Git?
+Ans: GIT is fast, and ‘C’ language makes this possible by reducing the overhead of run times associated with high level languages.	
+
+Q-6 Difference between git pull and git fetch?
+Ans: Git pull = git fetch + git merge
+              i.e = fetching repo from master repo + merging local repo with master repo
+
+Q-7 What is ‘staging area’ or ‘index’ in Git?
+Ans: Before completing the commits, it can be formatted and reviewed in an intermediate area known as ‘Staging Area’ or ‘Index’.Refer git_staging.png
+
+
+
+

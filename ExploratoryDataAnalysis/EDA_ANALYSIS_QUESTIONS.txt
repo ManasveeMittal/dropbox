@@ -1,0 +1,133 @@
+EDA ANALYSIS QUESTIONS
+	What is a typical value?
+		Measures of Location
+	What is the uncertainty for a typical value?
+		characterize the spread, or variability, of a data set
+	What is a good distributional fit for a set of numbers?
+		Probability Plot Correlation Coefficient Plot 
+			http://www.itl.nist.gov/div898/handbook/eda/section3/ppccplot.htm
+			Questions:
+				What is the best-fit member within a distributional family?
+				Does the best-fit member provide a good fit (in terms of generating a probability plot with a high correlation coefficient)?
+				Does this distributional family provide a good fit compared to other distributions?
+How sensitive is the choice of the shape parameter?
+	What is a percentile?
+		http://www.itl.nist.gov/div898/handbook/prc/section2/prc252.htm
+	Does an engineering modification have an effect?
+		Bihistogram:
+			http://www.itl.nist.gov/div898/handbook/eda/section3/bihistog.htm
+			Purpose: 
+				Check for a change in location, variation, or distribution
+			Questions:
+				Is a (2-level) factor significant?
+				Does a (2-level) factor have an effect?
+				Does the location change between the 2 subgroups?
+				Does the variation change between the 2 subgroups?
+				Does the distributional shape change between subgroups?
+				Are there any outliers?
+	Does a factor have an effect?
+		Block Plots
+			http://www.itl.nist.gov/div898/handbook/eda/section3/blockplo.htm
+			Purpose: 
+				Check to determine if a factor of interest has an effect robust over all other factors
+			Questions:
+				Is the factor of interest significant?
+				Does the factor of interest have an effect?
+				Does the location change between levels of the primary factor?
+				Has the process improved?
+				What is the best setting (= level) of the primary factor?
+				How much of an average improvement can we expect with this best setting of the primary factor?
+				Is there an interaction between the primary factor and one or more nuisance factors?
+				Does the effect of the primary factor change depending on the setting of some nuisance factor?
+				Are there any outliers?
+
+			Related Techniques:
+				t test (for shift in location for exactly 2 levels) 
+				ANOVA (for shift in location for 2 or more levels) 
+				Bihistogram (for shift in location, variation, and distribution for exactly 2 levels).
+
+	What are the most important factors?
+		DOE Mean Plot
+			http://www.itl.nist.gov/div898/handbook/eda/section3/dexmeanp.htm
+		Purpose:
+			Detect Important Factors With Respect to Location
+		Questions:
+			Which factors are important? The DOE mean plot does not provide a definitive answer to this question, but it does help categorize factors as "clearly important", "clearly not important", and "borderline importance".
+			What is the ranking list of the important factors?
+		Related Techniques
+			DOE scatter plot
+			DOE standard deviation plot
+			Block plot
+			Box plot
+			Analysis of variance
+	Are measurements coming from different laboratories equivalent?
+		Youden Plot:
+			http://www.itl.nist.gov/div898/handbook/eda/section3/youdplot.htm
+		Purpose:
+			effective method for comparing both the within-laboratory variability and the between-laboratory variability
+		Questions:
+			Are all labs equivalent?
+			What labs have between-lab problems (reproducibility)?
+			What labs have within-lab problems (repeatability)?
+			What labs are outliers?
+
+		Related Techniques
+			Scatter Plot
+
+	What is the best function for relating a response variable to a set of factor variables?
+		Nonlinear Least Squares Regression
+			http://www.itl.nist.gov/div898/handbook/pmd/section1/pmd142.htm
+	What are the best settings for factors?
+		RESPONSE SURFACE DESIGNS:
+			http://www.itl.nist.gov/div898/handbook/pri/section3/pri336.htm
+
+	Can we separate signal from noise in time dependent data?
+			SPECTRAL PLOT
+				http://www.itl.nist.gov/div898/handbook/eda/section3/spectrum.htm
+			Questions:
+				How many cyclic components are there?
+				Is there a dominant cyclic frequency?
+				If there is a dominant cyclic frequency, what is it?
+			Related Techniques:	
+				Autocorrelation Plot
+				Complex Demodulation Amplitude Plot
+				Complex Demodulation Phase Plot
+	Can we extract any structure from multivariate data?
+		Star Plot
+			http://www.itl.nist.gov/div898/handbook/eda/section3/starplot.htm
+			Questions
+			The star plot can be used to answer the following Questions:
+				What variables are dominant for a given observation?
+				Which observations are most similar, i.e., are there clusters of observations?
+				Are there outliers?
+	Does the data have outliers?
+		Box Plot
+			Purpose: 
+				Check location and variation shifts
+			Questions:
+				Is a factor significant?
+				Does the location differ between subgroups?
+				Does the variation differ between subgroups?
+				Are there any outliers?
+			Related Techniques:
+				Mean Plot
+				Analysis of Variance
+
+
+
+PRIMARY GOAL OF EDA:
+	a good-fitting, parsimonious model
+	a list of outliers
+	a sense of robustness of conclusions
+	estimates for parameters
+	uncertainties for those estimates
+	a ranked list of important factors
+	conclusions as to whether individual factors are statistically significant
+	optimal settings
+
+
+	Typical value
+		Measures of Location
+
+
+

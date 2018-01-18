@@ -1,0 +1,14 @@
+Q:	pgAdmin4 - PostgreSQL Binary Path in the Preferences
+
+A:
+HLINK:	https://dba.stackexchange.com/questions/149169/pgadmin4-postgresql-binary-path-in-the-preferences/149879#149879?newreg=a4972ad785024ab5b173b1ffddea3780
+
+
+Configure pgAdmin->Paths->Binary paths and set "PostgreSQL Binary Path" as shown in the screenshot. Depending on your OS and installation details, the binaries may be located elsewhere. Try
+
+`which psql`
+from the command line on linux/Unix systems.
+
+A Windows example: PostgreSQL Binary Path: "C:\Program Files\PostgreSQL\9.6\bin" 
+
+

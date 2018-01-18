@@ -1,0 +1,89 @@
+http://michal.karzynski.pl/blog/2017/03/19/developing-workflows-with-apache-airflow/
+
+# to have an isolated airflow environment
+pip install virtualenv
+pip install virtualenvwrapper
+# update and source your .profile
+mkvirtualenv airflow
+workon airflow
+export AIRFLOW_VERSION=1.7.0
+pip install airflow==${AIRFLOW_VERSION}
+# optionally other modules
+#pip install airflow[celery]==${AIRFLOW_VERSION}
+
+airflow initdb
+DB: sqlite:////home/triloq/airflow/airflow.db
+
+
+RUNNING THE SCRIPT:
+	python ~/airflow/dags/tutorial.py
+
+COMMAND LINE METADATA VALIDATION
+# print the list of active DAGs
+airflow list_dags
+
+# prints the list of tasks the "tutorial" dag_id
+airflow list_tasks tutorial
+
+# prints the hierarchy of tasks in the tutorial DAG
+airflow list_tasks tutorial --tree
+
+TESTING  DAG
+# command layout: command subcommand dag_id task_id date
+
+# testing print_date
+airflow test tutorial print_date 2015-06-01
+
+# testing sleep
+airflow test tutorial sleep 2015-06-01
+
+# testing templated
+airflow test tutorial templated 2015-06-01
+
+
+
+
+Apache Airflow is an open-source tool for orchestrating complex computational workflows and data processing pipelines. If you find yourself running cron task which execute ever longer scripts, or keeping a calendar of big data processing batch jobs then Airflow can probably help you. This article provides an introductory tutorial for people who want to get started writing pipelines with Airflow.
+
+An Airflow workflow is designed as a directed acyclic graph (DAG). That means, that when authoring a workflow, you should think how it could be divided into tasks which can be executed independently. You can then merge these tasks into a logical whole by combining them into a graph.
+
+
+
+The shape of the graph decides the overall logic of your workflow. An Airflow DAG can include multiple branches and you can decide which of them to follow and which to skip at the time of workflow execution.
+
+This creates a very resilient design, because each task can be retried multiple times if an error occurs. Airflow can even be stopped entirely and running workflows will resume by restarting the last unfinished task.
+
+When designing Airflow operators, it’s important to keep in mind that they may be executed more than once. Each task should be idempotent, i.e. have the ability to be applied multiple times without producing unintended consequences.
+
+a DAG – or a Directed Acyclic Graph – is a collection of all the tasks you want to run, organized in a way that reflects their relationships and dependencies
+
+The scheduler will send tasks for execution. The default Airflow settings rely on an executor named SequentialExecutor, which is started automatically by the scheduler. In production you would probably want to use a more robust executor, such as the CeleryExecutor
+
+
+Airflow nomenclature
+
+Here is a brief overview of some terms used when designing Airflow workflows:
+
+Airflow DAGs are composed of Tasks.
+Each Task is created by instantiating an Operator class. A configured instance of an Operator becomes a Task, as in: my_task = MyOperator(...).
+When a DAG is started, Airflow creates a DAG Run entry in its database.
+When a Task is executed in the context of a particular DAG Run, then a Task Instance is created.
+AIRFLOW_HOME is the directory where you store your DAG definition files and Airflow plugins.
+
+
+Airflow Operator:
+	An Operator is an atomic block of workflow logic, which performs a single action.
+	Operators are written as Python classes (subclasses of BaseOperator), where the __init__ function can be used to configure settings for the task and a method named execute is called when the task instance is executed
+
+Debugging an Airflow operator:
+	airflow test <dag_name> <task_name> <ate associated with a particular DAG Run>
+
+Airflow Sensor:
+	is a special type of Operator, typically used to monitor a long running task on another system
+	define a subclass of BaseSensorOperator and override its poke function. 
+
+The poke function will be called over and over every poke_interval seconds until one of the following happens:
+
+poke returns True – if it returns False it will be called again.
+poke raises an AirflowSkipException from airflow.exceptions – the Sensor task instance’s status will be set to Skipped.
+poke raises another exception, in which case it will be retried until the maximum number of retries is reached.

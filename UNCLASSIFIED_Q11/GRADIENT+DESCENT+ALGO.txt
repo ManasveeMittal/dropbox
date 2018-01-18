@@ -1,0 +1,380 @@
+
+function [theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters)
+%GRADIENTDESCENTMULTI Performs gradient descent to learn theta
+%   theta = GRADIENTDESCENTMULTI(x, y, theta, alpha, num_iters) updates theta by
+%   taking num_iters gradient steps with learning rate alpha
+
+% Initialize some useful values
+m = length(y); % number of training examples
+J_history = zeros(num_iters, 1);
+
+for iter = 1:num_iters
+
+    temp = X * theta;
+    error = temp - y;
+    newX = error' * X;
+    theta = theta - ((alpha/m) * newX');
+    % ====================== YOUR CODE HERE ======================
+    % Instructions: Perform a single gradient step on the parameter vector
+    %               theta. 
+    %
+    % Hint: While debugging, it can be useful to print out the values
+    %       of the cost function (computeCostMulti) and gradient here.
+    %
+
+
+
+
+
+
+
+
+
+
+
+    % ============================================================
+
+    % Save the cost J in every iteration    
+    J_history(iter) = computeCostMulti(X, y, theta);
+
+end
+
+end
+
+def gadientDescentMulti(X, y, theta=[], alpha, num_iters =10): #theta as series
+    # GRADIENT DESCENT FOR NEURAL NETWORKS
+    # ADIENTDESCENTMULTI Performs gradient descent to predict best theta
+    
+    # X  := features represented as a pandas dataframe | convert non numeric categorical and ordinal featuires into numeric features
+    # y  := output labels vector as a pandas series
+    # theta := define  initial theta
+    # I := num of observations = len(X)
+    # J := number of features 
+    # i = 1,2,...I 
+    # j = 1,2,...J
+    # num_iters = max num of interation to get appropriate output theta
+    # alpha := (positive float value) determine rate of converge, can be from  [...,0.01,0.03,0.1,0.3,..]
+    
+    
+    # X_scaled := X scaled by (X-mean(X))/(max(X)-min(X)) such that each X[:,j] feature
+    # y_scaled : y scaled as above
+    # generally 1 < max(X_scaled[:,J]) < 3 and -3 < min(X_scaled[:,J]) < -1 represent  
+    
+    # make a temp list: feature_classify = []
+    # len(feature_classify) = num of features = J
+    # len(test each feature X[:,j] is 
+    
+    # simple algorithm for theta initialization
+    # theta = panda series similar to X_scaled.mean(axis=1)  #good for linear approximation
+     
+    # define cost function #assuming linear
+
+    return theta #best prediction
+
+function J = computeCostMulti(X, y, theta)
+%COMPUTECOSTMULTI Compute cost for linear regression with multiple variables
+%   J = COMPUTECOSTMULTI(X, y, theta) computes the cost of using theta as the
+%   parameter for linear regression to fit the data points in X and y
+
+% Initialize some useful values
+m = length(y); % number of training examples
+
+% You need to return the following variables correctly 
+J = 0;
+
+% ====================== YOUR CODE HERE ======================
+% Instructions: Compute the cost of a particular choice of theta
+%               You should set J to the cost.
+
+
+J = (1 / (2*m) ) * sum(((X * theta)-y).^2);
+
+
+
+% =========================================================================
+
+end
+
+inbuilt scikit stochastic gradient descent
+http://scikit-learn.org/stable/modules/sgd.html
+
+import pandas as pd
+import matplotlib as plt
+import numpy as np
+
+raw_data = pd.read_csv('/home/triloq/Dropbox/life_guide/ML/ML_andrew_ng/machine-learning-ex1/ex1/ex1data1.txt',header=None,names=['xi','yi'])
+
+
+raw_data.head(10)
+
+f =[raw_data.dtypes]
+f
+
+#write an algo to transform non_numeric features to numeric and ignore certain feature not needed
+
+#raw_data = raw_data.as_matrix()
+cost=0
+num_obs=len(raw_data)
+num_obs
+
+
+isinstance(raw_data, pd.DataFrame)
+
+#extractedData = data[:,[1,9]]
+
+X = raw_data.iloc[:,0:-1]
+Y = raw_data.iloc[:,-1]
+X.head()
+Y.head()
+
+
+
+X['x0'] = pd.DataFrame(np.ones(num_obs))
+X
+#DataFrame.insert(loc, column, value, allow_duplicates=False)[source]
+
+
+
+theta =np.matrix([0.5,0.5])
+theta
+
+
+
+
+
+
+
+X=np.matrix(X.values)
+Y=np.matrix(Y.values)
+
+X.shape, theta.shape, Y.shape  
+
+error_squared = np.power(((X * theta.T) - Y), 2)
+error_squared
+
+
+def computeCostMulti(X_scaled, y_scaled, theta, num_obs):
+    error_squared = np.power(((X_scaled * theta.T) - y_scaled), 2)
+    return  np.sum(error_squared)/ (2 * num_obs)
+    
+
+computeCostMulti(X,Y,theta,num_obs)
+
+def gradientDescent(X, Y, theta, alpha, iters):  
+    temp = np.matrix(np.zeros(theta.shape))
+    parameters = int(theta.ravel().shape[1])
+    cost = np.zeros(iters)
+
+    for i in range(iters):
+        error = (X * theta.T) - Y
+
+        for j in range(parameters):
+            term = np.multiply(error, X[:,j])
+            temp[0,j] = theta[0,j] - ((alpha / len(X)) * np.sum(term))
+
+        theta = temp
+        cost[i] = computeCost(X, Y, theta)
+
+    return theta, cost
+
+temp = np.matrix(np.zeros(theta.shape))
+parameters = int(theta.ravel().shape[1])
+temp,parameters
+
+iters=10
+
+alpha =0.01
+
+cost = np.zeros(iters)
+
+for i in range(iters):
+        error = (X * theta.T) - Y
+        # print(error)
+        for j in range(parameters):
+            term = np.multiply(error, X[:,j])
+            print(temp)
+            temp[0,j] = theta[0,j] - ((alpha / len(X)) * np.sum(term))
+        theta = temp
+        cost[i] = computeCostMulti(X, Y, theta, num_obs)
+
+
+print(theta,cost)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Y.mean()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+X[]
+
+pd.DataFrame(np.random.randn(10, 5))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import random  #importing random library to generate random number
+random.seed(5) #This function maps a particular random number with the seed argument mentioned. All random numbers called after the seeded value returns the mapped number.
+
+x = [random.randint(-100,100) for i in range(1000)] #Return random integer in range [a, b], including both end points.
+
+help(random.random)
+
+x
+
+df = pd.DataFrame(np.random.randn(100, 4), columns=list('ABCD')df = pd.DataFrame(np.random.randint(0,100,size=(100, 4)), columns=list('ABCD'))
+
+X = pd.DataFrame(np.random.randint(0,100,size=(100, 4), columns=list('ABCD')))
+X
+
+df = pd.DataFrame(np.random.randn(0,100,size=(100)),np.random.randn(0,100))
+df
+
+np.random.randint(0,100,size=(100, 3))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+People also ask
+What is gradient descent algorithm?
+What is stochastic gradient descent?
+Stochastic gradient descent (often shortened in SGD), also known as incremental gradient descent, is a stochastic approximation of the gradient descent optimization method for minimizing an objective function that is written as a sum of differentiable functions.
+Stochastic gradient descent - Wikipedia
+https://en.wikipedia.org/wiki/Stochastic_gradient_descent
+Search for: What is stochastic gradient descent?
+What is back propagation?
+The backward propagation of errors, or backpropagation, is a common method of training artificial neural networks and used in conjunction with an optimization method such as gradient descent. The algorithm repeats a two phase cycle, propagation and weight update.
+Backpropagation - Wikipedia
+https://en.wikipedia.org/wiki/Backpropagation
+Search for: What is back propagation?
+What is gradient boosting?
+Gradient boosting is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees.
+Gradient boosting - Wikipedia
+https://en.wikipedia.org/wiki/Gradient_boosting
+Search for: What is gradient boosting?
+What is hinge loss?
+In machine learning, the hinge loss is a loss function used for training classifiers. The hinge loss is used for "maximum-margin" classification, most notably for support vector machines (SVMs).
+Hinge loss - Wikipedia
+https://en.wikipedia.org/wiki/Hinge_loss
+Search for: What is hinge loss?
+What is the learning rate?
+Learning rate is a decreasing function of time. Two forms that are commonly used are a linear function of time and a function that is inversely proportional to the time t. These are illustrated in the Figure 2.7. ... The learning is usually performed in two phases.
+Learning rate
+users.ics.aalto.fi/jhollmen/dippa/node22.html
+Search for: What is the learning rate?
+What is Delta rule in neural network?
+In machine learning, the delta rule is a gradient descent learning rule for updating the weights of the inputs to artificial neurons in a single-layer neural network. It is a special case of the more general backpropagation algorithm.
+Delta rule - Wikipedia
+https://en.wikipedia.org/wiki/Delta_rule
+Search for: What is Delta rule in neural network?
+What is single layer feedforward neural network?
+What is Xgboost?
+What is adaboost?
+What is the use of SVM algorithm?
+What is a Softmax?
+What is dropout in neural networks?
+What is a convolutional neural network?
+What is the use of weights in neural network?
+What is activation function in artificial neural network?
+
+

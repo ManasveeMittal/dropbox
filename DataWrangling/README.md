@@ -1,0 +1,17 @@
+,   , data_binning
+data_dummy_code
+data_impute
+data_standardize
+read_csv_alternative
+read_csv
+read_csv
+read_json_alternative
+read_json_alternative
+read_json
+read_xlsx_alternative
+read_xlsx
+read_xml
+retrieve_html
+store_mongodb
+store_postgresql
+store_SQLite

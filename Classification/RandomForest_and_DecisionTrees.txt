@@ -1,0 +1,132 @@
+Trivia:
+	Naming reason:
+		Since the set of splitting rules used to segment the predictor space can be summarized in a tree, these types of approaches are known as decision tree methods
+	Shape: decision trees are typically drawn upside down
+
+Doubts:
+	Does the Decistion tree strategize to assign similar no of observations in each leaf node: No it uses Residual Sum of Squares 
+
+Application:
+	-Regression
+	-Classification
+	
+Process:
+	-stratifying or segmenting the predictor space into a number of simple regions
+	-prediction:
+		-mean or the mode of the training observations in the region to which test observation belongs
+
+Advantages:
+	-simple and useful for interpretation
+	-sort of mirror human decision-making
+	-can be displayed graphically
+	-easily handle qualitative predictors without the need to create dummy variables
+
+Disadvantages:
+	-generally do not have the same level of predictive accuracy relative to other supervised learning approaches (Resolution below)
+
+EvolvedAlgoriths:
+	-BAGGING
+	-RANDOM FORESTS
+	-BOOSTING
+	Each of these approaches involves producing multiple trees which are then combined to yield a single consensus prediction
+	Combining a large number of trees can often result in dramatic improvements in prediction accuracy, at the expense of some loss in interpretation
+
+Decision Tree Characterstics:
+	-At a given internal node, the label (of the form X j < t k ) indicates the left-hand branch emanating from that split, and the right-hand branch corresponds to X j ≥ t k
+	-Terminal nodes/Leaf values : Mean(or mode) of the response for the observations that fall there
+	-Internal nodes: The points along the tree where the predictor space is split
+
+Examples:
+	Predicting Baseball Players’ Salaries Using Regression Trees:
+		-Data Description:
+			Features: 
+				-Years (the number of years that he has played in the major leagues)
+				-Hits (the number of hits that he made in the previous year)
+			Labels:Salary
+
+		-End2End Approach:
+			-remove observations that are missing Salary values
+			-log-transform Salary(a positively skewed variable in general) so that its distribution has more of a typical bell-shape
+			-decision creiteria (entropy/gini) to form braches :
+				-variable selection TOBEDONE 
+				- cut-off value determination TOBEDONE
+			-The hitter data:
+				ROOT->
+					Level: ROOT+1: Criterion: Years->
+					-Cutoff: ->  < 4.5 
+							Level: ROOT+1+1.-No further Division 
+							: Region R1={X | Years<4.5 }, Leaf Value: 5.107
+								 >= 4.5   
+							Level: ROOT+1+2.-Criterion : Hits
+								-Cutoff ->
+									<117.5  : R 2 ={X | Years>=4.5 ,Hits<117.5 } Leaf Value: 5.999
+									>=117.5 : R 3 ={X | Years>=4.5 , Hits>=117.5 } leaf value : 6.740
+
+Mathematical Process:
+	Prediction via Stratification of the Feature Space 
+		-We divide the predictor space—that is, the set of possible values for X 1 , X 2 , . . . , X p —into J distinct and non-overlapping regions, R 1 , R 2 , . . . , R J .
+		-For every observation that falls into the region R j , we make the same prediction, which is simply the mean of the response values for the training observations in R j
+
+	Constructing Regions:
+		-divide the predictor space into high-dimensional rectangles, or boxes 
+			Why: ease of interpretation of the predictive model (theoreticall, can have any shape)
+		-Formula: goal is to find boxes R 1 , . . . , R J that minimize the RSS, given by [Sum over j=1 to J [ Sum over i ∈ Rj [{y(i) - yhat(Rj)}**2] ] ]
+			: -yhat(Rj) = mean response for the training observations within the jth box
+		
+		- Above is computationally impossible so we take a top-down, greedy approach that is known as recursive binary splitting
+			-why called greedy: at each step of the tree-building process, the best split is made at that particular step, rather than looking ahead
+			-why is this better: instead of splitting the entire predictor space, we split one of the two previously identified regions
+		    
+		    -first select the predictor X j 
+		    -cutpoint s such that splitting the predictor space into the regions {X|X j < s} and {X|X j ≥ s} leads to the greatest possible reduction in RSS
+		    -Formula:
+		    	seek the value of j and s that minimize the equation
+		    	Summation{i: x i ∈ R 1 (j,s)} on[ (y i − ŷ R 1 )**2 ]  + 
+		    	Summation{i: x i ∈ R 2 (j,s)} on[ (y i − ŷ R 2 )**2 ]
+
+		    	where -
+		    		ŷ R 1 is the mean response for the training observations in R 1 (j, s),
+		    		ŷ R 2 is the mean response for the training observations in R 2 (j, s)
+		    		number of features p
+	Disadvatages:
+		Overfiiting
+
+
+Tree Pruning:
+	WHAT: A smaller tree with fewer splits (that is, fewer regions R 1 , . . . , R J ) WHY: might lead to lower variance and better interpretation at the cost of a little bias
+	Process:
+		What not: build the tree only so long as the decrease in the RSS due to each split exceeds some (high) threshold
+		Why not: too short-sighted since a seemingly worthless split early on in the tree might be followed by a very good split
+		Beter Strategy: grow a very large tree T 0 , and then prune it back in order to obtain a subtree that leads to the lowest test error rate
+		How: Cost complexity pruning/ weakest link pruning
+			-consider a sequence of trees indexed by a nonnegative tuning parameter α
+			-For each value of α there corresponds a subtree T ⊂ T 0 such that
+			VALUE =  SummationOver( 1<m< |T| )[ SummationOver( x i ∈ R m ) [(y i − ŷ Rm )**2 + α*|T|]] is as small as possible.
+			-|T| indicates the number of terminal nodes of the tree T , 
+			-R m is the rectangle (i.e. the subset of predictor space) corresponding to the mth terminal node
+			-ŷ Rm is the predicted response associated with R m —that is, the mean of the training observations in R m .
+			-The tuning parameter α controls a trade-off between the subtree’s complexity and its fit to the training data
+			-However, as α increases, there is a price to pay for having a tree with many terminal nodes, and so the quantity VALUE will tend to be minimized for a smaller subtree
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

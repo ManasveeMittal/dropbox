@@ -1,0 +1,158 @@
+Statistics can be defined as a collection of techniques used when planning and data collection, and when subsequently analyzing and presenting data.
+
+	Most statistical surveys can be divided into the following phases:
+		1. Clarification of concepts
+		2. Planning of data collection
+		3. Data collection
+		4. Analysis and presentation of data
+		5. Conclusion
+		Statistical methods (and statisticians!) are particularly useful in phases 2 and 4 of the survey.
+
+	two kinds of statistics:
+		– Descriptive statistics: Descriptive statistics means describing data using tables, charts and simple statistical calculations such as averages, percentages, etc.
+		– Analytical statistics is used to assess differences and relationships in data
+
+	In any survey (*), we collect information on the individuals of either the entire population (*) (a total survey) or a relatively small number of individuals of a sample (*) (a sample survey), in order to analyze and present data
+	One of the essential applications of sampling is sampling inspection in the field of statistical quality control.
+
+	A questionnaire survey has three parties:
+		– A researcher, who formulates the questions.
+		– An interviewer, who asks the questions.
+		– A respondent, who answers the questions
+		Background Questions:
+			sex, age, marital status, type of accommodation, residence
+			-used to group results in tables and graphs
+
+		Study Questions
+			They constitute the body of the questionnaire.
+			trivia: many people prefer an even number of categories. It is based on an idea that an odd number of categories (for example 5) encourage the respondent to choose the middle category, because it is convenient
+
+Presentation of Data:
+		Graphs (charts, plots, etc.) are suited to get a feel of patterns, structures, trends and relationships in data and thus are an invaluable supplement to a statistical analysis. 
+		They are also useful tools to find unlikely (e.g., extremely large or extremely small) data values or combinations of data values (such as a very high person who does not weigh much), which may be errors in the data
+
+	Bar Charts:conveniently summarize information from a table in a clear and illustrative manner
+
+	HISTOGRAM:
+	 	(*) is a special bar chart. It shows the frequency (*) of the data values:
+		 you can visualize the distribution of data values, for example,
+	 		where “the center” is located (i.e., where there are many data values),
+	 		how large the “spread” is, etc.
+	 		shape and strech of the spread
+
+	 	The general considerations you should have in connection with determining the number of bars and the width of the bars are:
+			– The graph should fit onto the paper (or screen).
+			– The graph should be able to accommodate all observations. Be aware of the minimum value and the maximum value.
+			– The graph does not “violate” the data material. If, for example, there are two obvious “bulges” in the distribution, do not make so few bars that this important information disappears!
+			– The intervals must be defined clearly. There must be no doubt as to which interval an observation should belong. You must be sure to which interval the endpoints belong.
+			– You should be able to compare the graph with other graphs, e.g., from previous surveys.
+
+			Technical Note: rule of thumb: No. of bars ¼ log (n)/log (2)
+
+	Pie charts
+		are often used to show how large a part of the “pie” each group represents.
+
+	Scatter Plots:
+		well suited to show relationships between two variables.
+	Line Charts
+		 often used to illustrate a trend
+
+	Description of Data:
+		– Quantitative data: 
+			 These data are used for calculations and for defining	the axes in graphs.
+		– Qualitative data:
+			 These data correspond to groupings of the sample, in tables or graphs
+
+	STATISTICS IS ABOUT DESCRIBING THE VARIATION IN DATA:
+		– Systematic variation: The center of data
+		– Random variation: The spread of data
+
+	sample statistics used to characterize the distribution of data:
+		– Measures of location (center)
+		– Measures of dispersion (spread)
+
+	NOTE: OFTEN PEOPLE USE THE WORD MEAN (*) RATHER THAN AVERAGE. 
+		Strictly speaking, one should use the word average of a sample, and use the word mean of a population. Many use the two terms interchangeably.
+
+	Measures of Location:
+		MEDIAN (*) :
+			data value “in the middle”, i.e., a number that divides the data values into two parts with an equal number of values
+
+		mode (*):
+			 is simply the most frequent data value!
+	
+		Skewness: Mean vs. Median:
+			Left-skewed: Mean < Median
+			Right-skewed: Mean > Median
+			Symmetrical:Mean = Median
+	
+	Measures of Dispersion:
+			range:
+				 (*) is simply the width of the interval of the data values
+				 APPLICATION :statistical quality control in the construction of control charts, where the number of data values in a sample is often in the order of magnitude 5. The exact purpose of the control chart is to quickly detect any changes in a production process by separating systematic and random variation
+			variance (*) :
+				average of the squared distances between the data values and the average.
+			standard deviation (*):
+				 is the square root of the variance
+
+				Note: In the above formula, we divide by n-1, not by n. This is, for technical reasons and in practice, an unimportant detail, unless the sample is very small. If n ¼ 1 (i.e., only one data value), the variance and the standard deviation cannot be calculated! This is consistent with the fact that in this situation we cannot talk about the spread of the distribution!
+
+			Interquartile Range:
+				 difference between the upper and lower quartiles: IQR = Q3 - Q1
+
+	 Choosing a Measure of Dispersion:
+	 		If the distribution is symmetrical, 
+	 			we often use the average as a measure of location. 
+	 			standard deviation as a measure of dispersion.
+
+			– If the distribution is skewed, 
+				you will often use the median as a measure of location. 
+				IQR as a measure of dispersion. 
+
+	Relative Spread (Dispersion):
+			often, the spread increases with an increasing average
+			coefficient of variation (*), often denoted CV:
+				as the standard deviation as a percentage of average:
+				CV = (s/x_bar)*100%
+
+	Data Types:
+		Quantitative data:
+			Ratio data: Here ratios are well defined; there is a natural zero, negative values do not occur.
+			Interval data:differences are well defined, and negative numbers may occur
+		Qualitative data:
+			Ordinal data: number of categories with a natural ordering
+		Nominal data:
+			 A number of named categories.
+		Alternative (binary) data: 
+			Two categories (i.e., two alternatives)
+
+	Table 3.5 Descriptive statistics vs. data type
+Sample statistic Nominal data Ordinal data Integer data Interval data Ratio data
+	Mode Yes Yes Yes 				Yes 		Yes
+	Median No Yes Yes 				Yes 		Yes
+	Average No (No) (Yes) 				Yes 		Yes
+	Quartiles No Yes Yes 				Yes 		Yes
+	Interquartile range No (No) Yes 				Yes 		Yes
+	Range No (No) Yes 				Yes 		Yes
+	Standard deviation No No (Yes) 				Yes 		Yes
+	Coefficient of variation No No (Yes) 				No 		Yes
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ 		Characteristics of the Normal Distribution:
+ 			 symmetrical, “bell-shaped” curve
+ 			(Xi - mu/sigma) ~ Z(0,1) => Standard Normal
+ 		Testing normal distribution:
+ 			1. The histogram: less irregular as n increases
+ 			2. The average = the median
+ 			3. Interquartile range larger than the standard deviation
+ 				IQR = 1.35 * s
+ 			4.Number of data values in symmetric intervals around the mean:
+ 				68% in mean +- SD
+
+ 		 Skewness and Kurtosis:
+ 		 	Skewness (*) is a measure of how skewed the distribution is compared to a symmetrical distribution:
+				– If data can be described by a symmetrical distribution, the skewness mustbe close to 0.
+				– Positive skewness indicates a right-skewed distribution.
+				– Negative skewness indicates a left-skewed distribution.

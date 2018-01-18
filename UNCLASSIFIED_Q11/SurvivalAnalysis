@@ -1,0 +1,59 @@
+There are four major applications of survival analysis into analytics:
+
+		1. Business Planning : Profiling customers who has a higher survival rate and make strategy accordingly.
+
+2. Lifetime Value Prediction : Engage with customers according to their lifetime value
+
+3. Active customers : Predict when the customer will be active for the next time and take interventions accordingly.
+
+4. Campaign evaluation : Monitor effect of campaign on the survival rate of customers.
+
+  Following are some industrial specific applications of survival analysis :
+
+• Banking – customer lifetime and LTV (loan to value ratio)
+
+• Insurance – time to lapsing on policy
+
+• Mortgages – time to mortgage redemption
+
+• Mail Order Catalogue – time to next purchase
+
+• Retail – time till food customer starts purchasing non-food
+
+• Manufacturing – lifetime of a machine component
+
+• Public Sector – time intervals to critical events
+
+
+
+How is survival analysis different from regression models?
+Regression models have a single output function. In case of a logistic regression, the output is the response function which can only take two values. In any other model, we can define the output function in a single objective function. For instance, if we are building a customer attrition model, which predicts whether a customer will attrite in next 3 months, following is the objective of the logistic model :
+
+f(x) =  0    if no attrition in next 3 months
+
+=  1    if customer attrited in next 3 months
+
+Say, we want to profile the customers, who are likely to attrite early and restrict the acquisition of such profile customers. Let’s assume for simplicity that there are only 2 variables : Gender and Tenure. We build a logistic model in Jan ’13 and found that out of 100 Males 30 attrite till Jan’13, whereas out of 100 females only 10 attrite till Jan’13. My model profiles females as better profile, but because of some reason we did not implement this factor into our acquisition strategy. Now, we stand in Jul’13 and if we look at the same population as considered in the logistic model,  out of 100 Males 35 attrite and out of 100 Females 55 attrite.
+
+The results seem to have swapped. In last 6 months, females saw high attrition, whereas male population seems to be very stable over this period. Now you observe that females had a lower tenure in Jan’13 as compared to the male population. The possible solution in this case is to take same month tranches/acquisitions to build a model. You now take only customer who was acquired before Jan’12. You get a population of 50 Males and 10 Females. However, you have reduced the noise coming from new tranches, you have also reduced the population you are building a model on. How do you address this issue?
+
+Such data for whom the results (attrition in this case) are unknown, are called censored data. We can include this data without compromising on the model accuracy in a survival analysis model. This is because the output or target variable of a survival analysis is a combination of death (attrition in this case) and time on books (tenure of customer).
+
+
+
+
+_________________________
+CLM Engine is an engine that allows brands to execute a Segment of One strategy. It combines advanced analytics, direct marketing thinking, campaign best practices and top notch Governance to get more value from an existing customer base.
+
+The key highlights of the engine are as follows:
+
+Segment of One Marketing
+Use of Genome Mapping (binary conversion of a transaction) to allocate Customers to Paths
+Every Path contain some fertile zones – called Gravity Zones, where the communication is intensified in bursts
+Preference (Revealed and Latent) based path changes
+Self-Learning
+Optimized for a large database of customers
+Relevant and Governed yet optimal number of interventions per customers
+Set Paths and Evolutions with richer information, offer optimization
+Handholding the customer from one purchase to the next has resulted a great lift in the business metrics which are the biggest challenge for marketers – Single to Repeat, Improve Frequency
+Design of Experiments which learns from results

@@ -1,0 +1,1203 @@
+/* global vb_page_info, googletag, dfpTargeting, _bti, ezt */
+'use strict';
+
+(function($){
+  // Initialize variables
+  var lastScroll = 0;
+  var depth = 0;
+  var nextSlotId = 1;
+  var firstContent;
+  var page = 1;
+  var screenWidth = jQuery(window).width();
+
+  // Info for original post, used for setting title and url on page change.
+  var originalUrl = window.location.href;
+  var originalTitle = $('title').text();
+
+  // Share icon varibles. These update as the active post changes. When a social icon is clicked, we use these to share the correct post.
+  var shareUrl = 'http://venturebeat.com';
+  var shareTitle = '';
+  var originalShareTitle = '';
+  var postId;
+  var originalPostId;
+
+  // Boolean Checks
+  var isFetchingArticles = true;
+  var isInsertingArticle = false;
+  var galleryHasBeenInserted = false;
+  var sponsoredPostInjected = false;
+
+  // Infinite post variables
+  var infinitePostList = [];
+  var infiniteReadMore = [];
+  var infinitePostIndex = 0;
+  var infinitePostCount = 0;
+  var injectedPostCount = 0;
+
+
+  // VB Recommended Sidebar Widget
+  var vbRecommendedWidget = $('#boomtrain-recs');
+  var cachedRecommendedWidget;
+
+  // Read More Posts variables
+  if(typeof vbSettings !== 'undefined' && vbSettings.readMoreInjection) {
+    var readMoreEnabled = true;
+    var readMoreCount = vbSettings.readMoreInjection.wordCount;
+  }
+  var readMorePage = 2;
+  var readMoreIndex = 1;
+
+  // This variable gets updated as infinite articles are injected. It holds the value of the element a new post should be injected after.
+  var lastPostSelector = '.body-container.container.clearfix';
+
+  // Get static CDN url
+  var domain = window.location.origin;
+  var staticUrl = '';
+  if (domain.indexOf('venturebeat.dev') !== -1 ) {
+    staticUrl = '//vbstatic.dev';
+  } else if (domain.indexOf('vbstaging.co') !== -1 ) {
+    staticUrl = '//staging.vbstatic.co';
+  } else {
+    staticUrl = '//vbstatic.co';
+  }
+  var adblock = false;
+  var test = document.createElement('div');
+  test.innerHTML = '&nbsp;';
+  test.className = 'adsbox';
+  window.onload = function() {
+    document.body.appendChild(test);
+    window.setTimeout(function() {
+      if (test.offsetHeight === 0) {
+        adblock = true;
+      } else {
+        adblock = false;
+      }
+      test.remove();
+    }, 100);
+  };
+
+
+  var channel = '';
+  if(typeof vb_page_info !== 'undefined' && vb_page_info.channel) {
+    channel = vb_page_info.channel;
+  }
+
+  // Make call to vb json api feed (configured in infinite.php on vb-news)
+  $.get( '/infinite?channel=' + channel, function( data ) {
+    isFetchingArticles = false;
+    infinitePostList = data;
+    page++;
+
+    // Hide footer & set data-url attr on original post
+    $('footer').css('display', 'none');
+    $('.body-container.container.clearfix').first().attr('data-index', 1000);
+
+    // Set initial share variables
+    shareUrl = originalUrl;
+    shareTitle = $('.article-title').first().text();
+    originalShareTitle = shareTitle;
+    postId = jQuery('meta[property="bt:id"]').attr('content');
+    originalPostId = postId;
+
+    // Inject share for infinite articles
+    injectShareButtons();
+
+    if (screenWidth > 768 || !readMoreEnabled) {
+      injectMobileMedRec();
+      setWindowScroll();
+    } else if (wordCount() < readMoreCount) {
+      injectMobileMedRec();
+      setWindowScroll();
+    } else {
+      $(document).ready(function() {
+        injectOverlay();
+      });
+    }
+  });
+
+  function wordCount() {
+    var words = $.trim($('.article-content').text().replace(/(\r\n|\n|\r)/gm,' '));
+    return words.split(' ').length;
+  }
+
+  // Set interval for URL/Title/Social check and change.
+  setInterval(function() {
+    var scrollPos = $(window).scrollTop();
+
+    // Adjust the URL based on the top item shown
+    if (Math.abs(scrollPos - lastScroll) > $(window).height() * 0.1) {
+      lastScroll = scrollPos;
+
+      $('.body-container.container.clearfix').each(function() {
+
+        // Check to see if component mostlyVisible
+        if (mostlyVisible(this)) {
+          var currentPost = {};
+
+          // If visible, update history/url state, title of page, and share icon variables. NOTE: '1000' is index of original post.
+          var currentIndex = $(this).attr('data-index');
+
+          if(currentIndex === 'sponsored') {
+            var sponsoredData = $(this).data();
+            if(typeof sponsoredData.postInfo !== 'undefined') {
+              currentPost = sponsoredData.postInfo;
+              history.replaceState(null, null, currentPost.link);
+              $('title').text(currentPost.title.replace(/[\u2018\u2019]/g, "'") + ' | ' + (currentPost.meta === 'games' ? 'GamesBeat' : 'VentureBeat') + ' | ' + currentPost.channel + ' | ' + currentPost.author);
+              shareUrl = currentPost.link;
+              shareTitle = currentPost.title.replace(/[\u2018\u2019]/g, "'");
+              postId = currentPost.id;
+            }
+
+            return false;
+          }
+
+          if (currentIndex < 1000) {
+            currentPost = infinitePostList[currentIndex];
+            history.replaceState(null, null, currentPost.link);
+            $('title').text(currentPost.title.replace(/[\u2018\u2019]/g, "'") + ' | ' + (currentPost.meta === 'games' ? 'GamesBeat' : 'VentureBeat') + ' | ' + currentPost.channel + ' | ' + currentPost.author);
+            shareUrl = currentPost.link;
+            shareTitle = currentPost.title.replace(/[\u2018\u2019]/g, "'");
+            postId = currentPost.id;
+          } else {
+            history.replaceState(null, null, originalUrl);
+            $('title').text(originalTitle);
+            shareUrl = originalUrl;
+            shareTitle = originalShareTitle;
+            postId = originalPostId;
+          }
+
+          return(false);
+        }
+      });
+    }
+  }, 5000);
+
+  function setWindowScroll() {
+    $(window).scroll(function() {
+      var scrollPos = $(window).scrollTop();
+      firstContent = $('.body-container.container.clearfix').first().find('#primary').offset().top;
+
+      // Check if near bottom ( < 25px ) and insert if true
+      if(!isInsertingArticle && (infinitePostIndex < infinitePostList.length)) {
+        if ($('body').height() - ( $(window).scrollTop() + window.innerHeight ) <  25) {
+          var injectSponsored = checkSponsoredPost();
+
+          if(injectSponsored && !sponsoredPostInjected) {
+
+            isInsertingArticle = true;
+            injectSponsoredPost();
+          } else {
+            isInsertingArticle = true;
+            jQuery(document).trigger('loadNewPost', [infinitePostList[infinitePostIndex], false]);
+            sponsoredPostInjected = false;
+          }
+        }
+      }
+
+      if (scrollPos > 3000) {
+        // Stop checking if page is past 3000px for performance reasons
+      } else if ((scrollPos > firstContent - 50) && screenWidth > 768 ) {
+        $('#sticky-wrapper').addClass('sticky');
+      } else if ((scrollPos < firstContent - 50) && screenWidth > 768 ) {
+        $('#sticky-wrapper').removeClass('sticky');
+      }
+    });
+  }
+
+  function injectSponsoredPost() {
+    var sponsoredSlotDiv = jQuery( '<div />' )
+      .attr( 'id', 'sponsored-' + injectedPostCount )
+      .attr( 'class', 'adslot adslot-custom adslot-sponsored' )
+      .attr( 'data-sizes', '[1,1]' )
+      .attr( 'data-dfp', 'ROS_Sponsored_Post' );
+
+    // Append Sponsored Post Adslot for DFP
+    jQuery('body').append(sponsoredSlotDiv);
+
+    googletag.cmd.push(function() {
+      var sponsoredSlot = googletag.defineSlot('/1038375/' + jQuery(sponsoredSlotDiv).attr('data-dfp'), [1,1], jQuery(sponsoredSlotDiv).attr('id')).addService(googletag.pubads());
+      sponsoredSlot.setTargeting('env', dfpTargeting['env']);
+      sponsoredSlot.setTargeting('post_chan', channel);
+
+      googletag.display(jQuery(sponsoredSlotDiv).attr('id'));
+      googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+        if(event.slot === sponsoredSlot) {
+          if(!event.isEmpty) {
+            console.log('not empty');
+          } else {
+            isInsertingArticle = true;
+            jQuery(document).trigger('loadNewPost', [infinitePostList[infinitePostIndex], false]);
+            sponsoredPostInjected = false;
+            injectedPostCount++;
+          }
+        }
+      });
+
+      googletag.pubads().refresh([sponsoredSlot]);
+    });
+
+    // Indicate we just injected a post so that we don't inject two in a row
+    sponsoredPostInjected = true;
+  }
+
+  function checkSponsoredPost() {
+    if(adblock) {
+      return false;
+    }
+    if(typeof vbSettings.infinitePostInjection === 'undefined') {
+      return false;
+    }
+    var start = vbSettings.infinitePostInjection.start;
+    var offset = vbSettings.infinitePostInjection.offset;
+    if (typeof vbSettings !== 'undefined' && typeof vbSettings.infinitePostInjection !== 'undefined' &&
+          (infinitePostCount + 1 - start) % offset === 0 ) {
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function mobileNavBarToggle() {
+    var prevScroll = 0;
+    var minimumScroll = 60;
+    var $window = $(window);
+    var navbar = $('#omni-navbar');
+
+    $window.on('scroll', function(){
+      var scrollTop = $window.scrollTop();
+      navbar.toggleClass('omni-navbar-hidden', scrollTop > prevScroll && scrollTop > minimumScroll);
+      prevScroll = scrollTop;
+    });
+  }
+
+  jQuery(document).ready(function() {
+    // Finds next post that has not been built, generates markup, and sends markup to injectInfinitepost().
+    jQuery(document).on('loadNewPost', function(event, newPostObject, isSponsored) {
+      // Check to see if post is original post, if it is, skip it and call this function again.
+      if (originalUrl === newPostObject.link && isSponsored) {
+
+        isInsertingArticle = true;
+        jQuery(document).trigger('loadNewPost', [infinitePostList[infinitePostIndex], false]);
+        sponsoredPostInjected = false;
+        return;
+      }
+
+      // Check to see if post is original post, if it is, skip it and call this function again.
+      if (originalUrl.indexOf( infinitePostList[infinitePostIndex].link ) !== -1 && !isSponsored) {
+
+        infinitePostIndex++;
+        isInsertingArticle = true;
+        jQuery(document).trigger('loadNewPost', [infinitePostList[infinitePostIndex], false]);
+        sponsoredPostInjected = false;
+        return;
+      }
+
+      // Check to see if the post has already been rendered, if it has been, skip it and call this function again for the next post.
+      for (var i = 0; i < infinitePostIndex; i++) {
+        if (infinitePostList[infinitePostIndex].link === infinitePostList[i].link) {
+          infinitePostIndex++;
+          isInsertingArticle = true;
+          jQuery(document).trigger('loadNewPost', [infinitePostList[infinitePostIndex], false]);
+          sponsoredPostInjected = false;
+          return;
+        }
+      }
+
+      // If post is multipage, splits the post at the <!--nextpage--> tag, then adds page links to the content before the <!--nextpage--> tag
+      if ( newPostObject.multipage ) {
+        var splitContent = newPostObject.content.split('<!--nextpage-->');
+        var pageLinksSplit = splitContent[splitContent.length-1].split('<div id=\"pagelinks\">');
+        newPostObject.content = splitContent[0] + '<div id=\"pagelinks\">' + pageLinksSplit[1];
+      }
+
+      // Boomtrain Recommended Widget functionality
+      if (vbRecommendedWidget.length) {
+        // Split sidebar into individual widgets
+        var sidebarWidgets = newPostObject.sidebar.split('</div>');
+        // Loop through each widget
+        for(var i = 0; i < sidebarWidgets.length; i++) {
+          // Add closing div tag that got taken out during the split
+          sidebarWidgets[i] += '</div>';
+          // If it's the Boomtrain Recommended Widget
+          if (sidebarWidgets[i].includes('boomtrain-recs')) {
+            // If the widget hasn't been cached yet and is on the page populated with recommendations
+            if (cachedRecommendedWidget == null && vbRecommendedWidget.children().length >= 1) {
+              // Convert DOM elements to string
+              var recommendedWidgetString = vbRecommendedWidget[0].outerHTML;
+              // Cache the widget for future use
+              cachedRecommendedWidget = recommendedWidgetString.replace('style="display: none;"', '') // Have widget visibe by default
+              // Set boomtrain recommended widget equal to cached version
+              sidebarWidgets[i] = cachedRecommendedWidget;
+            } else if(cachedRecommendedWidget) {
+              // Use cached recommended widget if already set
+              sidebarWidgets[i] = cachedRecommendedWidget;
+            }
+          }
+        }
+        newPostObject.sidebar = sidebarWidgets.join('');
+      }
+
+      var newPost = jQuery( '<div />')
+        .attr( 'id', 'newpost-' + infinitePostCount )
+        .attr( 'class', 'new-infinite-post' );
+
+      var adLeaderboard = jQuery( '<div />' )
+        .attr( 'class', 'vb-ad-leaderboard' );
+
+      newPost.append( adLeaderboard );
+
+      var leaderboardAdslot = jQuery( '<div />' )
+        .attr( 'id', 'adslot' + nextSlotId++ )
+        .attr( 'class', 'adslot adslot-leaderboard' )
+        .attr( 'data-sizes', '[[970,250],[970,90],[970,66],[728,90]]' )
+        .attr( 'data-dfp', 'ROS_Top_Leaderboard' );
+
+      var mobileLeaderboardAdslot = jQuery( '<div />' )
+        .attr( 'id', 'adslot' + nextSlotId++ )
+        .attr( 'class', 'adslot adslot-leaderboard-mobile' )
+        .attr( 'data-sizes', '[320,50]' )
+        .attr( 'data-dfp', 'ROS_Mobile_LB' );
+
+      adLeaderboard.append( leaderboardAdslot );
+      adLeaderboard.append( mobileLeaderboardAdslot );
+
+      var bodyContainer = jQuery( '<div />')
+        .attr( 'class', 'body-container container clearfix' )
+        .attr( 'data-index', isSponsored ? 'sponsored' : infinitePostIndex );
+
+      newPost.append( bodyContainer );
+
+      var articleMasthead = jQuery( '<div />' )
+        .attr( 'id', 'article-masthead' );
+
+      bodyContainer.append( articleMasthead );
+
+      var header = jQuery( '<header />' )
+        .attr( 'class', 'article-header' );
+
+      articleMasthead.append( header );
+
+      if ( typeof newPostObject.meta !== 'undefined' && newPostObject.meta !== null) {
+        var articleCategory = jQuery( '<a />' )
+          .attr( 'href', '/category/' + newPostObject.meta )
+          .attr( 'class', 'article-category' )
+          .text( newPostObject.channel.toUpperCase() );
+
+        header.append( articleCategory );
+      }
+
+      if ( typeof newPostObject.story_type_markup !== 'undefined' && newPostObject.story_type_markup !== null) {
+        header.append( newPostObject.story_type_markup.replace(':<', '<') );
+      }
+
+      var title = jQuery( '<h1 />' )
+        .attr( 'class', 'article-title' )
+        .text( newPostObject.title );
+
+      header.append( title );
+
+      var articleByline = jQuery( '<div />' )
+        .attr( 'class', 'article-byline' );
+
+      articleByline.append( newPostObject.byline_markup );
+
+      header.append( articleByline );
+
+      var time = jQuery( '<time />' )
+        .attr( 'class', 'the-time' )
+        .attr( 'title', newPostObject.date_time )
+        .attr( 'datetime', newPostObject.date_time )
+        .text( newPostObject.date );
+
+      articleByline.append( time );
+
+      var mediaHeader = jQuery( '<div />' )
+        .attr( 'class', 'article-media-header' );
+
+      mediaHeader.append( newPostObject.header );
+
+      header.append( mediaHeader );
+
+      var primary = jQuery( '<div />' )
+        .attr( 'id', 'primary' );
+
+      bodyContainer.append( primary );
+
+      var content = jQuery( '<div />' )
+        .attr( 'id', 'content' )
+        .attr( 'role', 'main' );
+
+      primary.append( content );
+
+      var article = jQuery( '<article />' )
+        .attr( 'id', 'post-' + newPostObject.id );
+
+      content.append( article );
+
+      var articleContent = jQuery( '<div />' )
+        .attr( 'class', 'article-content' );
+
+      articleContent.append( newPostObject.content );
+
+      article.append( articleContent ); 
+
+      var secondary = jQuery( '<div />' )
+        .attr( 'id', 'secondary' )
+        .attr( 'class', 'column widget-area');
+
+      bodyContainer.append( secondary );
+
+      var aside = jQuery( '<aside />' )
+        .attr( 'role', 'complementary' );
+
+      secondary.append( aside );
+
+      var sidebarContainer = jQuery( '<div />' )
+        .attr( 'class', 'xoxo' );
+
+      sidebarContainer.append( newPostObject.sidebar );
+
+      aside.append( sidebarContainer );
+
+      try {
+        if(window.advBidxc.isLoaded) {
+          window.advBidxc.next();
+        }
+      } catch (e) {}
+      
+      // Call method to inject new post
+      injectInfinitePost(newPost, newPostObject, isSponsored);
+
+
+      // If new post contains gallery, inject gallery scripts
+      if(newPostObject.content.match(/gallery-container/i) !== null && !galleryHasBeenInserted) {
+        injectGalleryScript();
+      }
+    });
+  });
+
+
+  // Inject infinite post
+  function injectInfinitePost(newPostMarkup, newPostObject, isSponsored) {
+    $(lastPostSelector).last().after(newPostMarkup);
+    if(isSponsored) {
+      $('.body-container.container.clearfix').last().data('postInfo', newPostObject);
+    }
+
+    // Track infinite article pageview with quantcast
+    if(typeof vbSettings !== 'undefined' && vbSettings.quantcast_p_code && typeof ezt !== 'undefined') {
+      var labels = 'Channel.'+ channel + ',Author.' + newPostObject.author.toLowerCase();
+
+      if( newPostObject.story_type ) {
+        labels += ',HelmStoryType.' + newPostObject.story_type.toLowerCase();
+      }
+
+      ezt.push({
+        qacct: vbSettings.quantcast_p_code,
+        event: 'refresh',
+        labels: labels
+      });
+    }
+
+    // Find new post dom element (by looking up id of new post).
+    var newPost = $('#newpost-' + infinitePostCount);
+
+    var articleContentHeight = jQuery('.article-content').last().height();
+
+    var sidebarTopMR = jQuery( '<div />' )
+      .attr( 'id', nextSlotId++ )
+      .attr( 'class', 'adslot adslot-medrec' )
+      .attr( 'data-dfp', 'ROS_Top_MR' );
+
+    var sidebarLowerMR = jQuery( '<div />' )
+      .attr( 'id', nextSlotId++ )
+      .attr( 'class', 'adslot adslot-medrec' )
+      .attr( 'data-sizes', '[300,250]' )
+      .attr( 'data-dfp', 'ROS_Lower_MR' );
+
+    // Sidebar MedRec dependant on height of the article content
+    if(articleContentHeight < 500) {
+      // top ad only
+      sidebarTopMR.attr( 'data-sizes', '[300,250]' );
+      newPost.find('.dfp-placeholder').first().append( sidebarTopMR );
+      $('.xoxo .vb_widget').last().css('display', 'none');
+    } else if (articleContentHeight < 700) {
+      // top ad and widget
+      sidebarTopMR.attr( 'data-sizes', '[300,250]' );
+      newPost.find('.dfp-placeholder').first().append( sidebarTopMR );
+    } else if (articleContentHeight < 1180) {
+      // full sidebar but only allow top ad height of 250
+      sidebarTopMR.attr( 'data-sizes', '[300,250]' );
+      newPost.find('.dfp-placeholder').first().append( sidebarTopMR );
+      newPost.find('.dfp-placeholder').last().append( sidebarLowerMR );
+    } else {
+      // full sidebar
+      sidebarTopMR.attr( 'data-sizes', '[[300,250],[300,600]]' );
+      newPost.find('.dfp-placeholder').first().append( sidebarTopMR );
+      newPost.find('.dfp-placeholder').last().append( sidebarLowerMR );
+    }
+
+    // Append html markup for 300x250 unit inside stories on mobile and tablet when more than 4 paragraphs
+    var paragraphs = newPost.find('.article-content').children();
+    if(paragraphs.length > 4) {
+      var midIndex = parseInt(paragraphs.length/2);
+      var newIndex = midIndex;
+      var midParagraph = paragraphs.eq(midIndex);
+      var inlineMRContainer = jQuery( '<p />' );
+      var inlineMR = jQuery( '<div />' )
+        .attr( 'id', 'adslot' + nextSlotId++ )
+        .attr( 'class', 'adslot adslot-medrec adslot-mobile' )
+        .attr( 'data-sizes', '[300,250]' )
+        .attr( 'data-dfp', 'ROS_Mobile_Inline_MR' );
+
+      inlineMRContainer.append( inlineMR );
+
+      if(midParagraph.find('img').length || midParagraph.find('iframe').length) {
+        newIndex = midIndex + 1;
+      }
+      if(paragraphs.eq(midIndex+1).find('img').length || paragraphs.eq(midIndex+1).find('iframe').length) {
+        newIndex = midIndex - 1;
+      }
+      $(paragraphs.eq(newIndex)).after( inlineMRContainer );
+    }
+
+    var dfpslots = newPost.find('.adslot').filter(':visible');
+    var slots = [];
+    var refreshSlots = [];
+    var refreshCount = 0;
+
+    // If googletag available, inject DFP units in new article.
+    if(typeof googletag !== 'undefined') {
+      googletag.cmd.push(function() {
+        var refreshAds = function() {
+          if(typeof amznads !== 'undefined') {
+            amznads.setTargetingForGPTAsync('amznslots');
+          }
+          googletag.pubads().refresh(slots);
+        };
+
+        dfpslots.each(function() {
+          var self = $(this);
+
+          // Conditional to make sure we're not setting the entire content element to 'display: none'. This would cause many articles to load at once and be generally bad.
+          if (self.attr('data-dfp') !== 'ROS_Mobile_Inline_MR') {
+            self.parent().css('display', 'none');
+          }
+
+          var slot = googletag.defineSlot('/1038375/'+ self.attr('data-dfp'), JSON.parse(self.attr('data-sizes')), self.attr('id')).addService(googletag.pubads()).setCollapseEmptyDiv(true, true);
+          var dfpTargeting = newPostObject.dfp_targeting;
+
+          slot.setTargeting('post_scroll', true);
+          slot.setTargeting('pv', 'first');
+
+          for(var key in dfpTargeting) {
+            if(dfpTargeting.hasOwnProperty(key)) {
+              slot.setTargeting(key, dfpTargeting[key]);
+            }
+          }
+          slots.push(slot);
+
+          googletag.display(self.attr('id'));
+          googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+            if(event.slot === slot) {
+              if(!event.isEmpty) {
+                self.parent().slideDown('fast');
+
+                setTimeout(function(){
+                  self.parent().css('height', self.parent().css('height'));
+                }, 500 );
+              }
+
+              var targetingMap = event.slot.getTargetingMap();
+              if(typeof targetingMap.pv !== 'undefined') {
+                event.slot.clearTargeting('pv');
+                var slotId = event.slot.getSlotElementId();
+                var iframe = document.querySelector('#' + slotId + ' iframe');
+                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var img = iframeDoc.querySelector('img');
+                if(img && img.alt && img.alt === 'no_refresh') {
+
+                } else {
+                  refreshSlots.push(slot);
+                }
+              }
+            }
+          });
+        });
+
+        var throttle;
+        if(typeof amznads !== 'undefined' && typeof amznads.lastGetAdsCallback !== 'undefined') {
+          throttle = parseInt((Date.now() -amznads.lastGetAdsCallback)/1000);
+        }
+
+        if(typeof amznads !== 'undefined' && throttle >= 10) {
+          amznads.lastGetAdsCallback = Date.now();
+          amznads.getAdsCallback('3181', refreshAds);
+          googletag.pubads().clearTargeting('amznslots');
+        } else {
+          googletag.pubads().clearTargeting('amznslots');
+          googletag.pubads().refresh(slots);
+        }
+        
+      });
+
+      if(typeof userInfo !== 'undefined' && !userInfo.logged_in) {
+        var intervalID = setInterval(function() {
+          googletag.pubads().refresh(refreshSlots);
+
+          if(++refreshCount === 5) {
+            window.clearInterval(intervalID);
+          }
+        }, 30000);
+      }
+    }
+
+    // Send new pageview to analytics after page load
+    if(typeof analytics !== 'undefined') {
+      var link = newPostObject.link;
+      var property = newPostObject.meta === 'games' ? 'GamesBeat' : 'VentureBeat';
+      var meta = newPostObject.meta;
+      var category = meta.charAt(0).toUpperCase() + meta.slice(1);
+      var title = newPostObject.title.replace(/[\u2018\u2019]/g, "'") + ' | ' + property + ' | ' + category + ' | by ' + newPostObject.author;
+      analytics.page({
+        title: title,
+        url: link,
+        path: link.replace(document.location.origin, ''),
+        referrer: 'Infinite'
+      });
+    }
+
+    // If we're at article before last, call for more articles
+    if ( infinitePostIndex > (infinitePostList.length - 3) && !isFetchingArticles ) {
+      getMoreArticles();
+    }
+
+    infinitePostCount++;
+    // Update variables after injection
+    if(!isSponsored) {
+      infinitePostIndex++;
+    } else {
+      injectedPostCount++;
+    }
+
+    depth++;
+    lastPostSelector = '.new-infinite-post';
+    isInsertingArticle = false;
+  }
+
+  // Helper function that returns true if 25% of element is visible
+  function mostlyVisible(element) {
+    var scrollPos = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var elTop = $(element).offset().top;
+    var elHeight = $(element).height();
+    var elBottom = elTop + elHeight;
+    return ((elBottom - elHeight*0.25 > scrollPos) &&
+            (elTop < (scrollPos+0.5*windowHeight)));
+  }
+
+  // Helper function to inject gallery scripts
+  function injectGalleryScript() {
+    $.getScript(staticUrl + '/brand/js/lib/magnific-popup.js', function() {
+      $.getScript(staticUrl + '/brand/js/vb-gallery.min.js', function() {
+        galleryHasBeenInserted = true;
+      });
+    });
+  }
+
+  // Helper function to inject share buttons on infinite articles
+  function injectShareButtons() {
+    var shareContainer = $('.body-container');
+    var stickyWrapper = $(document.createElement('div')).attr('id', 'sticky-wrapper').addClass('sticky-wrapper').css('height', '285px');
+    var socialShares = $(document.createElement('div')).addClass('social-shares');
+    var socialButtons = $(document.createElement('div')).addClass('social-buttons');
+    stickyWrapper.append(socialShares);
+    socialShares.append(socialButtons);
+    shareContainer.append(stickyWrapper);
+
+    // FACEBOOK SOCIAL BUTTON
+
+    var facebookSocialButtonContainer = jQuery( '<div />' )
+      .attr( 'class', 'share-button share-facebook' )
+      .on('click', function() {
+        if(typeof _bti !== 'undefined') {
+          _bti.track('shared', { 'id': postId, 'model': 'news', 'bt-event-type': 2, 'link_clicked': 'facebook'});
+        }
+
+        if(typeof analytics !== 'undefined') {
+          analytics.track('Shared Article', {
+            link: 'Facebook',
+            category: 'social',
+            url: window.location.href
+          });
+        }
+        window.open('//www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl) + '&t=' + encodeURIComponent(htmlDecode(shareTitle)), '', 'toolbar=0, status=0, width=900, height=500');
+      });
+    var facebookSocialButton = jQuery( '<a />' )
+      .attr( 'class', 'share' );
+
+    facebookSocialButtonContainer.append( facebookSocialButton );
+    socialButtons.append( facebookSocialButtonContainer );
+
+    // TWITTER SOCIAL BUTTON
+
+    var twitterSocialButtonContainer = jQuery( '<div />' )
+      .attr( 'class', 'share-button share-twitter' )
+      .on('click', function() {
+        if(typeof _bti !== 'undefined') {
+          _bti.track('shared', { 'id': postId, 'model': 'news', 'bt-event-type': 2, 'link_clicked': 'twitter'});
+        }
+        if(typeof analytics !== 'undefined') {
+          analytics.track('Shared Article', {
+            link: 'Twitter',
+            category: 'social',
+            url: window.location.href
+          });
+        }
+        window.open('//twitter.com/intent/tweet?text=' + encodeURIComponent(htmlDecode(shareTitle)) + '&url=' + encodeURIComponent(shareUrl) + '&via=VentureBeat&related=VentureBeat,GamesBeat', '', 'toolbar=0, status=0, width=650, height=360');
+      });
+    var twitterSocialButton = jQuery( '<a />' )
+      .attr( 'class', 'share' );
+      
+    twitterSocialButtonContainer.append( twitterSocialButton );
+    socialButtons.append( twitterSocialButtonContainer)
+
+    // LINKEDIN SOCIAL BUTTON
+
+    var linkedinSocialButtonContainer = jQuery( '<div />' )
+      .attr( 'class', 'share-button share-linkedin' )
+      .on('click', function() {
+        if(typeof _bti !== 'undefined') {
+          _bti.track('shared', { 'id': postId, 'model': 'news', 'bt-event-type': 2, 'link_clicked': 'linkedin'});
+        }
+
+        if(typeof analytics !== 'undefined') {
+          analytics.track('Shared Article', {
+            link: 'LinkedIn',
+            category: 'social',
+            url: window.location.href
+          });
+        }
+        window.open('https://www.linkedin.com/cws/share?url=' + encodeURIComponent(shareUrl) + '&token=&isFramed=true', 'linkedin', 'toolbar=no,width=550,height=550');
+      });
+    var linkedinSocialButton = jQuery( '<a />' )
+      .attr( 'class', 'share' );
+
+    linkedinSocialButtonContainer.append( linkedinSocialButton );
+    socialButtons.append( linkedinSocialButtonContainer );
+
+    // REDDIT SOCIAL BUTTON
+
+    var redditSocialButtonContainer = jQuery( '<div />' )
+      .attr( 'class', 'share-button share-reddit' )
+      .on('click', function() {
+        if(typeof _bti !== 'undefined') {
+          _bti.track('shared', { 'id': postId, 'model': 'news', 'bt-event-type': 2, 'link_clicked': 'reddit'});
+        }
+
+        if(typeof analytics !== 'undefined') {
+          analytics.track('Shared Article', {
+            link: 'Reddit',
+            category: 'social',
+            url: window.location.href
+          });
+        }
+        window.open('https://www.reddit.com/submit?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(htmlDecode(shareTitle)), '', 'toolbar=no,width=550,height=550');
+      });
+    var redditSocialButton = jQuery( '<a />' )
+      .attr( 'class', 'share' );
+
+    redditSocialButtonContainer.append( redditSocialButton );
+    socialButtons.append( redditSocialButtonContainer );
+
+    // HACKER NEWS SOCIAL BUTTON
+
+    var hackerNewsSocialButtonContainer = jQuery( '<div />' )
+      .attr( 'class', 'share-button share-stumbleupon' )
+      .on('click', function() {
+        if(typeof _bti !== 'undefined') {
+          _bti.track('shared', { 'id': postId, 'model': 'news', 'bt-event-type': 2, 'link_clicked': 'hackernews'});
+        }
+
+        if(typeof analytics !== 'undefined') {
+          analytics.track('Shared Article', {
+            link: 'Hacker News',
+            category: 'social',
+            url: window.location.href
+          });
+        }
+        window.open('http://news.ycombinator.com/submitlink?u=' + encodeURIComponent(shareUrl) + '&t=' + encodeURIComponent(htmlDecode(shareTitle)));
+      });
+    var hackernewsSocialButton = jQuery( '<a />' )
+      .attr( 'class', 'share' );
+
+    hackerNewsSocialButtonContainer.append( hackernewsSocialButton );
+    socialButtons.append( hackerNewsSocialButtonContainer );
+
+
+    // Render FB Like button on desktop only
+    if( screenWidth > 1169) {
+
+      // Wait for FB JS SDK to load
+      setTimeout(function() {
+        var dynLike = document.createElement('fb:like');
+        dynLike.setAttribute('class', 'fb-like-button');
+        dynLike.setAttribute('href', 'https://facebook.com/venturebeat');
+        dynLike.setAttribute('layout', 'button_count');
+        dynLike.setAttribute('action', 'like');
+        dynLike.setAttribute('size', 'large');
+        dynLike.setAttribute('show_faces', 'false');
+        dynLike.setAttribute('share', 'false');
+        stickyWrapper.append(dynLike);
+        
+        if(typeof FB !== 'undefined') {
+          FB.XFBML.parse();
+
+          analytics.track('FB Like Render', {
+            url: window.location.href
+          });
+
+          FB.Event.subscribe('xfbml.render', function(response) {
+            dynLike.style.position = 'absolute';
+          });
+
+          FB.Event.subscribe('edge.create', function(url, html_element) {
+            analytics.track('Cliked FB Like', {
+              url: window.location.href
+            });
+          });
+        }
+      }, 300);
+    }
+
+  }
+
+  // Helper function to decode html entities
+  function htmlDecode(value) {
+    var txt = document.createElement('textarea');
+    txt.innerHTML = value;
+    return txt.value;
+  }
+
+  // Helper function to receive more infinite articles
+  function getMoreArticles() {
+    isFetchingArticles = true;
+    $.get( '/infinite?paged=' + page + '&channel=' + channel, function( data ) {
+      isFetchingArticles = false;
+      infinitePostList = infinitePostList.concat(data);
+      page++;
+    });
+  }
+
+  function triggerAdsBySelector(selector) {
+    // If googletag available, inject DFP units in new article.
+    if(typeof googletag !== 'undefined') {
+      var dfpslots = $(selector).find('.adslot').filter(':visible');
+      var slots = [];
+      var refreshSlots = [];
+      var refreshCount = 0;
+
+      googletag.cmd.push(function() {
+
+        var refreshAds = function() {
+          if(typeof amznads !== 'undefined') {
+            amznads.setTargetingForGPTAsync('amznslots');
+          }
+          googletag.pubads().refresh(slots);
+        };
+
+        dfpslots.each(function() {
+          var self = $(this);
+          var slot = googletag.defineSlot('/1038375/'+ self.attr('data-dfp'), JSON.parse(self.attr('data-sizes')), self.attr('id')).addService(googletag.pubads()).setCollapseEmptyDiv(true, true);
+
+          slot.setTargeting('pv', 'first');
+          for(var key in dfpTargeting) {
+            if(dfpTargeting.hasOwnProperty(key)) {
+              slot.setTargeting(key, dfpTargeting[key]);
+            }
+          }
+
+          googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+            if(event.slot === slot) {
+              var targetingMap = event.slot.getTargetingMap();
+              if(typeof targetingMap.pv !== 'undefined') {
+                event.slot.clearTargeting('pv');
+                var slotId = event.slot.getSlotElementId();
+                var iframe = document.querySelector('#' + slotId + ' iframe');
+                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var img = iframeDoc.querySelector('img');
+                if(img && img.alt && img.alt === 'no_refresh') {
+
+                } else {
+                  refreshSlots.push(slot);
+                }
+              }
+              
+            }
+          });
+          slots.push(slot);
+
+          googletag.display(self.attr('id'));
+          if(self.hasClass('read-more')) {
+            self.removeClass('adslot');
+          }
+        });
+
+        var throttle;
+        if(typeof amznads !== 'undefined' && typeof amznads.lastGetAdsCallback !== 'undefined') {
+          throttle = parseInt((Date.now() -amznads.lastGetAdsCallback)/1000);
+        }
+
+        if(typeof amznads !== 'undefined' && dfpslots.length && selector !== '#read-more' && throttle >= 10) {
+          amznads.lastGetAdsCallback = Date.now();
+          amznads.getAdsCallback('3181', refreshAds);
+          googletag.pubads().clearTargeting('amznslots');
+        } else {
+          googletag.pubads().clearTargeting('amznslots');
+          googletag.pubads().refresh(slots);
+        }
+      });
+
+      if(selector === '.article-content') {
+        if(typeof userInfo !== 'undefined' && !userInfo.logged_in) {
+          var intervalID = setInterval(function() {
+            googletag.pubads().refresh(refreshSlots);
+
+            if(++refreshCount === 5) {
+              window.clearInterval(intervalID);
+            }
+          }, 30000);
+        }
+      }
+      
+    }
+  }
+
+  function injectReadMoreRiver(postList) {
+    var readMoreList = '';
+    var adStart = vbSettings.readMoreInjection.adStart;
+    var adOffset = vbSettings.readMoreInjection.adOffset;
+
+    var readMoreList = jQuery( '<div />' );
+
+    postList.forEach(function(post) {
+      if (originalUrl.indexOf( post.link ) !== -1) {
+        return;
+      }
+
+      // replace between 'fit=' and '&' or end of string with correct dimensions
+      var imageUrl = post.image.replace( /fit=.*?(?=&|$)/, 'fit=285%2C185' );
+
+      var postRow = jQuery( '<div />')
+        .attr( 'class', 'row post-row' );
+
+      var postLink = jQuery( '<a />' )
+        .attr( 'href', post.link );
+
+      postRow.append( postLink );
+
+      var cardImage = jQuery( '<div />' )
+        .attr( 'class', 'col-xs-5 col-sm-offset-1 col-sm-3 read-more-card-image' );
+
+      postLink.append( cardImage );
+
+      var imageHelper = jQuery( '<span />' )
+        .attr( 'class', 'image-helper' );
+
+      cardImage.append( imageHelper );
+
+      var imageContainer = jQuery( '<div />' )
+        .attr( 'class', 'read-more-image' );
+
+      cardImage.append( imageContainer );
+       
+      var image = jQuery( '<img />' )
+        .attr( 'src', imageUrl );
+
+      imageContainer.append( image );
+
+      var postInfo = jQuery( '<div />' )
+        .attr( 'class', 'col-xs-7 col-sm-7 read-more-card-post' );
+
+      postLink.append( postInfo );
+
+      var title = jQuery( '<h2 />' )
+        .attr( 'class', 'article-title' )
+        .text( post.title );
+
+      postInfo.append( title );
+
+      var byline = jQuery( '<div />' )
+        .attr( 'class', 'article-byline' );
+
+      postInfo.append( byline );
+
+      var author = jQuery( '<div />' )
+        .text( post.author );
+
+      byline.append( author );
+
+      var time = jQuery( '<time />' )
+        .text( post.date );
+
+      byline.append( time );
+
+      readMoreList.append( postRow );
+
+      readMoreIndex ++;
+
+      if (readMoreIndex === adStart || (((readMoreIndex - adStart) % adOffset) === 0)) {
+        var adContainer = jQuery( '<div />' )
+          .attr( 'class', 'row post-row medrec-row' );
+        var readMoreMR = jQuery( '<div />' )
+          .attr( 'id', 'read-more-ad' + nextSlotId++ )
+          .attr( 'class', 'adslot read-more adslot-medrec adslot-mobile' )
+          .attr( 'data-sizes', '[300,250]' )
+          .attr( 'data-dfp', 'ROS_Mobile_RF_MR' );
+
+        adContainer.append( readMoreMR );
+        readMoreList.append( adContainer );
+      }
+
+    });
+    $('#read-more-anchor').before(readMoreList);
+    $('#read-more').height(function() {
+      return  $('#read-more-anchor').offset().top - $('#read-more').offset().top + 70;
+    });
+    triggerAdsBySelector('#read-more');
+    isInsertingArticle = false;
+  }
+
+  function getReadMoreArticles() {
+    isFetchingArticles = true;
+    $.get( '/infinite?paged=' + readMorePage + '&channel=' + channel, function( data ) {
+      isFetchingArticles = false;
+      infiniteReadMore = data;
+      injectReadMoreRiver(infiniteReadMore);
+      readMorePage++;
+    });
+  }
+
+  function setWindowScrollReadMore() {
+    $(window).scroll(function() {
+      var scrollPos = $(window).scrollTop();
+      var anchorPos = $('#read-more-anchor').offset().top;
+
+      if(!isInsertingArticle) {
+        if (anchorPos - scrollPos < 2000) {
+          isInsertingArticle = true;
+          getReadMoreArticles();
+        }
+      }
+    });
+  }
+
+  function injectMobileMedRec() {
+    // Handle mobile in-story ad unit
+    var paragraphs = $('.article-content').children();
+    var storyMedrecContainer = jQuery( '<p />' );
+    var storyMedrec = jQuery( '<div />' )
+      .attr( 'id', 'div-gpt-ad-1452217192273-7' )
+      .attr( 'class', 'adslot adslot-medrec adslot-mobile' )
+      .attr( 'data-sizes', '[300,250]' )
+      .attr( 'data-dfp', 'ROS_Mobile_Inline_MR' );
+
+    storyMedrecContainer.append( storyMedrec );
+
+    // 300x250 unit inside stories on mobile and tablet
+    if( typeof vb_page_info !== 'undefined' && vb_page_info.page_type === 'single' ) {
+      if(paragraphs.length > 4) {
+        var midIndex = parseInt(paragraphs.length/2);
+        var newIndex = midIndex;
+
+        var midParagraph = paragraphs.eq(midIndex);
+        if(midParagraph.find('img').length || midParagraph.find('iframe').length) {
+          newIndex = midIndex + 1;
+        }
+        if(paragraphs.eq(midIndex+1).find('img').length || paragraphs.eq(midIndex+1).find('iframe').length) {
+          newIndex = midIndex - 1;
+        }
+
+        $(paragraphs.eq(newIndex)).after( storyMedrecContainer );
+      }
+    }
+    triggerAdsBySelector('.article-content');
+  }
+
+  function injectOverlay() {
+
+    var readMoreContainer = jQuery( '<div />' )
+      .attr( 'id', 'read-more' )
+      .attr( 'class', 'container' );
+
+    var readMoreRow = jQuery( '<div />' )
+      .attr( 'class', 'row' );
+
+    readMoreContainer.append( readMoreRow );
+
+    var buttonContainer = jQuery( '<div />' )
+      .attr( 'class', 'col-xs-12' );
+
+    readMoreRow.append( buttonContainer );
+
+    var readMoreButton = jQuery( '<button />' )
+      .attr( 'id', 'read-more-button' )
+      .attr( 'class', 'btn btn-default' )
+      .text( 'Read Full Story' );
+
+    buttonContainer.append( readMoreButton );
+
+    var readMoreRiver = jQuery( '<div />' )
+      .attr( 'class', 'col-xs-12 read-more-river' );
+
+    readMoreRow.append( readMoreRiver );
+
+    var readMoreLeadContainer = jQuery( '<div />' )
+      .attr( 'class', 'row read-more-lead' );
+
+    readMoreRiver.append( readMoreLeadContainer );
+
+    var readMoreLead = jQuery( '<p />' )
+      .text( 'THE LATEST' );
+
+    readMoreLeadContainer.append( readMoreLead );
+
+    var readMoreAnchor = jQuery( '<div />' )
+      .attr( 'id', 'read-more-anchor' );
+
+    readMoreRiver.append( readMoreAnchor );
+
+    $('.body-container').append( readMoreContainer );
+    injectReadMoreRiver(infinitePostList);
+    setWindowScrollReadMore();
+    $('#read-more-button').click(function(event) {
+      if(typeof analytics !== 'undefined') {
+        analytics.track('Read More Clicked', {
+          url: originalUrl,
+          title: originalTitle
+        });
+      }
+
+      event.preventDefault();
+      $(window).off('scroll');
+      setWindowScroll();
+      $('#read-more').remove();
+      injectMobileMedRec();
+      mobileNavBarToggle();
+    });
+  }
+
+  // Send depth data to analytics
+  window.onbeforeunload = function() {
+    if(typeof analytics !== 'undefined') {
+      analytics.track('Infinite Articles Viewed', {
+        depth: depth
+      });
+    }
+  };
+
+
+})(jQuery);
+;
+!function(a,b){"use strict";function c(){if(!e){e=!0;var a,c,d,f,g=-1!==navigator.appVersion.indexOf("MSIE 10"),h=!!navigator.userAgent.match(/Trident.*rv:11\./),i=b.querySelectorAll("iframe.wp-embedded-content");for(c=0;c<i.length;c++){if(d=i[c],!d.getAttribute("data-secret"))f=Math.random().toString(36).substr(2,10),d.src+="#?secret="+f,d.setAttribute("data-secret",f);if(g||h)a=d.cloneNode(!0),a.removeAttribute("security"),d.parentNode.replaceChild(a,d)}}}var d=!1,e=!1;if(b.querySelector)if(a.addEventListener)d=!0;if(a.wp=a.wp||{},!a.wp.receiveEmbedMessage)if(a.wp.receiveEmbedMessage=function(c){var d=c.data;if(d.secret||d.message||d.value)if(!/[^a-zA-Z0-9]/.test(d.secret)){var e,f,g,h,i,j=b.querySelectorAll('iframe[data-secret="'+d.secret+'"]'),k=b.querySelectorAll('blockquote[data-secret="'+d.secret+'"]');for(e=0;e<k.length;e++)k[e].style.display="none";for(e=0;e<j.length;e++)if(f=j[e],c.source===f.contentWindow){if(f.removeAttribute("style"),"height"===d.message){if(g=parseInt(d.value,10),g>1e3)g=1e3;else if(~~g<200)g=200;f.height=g}if("link"===d.message)if(h=b.createElement("a"),i=b.createElement("a"),h.href=f.getAttribute("src"),i.href=d.value,i.host===h.host)if(b.activeElement===f)a.top.location.href=d.value}else;}},d)a.addEventListener("message",a.wp.receiveEmbedMessage,!1),b.addEventListener("DOMContentLoaded",c,!1),a.addEventListener("load",c,!1)}(window,document);;

@@ -1,0 +1,238 @@
+In the next set of SQL
+queries, we'll see examples
+of using sub queries in the from and the select clauses.
+In the previous video, we
+introduced sub queries but we only used them in the where clause.
+In the condition of queries, we
+wrote sub queries that generated
+sets that we use for comparisons.
+In the next set of queries,
+we're going to see that we can
+also use sub queries, select
+expressions in the from
+clause of queries as well as in the select clause.
+If we use a sub query
+in the front, what we're really
+doing is running and that's the
+select statement that's going to
+generate one of the
+tables that we use in the rest of the query.
+If we use a sub query
+in the select, then what
+we're doing is writing a select
+expression, a sub select expression,
+that produces the value that comes out of the query.
+So let's see this in action
+and as usual we'll be using
+our simple college admissions database
+with a college, student and apply tables.
+Our first query is going to
+lead to demonstrating the use
+of a sub query in the from
+clause. You might remember
+from a previous video that we
+had the concept of scaling a
+student's GPA based on the size of their high school.
+Specifically, we took the GPA
+and multiplied it by the size of high school divided by a thousand.
+What we're going to do in
+this query is we're going to
+return all students where scaling
+their GPA changes its value
+by more than one, specifically either
+the scale GPA minus the
+GPA is greater than one
+or the GPA minus the scale GPA is greater than one.
+So let's run the query, and
+we find a number of
+students whose GPA is modified
+by more than one by scaling it.
+Now let's take a look at this query.
+We have this expression that scales
+the GPA and we actually
+have to write the expression out three times.
+Now remember, this could in fact be a much more complicated calculation.
+A smart database system
+might look at the query and
+recognize that it can do
+the computation once and use
+it in all three places, but maybe
+we're not using a smart database system.
+And furthermore, for the
+query itself, we might
+like to simplify things and only write that expression once.
+So, simplifying the where cause is actually fairly easy.
+We can just use the absolute
+value function that's built into most SQL implementation.
+So we write absolute value
+function and we apply
+it to this computation here.
+We delete the second clause
+of the query, and we run the query.
+And we should get exactly the same result, and we do.
+So, that's good, but we
+still have to use
+the two computations here of the scale GPA.
+So, what I'm going to do
+now is I'm going to
+put in the from clause
+a sub-query and that sub-query
+is going to among things compute the scale GPA.
+When we put a
+sub query in the from clause,
+what we're doing is creating a
+select from where statement that
+produces a relation, but in
+the rest of the query we can
+treat that just like a
+relation, so we can refer
+to the scale GPA in the rest of the query.
+Alright, so let me just do a little editing here.
+So, I'm going to take this select
+from here, this portion
+of the query, like that, and
+I'm going to turn it into its own
+subquery, and put it in the from clause.
+Now I'm going to
+give it a name G and technically,
+I might be able to leave
+that out, but most SQL implementations require it.
+This says compute the select
+from where expression and call
+the result G. And now
+in the rest of the query,
+anytime I refer to G,
+I'm referring to the result of this sub-query in the from.
+Specifically, I now have
+scaled GPA and if
+I want, I can put that
+it comes from G, although, I don't need to since it's not ambiguous.
+And I can use that scaled GPA in the rest of my query.
+Now, I'm still missing a select.
+So, I'll just put select star
+here and I'll get all attributes
+back and now, I have
+a complete query where I
+computed the scale GPA
+in the from clause and used it elsewhere in the query.
+I run this one and I
+get again the exact same result.
+We're going to see more examples of
+using sub-queries in the from
+clause in the later video on aggregation.
+Our second major example is going
+to lead to using a sub-query in the select clause.
+Let's start by explaining what this query does.
+What we're going to do is
+we're going to find colleges
+and we're going to pair those colleges
+with the highest GPA among their applicants.
+So this requires joining all three
+of our relations: college, apply, and student.
+We have here the join conditions.
+We always need to remember to include those.
+And we're going to return
+those college names, states, and
+GPAs where the GPA
+is the highest (and I'm
+using the greater than or equal
+to all construct here) among
+the GPAs of the
+students who applied to that same college.
+Okay?
+You might want to pause
+the video and just make sure
+you understand what the query is doing.
+But again and what it's going to
+return is colleges with the highest GPA among their applicants.
+Let's run the query, and we
+see that most colleges,
+all the colleges in fact, have
+a applicant with a 3.9 GPA.
+That happens to be the
+highest in the database, and all
+of the colleges have an applicant with that GPA.
+Now we see some duplicates here.
+If we don't like duplicates, we use
+our usual trick of putting
+distinct, and now we
+have our four colleges in
+our database and the highest GPA of their applicants.
+Now let's see how we
+can write this query using a sub-query in the select clause.
+What a sub-query in a select
+clause does is performs a
+computation and as long
+as that computation returns exactly one
+value, that value is used in the result tuple.
+So let me just start typing here a little bit.
+What we're going to do here
+is we're going to select
+the college name and state
+from the college.
+Let me just pull this down here.
+from the college, and then
+we're going to use a modified
+version of this query to
+compute the highest GPA for that particular college.
+So we're going to have college name,
+state, and here comes the
+sub-query in the from clause.
+So let's just put
+parentheses around there, okay?
+And we're going to in
+the sub-query just compute the
+GPA, and it's going to be
+the highest GPA for this college.
+So we don't need to include college in our from list.
+And now we have college here,
+and the rest of this is the same query precisely.
+The last thing we're going to
+do is label this attribute as GPA.
+And now we're all set.
+You may want to pause
+the video and look carefully to make
+sure you understand how the query works.
+But again, it's taking the...for each
+college the name, the state, and then finding the highest GPA.
+So let's go for it.
+We run the query and indeed we get the results.
+It happens to have sorted differently
+then last time,but it is exactly the same result.
+Now let's suppose that
+instead of wanting to pair
+every college with the highest
+GPA of the applicants, we wanted
+to instead pair the colleges
+with the names of the applicants.
+So we can do something similar.
+We have the college, name, and state.
+And then in the sub-query
+in the from clause, we'll find
+the names of the students who applied to that college.
+So everything looks pretty much
+the same except we don't
+need this big sub-query, this big portion here.
+We write it like this.
+We'll call it the student name.
+And that looks pretty similar.
+Again, we've got the college,
+name, state, and then all the students who applied to that college.
+We run the query and we get an error.
+The error was expected, and I'm using it to illustrate a point.
+When you write a sub-query in
+the select clause, it's critical
+that that sub-query return exactly one
+value, because the result
+of that is being used to fill in just one cell of the result.
+In our earlier example, we were
+computing the highest GPA for
+each college and there's exactly one of those.
+In this case, we have several
+students applying to colleges, so
+we wouldn't know, when we get
+a bunch of values in the
+result, which one to put in the tuple that's being constructed.
+And in fact, our result here says
+subquery returns more than
+one row, and that's the error.

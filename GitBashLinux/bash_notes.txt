@@ -1,0 +1,65 @@
+                                            GREP
+
+# Please create the following demo_text file for this example.
+
+# $ cat demo_text
+
+#  THIS LINE IS THE 1ST UPPER CASE LINE IN THIS FILE.
+# this line is the 1st lower case line in this file.
+# This Line Has All Its First Character Of The Word With Upper Case.
+
+# Two lines above this line is empty.
+# And this is the last line.
+
+# 4. Vim Word Navigation
+
+# You may want to do several navigation in relation to the words, such as:
+
+#  * e - go to the end of the current word.
+#  * E - go to the end of the current WORD.
+#  * b - go to the previous (before) word.
+#  * B - go to the previous (before) WORD.
+#  * w - go to the next word.
+#  * W - go to the next WORD.
+# WORD - WORD consists of a sequence of non-blank characters, separated with white space.
+# word - word consists of a sequence of letters, digits and underscores.
+
+# Example to show the difference between WORD and word
+
+#  * 192.168.1.1 - single WORD
+#  * 192.168.1.1 - seven words.
+
+#--------------------------------------------------------------------------#
+
+1. Search for the given string in a single file | grep "literal_string" filename
+2. Checking for the given string in multiple files | grep "string" FILE_PATTERN | $ grep "this" demo_*
+3. Case insensitive search using grep -i| grep -i "string" FILE
+4. Match regular expression in files | grep "REGEX" filename |$ grep "lines.*empty" demo_file
+Two lines above this line is empty.
+
+ A regular expression may be followed by one of several repetition operators:
+    ? The preceding item is optional and matched at most once.
+    * The preceding item will be matched zero or more times.
+    + The preceding item will be matched one or more times.
+    {n} The preceding item is matched exactly n times.
+    {n,} The preceding item is matched n or more times.
+    {,m} The preceding item is matched at most m times.
+    {n,m} The preceding item is matched at least n times, but not more than m times.
+
+5. Checking for full words, not for sub-strings using grep -w | $ grep -iw "is" demo_file
+
+6. Displaying n lines before/after/around the match using grep -A, -B and -C respectively
+
+grep -A <N> "string" FILENAME #or -B or -C
+
+7. Highlighting the search using GREP_OPTIONS | $ export GREP_OPTIONS='--color=auto' GREP_COLOR='100;8' && grep this demo_file
+8. Searching in all files recursively using grep -r | $ grep -r "ramesh" *
+9. Invert match using grep -v | $ grep -v "go" demo_text
+10. display the lines which does not matches all the given pattern.| grep -v -e "pattern" -e "pattern" |$ grep -v -e "a" -e "b" -e "c" test-file.txt
+11A. Counting the number of matches using grep -c| grep -c "pattern" filename | $ grep -c "go" demo_text
+11B When you want do find out how many lines matches the pattern | $ grep -c this demo_file
+11C When you want do find out how many lines that does not match the pattern |$ grep -v -c this demo_file
+12. Display only the file names which matches the given pattern using grep -l |$ grep -l this demo_*
+13. Show only the matched string(useful with regex) |$ grep -o "is.*line" demo_file
+14. Show the position( byte offset of the whole file) of match in the line|grep -o -b "pattern" file |$ grep -o -b "3" temp-file.txt
+15. Show line number while displaying the output using grep -n| $ grep -n "go" demo_text

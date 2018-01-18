@@ -1,0 +1,81 @@
+Non-Linear Modelling: Machine Learning with Python
+
+Questions/Bottlenecks
+	How do I decide what order of polynomial to try to fit? Do I need to include cross-coupling terms for multi-variate regression? Is there an easy way to automate the process?
+		-“Can I plot the data and take a quick peek?”
+			only when one can visualize the data clearly (feature dimension is 1 or 2)
+		-useless when cross-coupling within the features influencing the outcome
+
+	How to ensure I don’t overfit to the data?
+	Is my machine learning model robust against measurement noise?
+
+Solution
+	-Linear regression should be the first tool to look up and before you scream “…but these are highly nonlinear data sets…”, let us remember that the ‘LINEAR’ in linear regression model refers to the coefficients, and not to the degree of the features. -Features (or independent variables) can be of any degree or even transcendental functions like exponential, logarithmic, sinusoidal. And, a surprisingly large body of natural phenomena can be modeled (approximately) using these transformations and linear model.
+
+	Question?:
+		— how to decide up to what polynomials are necessary
+		— when to stop if we start by incorporating 1st degree, 2nd degree, 3rd degree terms one by one?
+		— how to decide if any of the cross-coupled terms are important i.e. do we only need X1², X2³ or X1.X2 and X1².X3 terms also?
+
+	Approach:
+		-Automatic polynomial feature generation:
+			-sklearn.preprocessing.PolynomialFeatures offers a neat way to generate polynomial features from a set of linear features  
+		-Regularized regression:
+			-the basic idea is to penalize the model coefficients such that they don’t grow too big and overfit the data
+			-refer https://towardsdatascience.com/machine-learning-with-python-easy-and-robust-method-to-fit-nonlinear-data-19e8a1ddbd49
+
+"""
+https://github.com/tirthajyoti/PythonMachineLearning/blob/master/Multi-variate%20LASSO%20regression%20with%20CV-%20Medium%20article%20code.ipynb
+
+# Alpha (regularization strength) of LASSO regression
+lasso_eps = 0.002
+lasso_nalpha=10
+lasso_iter=5000
+
+# Min and max degree of polynomials features to consider
+degree_min = 1
+degree_max = 8
+
+r2_scores=[]
+train_scores=[]
+models =[]
+error_test=[]
+error_train=[]
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LassoCV
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import make_pipeline
+
+X_train, X_test, y_train, y_test = train_test_split(df[['X1','X2','X3']], df['y'], 
+                                                    test_size=test_set_fraction)
+
+# Make a pipeline model with polynomial transformation and LASSO regression with cross-validation
+# Run it for increasing degree of polynomial (complexity of the model)
+for degree in range(degree_min,degree_max+1):
+    model = make_pipeline(PolynomialFeatures(degree,interaction_only=False), 
+                          LassoCV(eps=lasso_eps,n_alphas=lasso_nalpha,max_iter=lasso_iter,normalize=True,cv=5))
+    
+    #model = make_pipeline(PolynomialFeatures(degree,interaction_only=False), 
+                          #LinearRegression(normalize=True))
+                                                                  
+    model.fit(X_train,y_train)
+    
+    test_pred = np.array(model.predict(X_test))
+    train_pred = np.array(model.predict(X_train))
+    
+    RMSE_test=np.sqrt(np.sum(np.square(test_pred-y_test)))
+    RMSE_train=np.sqrt(np.sum(np.square(train_pred-y_train)))
+    
+    error_test.append(RMSE_test)
+    error_train.append(RMSE_train)
+    
+    test_score = model.score(X_test,y_test)
+    r2_scores.append(test_score)
+    
+    train_score = model.score(X_train,y_train)
+    train_scores.append(train_score)
+    
+    models.append(model)
+ """

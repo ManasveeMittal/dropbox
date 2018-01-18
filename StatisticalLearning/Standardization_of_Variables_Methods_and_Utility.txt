@@ -1,0 +1,57 @@
+Standardization / Scaling/Normalization
+	Methods:
+		 Z score:
+		 	Formula
+		 		xi:=(xi-mean(X))/Standard_Deviation(X)
+		 	Interpretation:
+		 		standardized values do not lie in a particular interval,mean 0, std 1
+
+		 Min-Max scaling:
+		 	Formula:
+		 		X-min(X)/(max(X)-min(X)
+		 	Interpretation:
+		 		equal ranges but different means and standard deviations
+		Standard Deviation:
+			Formuala:
+				xi/stdev(X)
+			Interpretation:
+				equal variance, but different means and range
+		Range:
+			 Formuala:
+			 	xi /(max(X) - min(X))
+			 Interpretation:
+			 	means, variances, and ranges of the variables are still different, but at least the ranges are likely to be more similar
+		Centering:
+			Formuala;
+				xi := xi-constant
+
+
+	Utility in ML-Algos:
+
+		Not required when:
+			Linear Regression:
+				does not change RMSE, R-squared value, Adjusted R-squared value, p-value of coefficients
+		Cluster Analysis:
+		 	The technique depend on the concept of measuring the distance between the different observations we're trying to cluster
+		 	If a variable is measured at a higher scale than the other variables, then whatever measure we use will be overly influenced by that variable.
+
+		PCA-Principal Component Analysis:
+			 PCA gives relatively more weightage to those variables that have higher variances.
+			 Standardizing raw values makes equal variance so high weight is not assigned to variables having higher variances.
+
+		KNN - K-nearest neighbors:
+			Before using KNN with an Euclidean distance measure. Standardization makes all variables to contribute equally
+
+		Support Vector Machine (SVM)
+			SVM kernel methods are based on distance so it is required to scale variables prior to running final Support Vector Machine (SVM) model.
+
+		Lasso and Ridge Regression
+			 Lasso regression puts constraints on the size of the coefficients associated to each variable. However, this value will depend on the magnitude of each variable. The result of centering the variables means that there is no longer an intercept. This applies equally to ridge regression.
+
+		Regression analysis
+			calculate importance of variables by ranking independent variables based on the descending order of absolute value of standardized coefficient.
+
+			when an interaction is created from two variables that are not centered on 0, some amount of collinearity will be induced. Centering first addresses this potential problem. In simple terms, having non-standardized variables interact simply means that when X1 is big, then X1X2 is also going to be bigger on an absolute scale irrespective of X2, and so X1 and X1X2 will end up correlated.
+
+			Also, standardize a variable when you include power terms X². Standardization removes collinearity.
+

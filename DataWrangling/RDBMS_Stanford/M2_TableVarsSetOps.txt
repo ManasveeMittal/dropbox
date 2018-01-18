@@ -1,0 +1,311 @@
+In this demo, we'll be learning some more features of the SQL language.
+Specifically, we'll be learning about
+table variables and about set operators.
+We already learned the basic select statement.
+which can be quite powerful for
+writing queries but we'll learn
+some constructs in these demos
+that will give us even more expressive power.
+The first construct is table variables.
+Table variables are in the FROM clause, and they actually serve two uses.
+One is simply to make queries more readable, as we'll see.
+But a second purpose is to
+rename relations that are used in the FROM clause,
+particularly when we have two instances of the same relation.
+This is exactly what we
+needed in the relational algebra when
+we wrote joins that included
+two instances of the same relation.
+The second construct we'll be
+learning, actually a set of constructs,
+in this video, are the set operators.
+And we'll be learning the same
+three set operators we had
+in relational algebra: the union
+operator, the intersect operator,
+and the except operator which is the minus operator.
+We'll be doing a demo and
+the demo will use the
+same college admissions database that
+we've been using in previous demos where
+we have tables about college
+information, student information and students applying to colleges.
+Let's move to the demo.
+Let's start with a big
+join query that we'll use to introduce table variables.
+This query involves all three relations.
+It joins the three relations on
+their shared attributes and then it selects a bunch of information.
+So here we see the result of that query.
+So the main point of this
+query is not the result but
+just to show you how table variables are used in the FROM clause.
+We can add two, each of our relation names, a variable.
+We'll use S for student
+and C for college and A for apply.
+And then everywhere else in the
+query, instead of writing the
+full relation name we can just use the variable.
+In this case we're not changing the
+expressiveness, we're not changing the
+outcome of the query, we're really
+just making it a bit
+more readable and we can do
+the same thing here in this left clause.
+We'll take S and A and so on.
+Then we'll run the query and we'll get exactly the same result, no change.
+Now let's look at
+where table variables are actually useful.
+What we want to get
+in this query is all pairs
+of students who have the same
+GPA. This is kind of
+similar to the relational algebra
+query we did where we found
+all pairs of colleges that are in the same state.
+In order to do that we
+need to have two instances of the student relation.
+So we'll call one instance, S1, and we'll call the other instance S2.
+And the FROM will do the
+cross-product of those two,
+so it will consider every
+every possible pair of students from the student relation.
+From all those pairs,
+we'll take the pairs where the
+student had the same GPA
+and will return the ID,
+name, and GPA for each of the two students.
+So let's go ahead and
+execute the query; and here we can see the result.
+Now, this result is exactly what we wrote.
+It literally is every pair
+of students that have the same
+GPA, but it might not be what we intended.
+Amy and Amy, the same student.
+Well Amy has the same GPA
+as herself, but more likely
+we just wanted different students who had the same GPA.
+So to do that we'll add
+an and that says these are two different students.
+The SIDs of the students are different.
+Now, let's run the query and see what happens.
+Now, we see that we no
+longer have Amy and Amy,
+and every student is paired with a different student.
+We do have two Amy's here,
+but don't be alarmed, this Amy
+is 123 and this Amy is 654.
+So things are looking
+quite a bit better, but there's
+still one thing that we
+might not want in the result
+of the query which is that
+we have Amy paired with
+Doris and then we
+have Doris paired with Amy.
+So we're actually getting every pair
+of students twice in the two different orders.
+As it turns out, that's very easy to fix.
+We only need to erase one character to make that work.
+Maybe you can think about what that character is.
+Here it is.
+Instead of looking at not equals, we'll just make it less than.
+And then we'll get every pair of
+students only once because we'll
+always be listing the one with
+the smaller SID first and
+finally we get the answer
+that we probably intended in the first place.
+Now let's take a look at the set operators and we'll start with union.
+Just like in our relational algebra video
+let's use the union operator to
+generate a list that includes names
+of colleges together with names of students.
+So here's the query that will
+do it for us and we
+go ahead and execute the query and we see our result.
+Now I left the
+schema as having the
+C name in the first part
+of the union and the S name in the second.
+SQL allowed me to do
+that and it chose to use the C name to label the result.
+If I want to unify the
+schemas of the two sides
+of the union and give a
+new label for the result, I
+use the "as" as we saw earlier for
+re-naming attributes in the result of queries.
+So I'll add "as name" to
+both sides of the union,
+run the query, and now I see name in the result.
+Now one thing you might have
+noticed is that this result is actually sorted.
+We didn't ask for it
+to be sorted, but for some
+reason the system sorted it for us.
+And I can actually explain why that happened.
+I'll also mention that if I
+ran this same query on another system, it might not come out sorted.
+In fact, it will not come out sorted because I tried it.
+Here's the deal.
+The union operator in SQL
+by default eliminates duplicates in its results.
+So if we have two Amy's,
+which in fact we do, we only get one Amy in our result.
+And similarly, for Craig, we have two of those as well.
+So that's the default, and
+it so happens the system I'm
+using today, which is called
+SQLite, eliminates duplicates gets by sorting the result.
+So, it sorts the result, looks for
+adjacent pairs that are the
+same and eliminates all but
+one of those, and then it gives us the answer.
+But again, I want to
+emphasize that's not something one
+can count on when one runs
+the same query on a different
+system or even on the same system on a different day.
+Now, if we want
+to have the duplicates in our
+result, that's something we can do quite easily.
+We add to union the
+word all that will turn
+the set operator into what's
+technically a multi-set operator that retains duplicates.
+We run the query.
+Well, the first thing we notice is it's not sorted anymore.
+That's because it didn't need to eliminate the duplicates.
+But if we look closely, we'll also see that the duplicates are now there.
+We have two Amys, for example,
+and we have two Craigs as well.
+If we want this result to
+be sorted and to guarantee
+that the other one's sorted, we would add an order by clause.
+So we can just say order by name.
+We run the query and now
+we have the result in sorted order.
+Our next query demonstrates the intersect operator.
+This query is going to
+get the IDs of all
+students who have applied to both
+CS for a major and EE for a major.
+So, very simple query.
+We get the IDs of students
+who applied to CS, the
+IDs of students who applied to EE,
+and then we perform the intersect operator
+on the result of those two queries.
+We execute it, and we find that there are indeed two students who applied to CS and EE. Some database systems don't support the intersect operator. They don't lose any expressive power. We just have to write our queries in different ways. So, this next query is computing exactly the same thing. The sIDs of students who have applied to both CS and EE, but this time we're doing it by doing two instances of the apply relation. One of these self joins, so we have to use table variables again, so we take every pair of apply tuples, we look at cases where it's the same student, and in one case, they're applying for CS, in the other case they're applying for EE, and we'll return the sID of those students. So we run the query and we get sort of the same answer, but not exactly, because we have a whole bunch of duplicates now that we didn't get when we did it with an intersect operator. Now, where did those duplicates come from? Let's take a look at the apply relation itself. Here, we see that student 123 applied to
+that there are indeed two students
+who applied to CS and EE.
+Some database systems don't support the intersect operator.
+They don't lose any expressive power.
+We just have to write our queries in different ways.
+So this next query is computing
+exactly the same thing, the
+SIDs of students who have
+applied to both CS and
+EE, but this time
+we're doing it by doing two
+instances of the apply relation,
+one of these self joins, so we have to use table variables again.
+So we take every pair
+of apply tuples, we look
+at cases where it's the same
+student, and in one case, they're applying for CS.
+In the other case, they're applying for
+EE, and we'll return the SID of those students.
+So we run the query and we
+get sort of the same answer,
+but not exactly because we have
+a whole bunch of duplicates now
+that we didn't get when we did it with an intersect operator.
+Now where did those duplicates come from?
+Let's take a look at the
+apply relation itself.
+Here we see that student
+123 applied to CS and to
+EE and to CS again and to EE again.
+And we're gonna get all
+pairs of 123 tuples,
+where one pair pair of
+the tuples is CS and the other is EE.
+So, we'll get CS with EE, CS with EE and so on.
+Going back to our query result.
+Here it is.
+We can see that we got the four 123's when we ran the query.
+Well, that's easy to get rid of.
+We just write select distinct and
+that will get rid of duplicates and
+now we're back to our original query result.
+Now instead of finding students
+who applied to both CS and
+EE, let's find students
+who applied to CS but did not apply to EE.
+For that we need the difference operator.
+It's called difference in relational Algebra.
+Sometimes, it's called minus.
+The word that's used in the
+SQL standard is the word except.
+So here's our query.
+We find the student IDs who
+applied to CS and then
+we take away from those the
+IDs of students who applied to EE.
+We run the query and we
+find that there are three students
+who applied to CS and not to EE.
+Some database systems don't support
+the except operator either and
+here, things get a little tricky.
+So, let's try to rewrite
+that query without using the except operator.
+So as a reminder, we want to
+find students who applied to
+CS but did not apply to EE.
+So, here's my attempt at writing that query.
+I again do a self join
+of apply with apply, and I
+find all pairs where it's
+the same student we're talking about
+and the major in one
+of the tuples of CS and the major in the other one is not EE.
+Well, it looks pretty good.
+Let's see what happens.
+Whoa, we got a lot of results.
+Okay, well that's probably just that
+problem with duplicates again, so
+let's just add distinct and go for it.
+It still seems like a lot of results.
+Let's go back to our previous
+query that uses except and
+then we found that there were three students in the result
+where here we're still getting five in the result.
+Well, if we think about
+exactly what we wrote,
+what we wrote is finding
+all pairs of apply
+records where it's the same student
+and they applied to CS in
+one of the pairs and they didn't
+apply to EE in the other.
+So, it could be, for example, biology or geology.
+But the problem is that
+when we consider these pairs, that
+doesn't mean there's not another
+pair with the same student
+where they applied to CS and EE.
+All this is actually finding is
+students who applied to CS
+and also applied to another
+major that's not EE.
+So, that's quite different from the query we're shooting for.
+And actually, the interesting thing
+is that with the constructs we've
+seen so far in SQL, it's
+not possible to write
+the query we had earlier without using the except operator.
+But in later videos we will
+see additional constructs in SQL that do allow us to write that query.

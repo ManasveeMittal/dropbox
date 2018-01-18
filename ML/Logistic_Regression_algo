@@ -1,0 +1,40 @@
+
+Linear regression uses the general linear equation Y=b0+∑(biXi)+ϵ where 
+	Y is a continuous dependent variable and 
+	Xi are usually continuous independent variables  (but can also be binary, e.g. when the linear model is used in a t-test) or other discrete domains.
+	ϵ is a term for the variance that is not explained by the model and is usually just called "error".
+ Individual dependent values denoted by YjYj can be solved by modifying the equation a little: 
+		Yj=b0+∑(biXij)+ϵj
+
+LOGISTIC REGRESSION is another generalized linear model (GLM) procedure using the same basic formula, but instead of the continuous YY, it is regressing for the probability of a categorical outcome. In simplest form, this means that we're considering just one outcome variable and two states of that variable- either 0 or 1.
+
+The equation for the probability of Y=1 looks like this:
+		P(Y=1)=1/(1+exp(−(b0+∑(biXi))
+
+	 Xi can be continuous or binary independent variables 
+	 bi The regression coefficients  can be exponentiated to give you the change in odds of YY per change in XiXi, i.e., 
+	 Odds =	P(Y=1)/P(Y=0)	=	P(Y=1)/(1−P(Y=1))  and
+	 ΔOdds = odds ratio = exp(bi) = Odds(Xi+1)/Odds(Xi)
+	 In English, you can say that the odds of Y=1 increase by a factor of e(bi) per unit change in XiXi.
+
+Example: If you wanted to see how body mass index predicts blood cholesterol (a continuous measure), you'd use linear regression as described at the top of my answer. If you wanted to see how BMI predicts the odds of being a diabetic (a binary diagnosis), you'd use logistic regression
+
+
+
+		named for the function used at the core of the method, the logistic function/sigmoid function 1 / (1 + e^-value)
+		describe properties of population growth in ecology, rising quickly and maxing out at the carrying capacity of the environment. 
+		S-shaped curve that can take any real-valued number and map it into a value between 0 and 1, but never exactly at those limits.
+		models the probability of the default class (e.g. the first class)
+		modeling the probability that an input (X) belongs to the default class (Y=1), we can write this formally as:P(X) = P(Y=1|X)
+
+	LEARNING THE LOGISTIC REGRESSION MODEL:
+		 using maximum-likelihood estimation, estimate the coefficients (Beta values b) of the logistic regression algorithm from your training data
+		 best coefficients would result in a model that would predict a value very close to 1  for the default class and a value very close to 0 for the other class.
+
+	Prepare Data for Logistic Regression:
+		Binary Output Variable
+		Remove Noise: Logistic regression assumes no error in the output variable (y), consider removing outliers and possibly misclassified instances from your training data.
+		Remove Correlated Inputs:  Consider calculating the pairwise correlations between all inputs and removing highly correlated inputs
+		Fail to Converge: if there are many highly correlated inputs in your data or the data is very sparse
+
+	Resources : An Introduction to Statistical Learning: with Applications in R, pages 130-137

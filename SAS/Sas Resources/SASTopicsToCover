@@ -1,0 +1,59 @@
+joins and merge
+
+group in data step and proc sql
+
+first and last
+
+proc sort 
+Removing duplicate
+
+if and else  for macro
+
+symput
+call
+
+proc transpose
+Proc sql case when
+data set if then
+
+
+Data output(keep/drop = )   ;
+Set inputdata(keep/drop = col1, col2, col3);
+keep/drop col1 col2 col3; 
+where/if
+
+where age > 50;
+if age > 50;
+if condition = true then newvariable = tt;else newvariable = zz;
+
+if condition= true the do;
+tax = 30* income
+HRA = 20*income;
+
+else do;
+tax = 20*income;
+HRA = 10*income;
+end;
+
+run;
+
+
+proc sql;
+update tablename set colname = '' where field in;
+quit;
+
+
+
+
+Keep
+drop
+where
+if
+rename
+format
+first.
+last.
+by
+merge
+append
+group

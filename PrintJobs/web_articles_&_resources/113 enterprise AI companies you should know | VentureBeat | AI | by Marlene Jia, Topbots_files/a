@@ -1,0 +1,1169 @@
+'use strict';
+/**
+ * Define a single object to contain our tracking methods and helpers.
+ */
+var btTracking = {
+
+  /**
+   * Run operations at 'onReady'.
+   *
+   * Sets up event handlers to track actions as they happen.
+   */
+  onReady: function() {
+    // Triggered when a user submits the registration form
+    jQuery( window ).on('btUserRegister', btTracking.trackSignedUp );
+
+  },
+
+
+  // Track when a user signs up
+  trackSignedUp: function( eventObject, user ) {
+
+    //initialize the newly registered user
+    _bt.trackAccountSignup(user.email, { first_name: user.first_name, last_name: user.last_name, source: user.source, membershipType: 'monthly', daily: 'true' });
+    // _bti.trackAccountCompleted(user.profile.email);
+  }
+
+};
+
+/**
+ * Initialize boomtrain Tracking object and handlers 'onReady'
+ */
+jQuery(document).ready(function() {
+
+  if(typeof _bt !== 'undefined') {
+
+    // Link click tracking
+    jQuery('.vb-gigya-login').click(function(){ _bt.track("clicked", {"bt-event-type": 2, "link_clicked": "Login"}); });
+
+    jQuery('.vb-gigya-register').click(function(){ _bt.track("clicked", {"bt-event-type": 2, "link_clicked": "Register"}); });
+
+    jQuery('.sign-up vb-gigya-register').click(function(){ _bt.track("clicked", {"bt-event-type": 2, "link_clicked": "Sign Up"}); });
+
+    jQuery('.user-profile-link').click(function(){ _bt.track("clicked", {"bt-event-type": 2, "link_clicked": "Account"}); });
+
+    jQuery('.btn-subscribe-for-access').click(function(){ _bt.track("clicked", {"bt-event-type": 2, "link_clicked": "Subscribe for free Access"}); });
+
+    jQuery('.segmentio-report-buy-now').click(function(){
+      var report_title = Drupal.settings.vb_intel_segmentio.item_title;
+      var report_price = Drupal.settings.vb_intel_segmentio.item_price;
+      var action = (report_price === 'Free' ? 'Get this report' : 'Buy Report');
+      //get report title and price
+      _bt.track("clicked", { "bt-event-type": 2,"link_clicked": action, "report": report_title, "cost": report_price });
+    });
+
+    jQuery('.btn-monthly-subscription').click(function(){ _bt.track("clicked", {"bt-event-type": 2, "link_clicked": "Buy Monthly Subscription"}); });
+    jQuery('.btn-yearly-subscription').click(function(){ _bt.track("clicked", {"bt-event-type": 2, "link_clicked": "Buy Yearly Subscription"}); });
+
+    if( typeof( vbCommerceOrderInfo ) !== 'undefined' ) {
+
+      // Setup the event properties we want to track
+      var purchaseTrackingData = {
+        label: vbCommerceOrderInfo.label,
+        revenue: vbCommerceOrderInfo.revenue.replace('$',''),
+        type: vbCommerceOrderInfo.type
+      };
+      _bt.track("purchase_made",{label: purchaseTrackingData.label, revenue: purchaseTrackingData.revenue, type: purchaseTrackingData.type });
+    }
+
+   jQuery('.btn-contact').click(function(){
+     var buttonName = jQuery(this).text();
+     _bt.track("clicked", {"bt-event-type": 2, "link_clicked": buttonName});
+    });
+
+    // Load up Boomtrain tracking handlers
+    btTracking.onReady();
+  }
+  
+
+});
+;
+/*!
+ * jQuery UI Core 1.11.4
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/category/ui-core/
+ */
+!function(a){"function"==typeof define&&define.amd?define(["jquery"],a):a(jQuery)}(function(a){function b(b,d){var e,f,g,h=b.nodeName.toLowerCase();return"area"===h?(e=b.parentNode,f=e.name,!(!b.href||!f||"map"!==e.nodeName.toLowerCase())&&(g=a("img[usemap='#"+f+"']")[0],!!g&&c(g))):(/^(input|select|textarea|button|object)$/.test(h)?!b.disabled:"a"===h?b.href||d:d)&&c(b)}function c(b){return a.expr.filters.visible(b)&&!a(b).parents().addBack().filter(function(){return"hidden"===a.css(this,"visibility")}).length}a.ui=a.ui||{},a.extend(a.ui,{version:"1.11.4",keyCode:{BACKSPACE:8,COMMA:188,DELETE:46,DOWN:40,END:35,ENTER:13,ESCAPE:27,HOME:36,LEFT:37,PAGE_DOWN:34,PAGE_UP:33,PERIOD:190,RIGHT:39,SPACE:32,TAB:9,UP:38}}),a.fn.extend({scrollParent:function(b){var c=this.css("position"),d="absolute"===c,e=b?/(auto|scroll|hidden)/:/(auto|scroll)/,f=this.parents().filter(function(){var b=a(this);return(!d||"static"!==b.css("position"))&&e.test(b.css("overflow")+b.css("overflow-y")+b.css("overflow-x"))}).eq(0);return"fixed"!==c&&f.length?f:a(this[0].ownerDocument||document)},uniqueId:function(){var a=0;return function(){return this.each(function(){this.id||(this.id="ui-id-"+ ++a)})}}(),removeUniqueId:function(){return this.each(function(){/^ui-id-\d+$/.test(this.id)&&a(this).removeAttr("id")})}}),a.extend(a.expr[":"],{data:a.expr.createPseudo?a.expr.createPseudo(function(b){return function(c){return!!a.data(c,b)}}):function(b,c,d){return!!a.data(b,d[3])},focusable:function(c){return b(c,!isNaN(a.attr(c,"tabindex")))},tabbable:function(c){var d=a.attr(c,"tabindex"),e=isNaN(d);return(e||d>=0)&&b(c,!e)}}),a("<a>").outerWidth(1).jquery||a.each(["Width","Height"],function(b,c){function d(b,c,d,f){return a.each(e,function(){c-=parseFloat(a.css(b,"padding"+this))||0,d&&(c-=parseFloat(a.css(b,"border"+this+"Width"))||0),f&&(c-=parseFloat(a.css(b,"margin"+this))||0)}),c}var e="Width"===c?["Left","Right"]:["Top","Bottom"],f=c.toLowerCase(),g={innerWidth:a.fn.innerWidth,innerHeight:a.fn.innerHeight,outerWidth:a.fn.outerWidth,outerHeight:a.fn.outerHeight};a.fn["inner"+c]=function(b){return void 0===b?g["inner"+c].call(this):this.each(function(){a(this).css(f,d(this,b)+"px")})},a.fn["outer"+c]=function(b,e){return"number"!=typeof b?g["outer"+c].call(this,b):this.each(function(){a(this).css(f,d(this,b,!0,e)+"px")})}}),a.fn.addBack||(a.fn.addBack=function(a){return this.add(null==a?this.prevObject:this.prevObject.filter(a))}),a("<a>").data("a-b","a").removeData("a-b").data("a-b")&&(a.fn.removeData=function(b){return function(c){return arguments.length?b.call(this,a.camelCase(c)):b.call(this)}}(a.fn.removeData)),a.ui.ie=!!/msie [\w.]+/.exec(navigator.userAgent.toLowerCase()),a.fn.extend({focus:function(b){return function(c,d){return"number"==typeof c?this.each(function(){var b=this;setTimeout(function(){a(b).focus(),d&&d.call(b)},c)}):b.apply(this,arguments)}}(a.fn.focus),disableSelection:function(){var a="onselectstart"in document.createElement("div")?"selectstart":"mousedown";return function(){return this.bind(a+".ui-disableSelection",function(a){a.preventDefault()})}}(),enableSelection:function(){return this.unbind(".ui-disableSelection")},zIndex:function(b){if(void 0!==b)return this.css("zIndex",b);if(this.length)for(var c,d,e=a(this[0]);e.length&&e[0]!==document;){if(c=e.css("position"),("absolute"===c||"relative"===c||"fixed"===c)&&(d=parseInt(e.css("zIndex"),10),!isNaN(d)&&0!==d))return d;e=e.parent()}return 0}}),a.ui.plugin={add:function(b,c,d){var e,f=a.ui[b].prototype;for(e in d)f.plugins[e]=f.plugins[e]||[],f.plugins[e].push([c,d[e]])},call:function(a,b,c,d){var e,f=a.plugins[b];if(f&&(d||a.element[0].parentNode&&11!==a.element[0].parentNode.nodeType))for(e=0;e<f.length;e++)a.options[f[e][0]]&&f[e][1].apply(a.element,c)}}});;
+<!--START Lightbox Javascript-->
+    (function () {
+    window.setTimeout(function() {
+    var e = document.createElement('script'); e.type = 'text/javascript'; e.async = true;
+    e.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.lightboxcdn.com/vendor/fd07310a-aaef-447a-9acf-a5c2dbd02590/lightbox_inline.js?mb=' + (new Date().getTime());
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(e, s);
+    }, 500);
+    })();
+<!--END Lightbox Javascript-->
+;'use strict';
+/**
+ * Define a single object to contain our tracking methods and helpers.
+ */
+
+var vbTracking = {
+
+  /**
+   * Have we already identified the user on this page?
+   *
+   * Helps prevent wasting event calls to identify a user multiple times.
+   * See the doIdentify() method below.
+   */
+  identified: false,
+
+  /**
+   * Did this user just register?
+   *
+   * Allows us to easily trigger 'Register' events right after a user registers.
+   * See the trackRegistered() and trackLogin() methods below.
+   */
+  registered: false,
+
+
+  /**
+   * Run operations at 'onReady'.
+   *
+   * Sets up event handlers to track actions as they happen.
+   */
+  onReady: function() {
+
+    // Triggered onReady when a logged-in user is present
+    jQuery( window ).on('vbUserIdentify', vbTracking.trackIdentify );
+
+    // Triggered when a user submits the registration form
+    jQuery( window ).on('vbUserRegister', vbTracking.trackRegister );
+
+    // Triggered when a user successfully logs in
+    jQuery( window ).on('vbUserLogin', vbTracking.trackLogin );
+
+    // Triggered when a user successfully logs out
+    jQuery( window ).on('vbUserLogout', vbTracking.trackLogout );
+
+    // Impression tracking
+    if (jQuery('#profiles-powered-by').length) {
+      var company = jQuery('#profile-company-name').text().trim();
+      analytics.track('VB Profile Viewed', {
+        profile: company,
+        channel: vb_page_info.channel,
+        url: window.location.href,
+        property: vbSettings.property
+      });
+    }
+
+    // Link click tracking
+    analytics.trackLink( jQuery('.vb-gigya-login'), 'Clicked Login', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackLink( jQuery('.vb-gigya-register'), 'Clicked Register', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackLink( jQuery('.vb-gigya-logout'), 'Clicked Logout', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackLink( jQuery('.vb-gigya-view-account'), 'Clicked Account', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackLink( jQuery('.vb-gigya-forgot-password'), 'Clicked Forgot Password', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackLink( jQuery('.delete-account'), 'Clicked Delete Account', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackLink( jQuery('.edit-avatar'), 'Clicked Edit Avatar', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+
+
+    // Click tracking on main menu
+    analytics.trackLink( jQuery('nav.navbar a'), 'Clicked Main Menu', function( el ){
+      return {
+        link: jQuery(el).text(),
+        category: 'Navigation',
+        url: window.location.href,
+        property: vbSettings.property
+      };
+    });
+
+    // Click tracking on side sticky nav
+    analytics.trackLink(jQuery('.sticky-nav-menu a'), 'Clicked Sticky Nav', function(el) {
+      return {
+        category: jQuery(el).text()
+      };
+    });
+
+    // Click tracking on story tags
+    analytics.trackLink( jQuery('.article-tags a'), 'Clicked Tag', function( el ){
+      return {
+        link: jQuery(el).text(),
+        category: 'Navigation',
+        url: window.location.href,
+        property: vbSettings.property
+      };
+    });
+
+    // Click tracking on story category
+    analytics.trackLink( jQuery('.article-category'), 'Clicked Story Category', function( el ){
+      return {
+        link: jQuery(el).text(),
+        category: 'Navigation',
+        url: window.location.href,
+        property: vbSettings.property
+      };
+    });
+
+    // Click tracking on story type
+    analytics.trackLink( jQuery('.post-label'), 'Clicked Story Type', function( el ){
+      return {
+        link: jQuery(el).text(),
+        category: 'Navigation',
+        url: window.location.href,
+        property: vbSettings.property
+      };
+    });
+
+    // Click tracking on author twitter
+    analytics.trackLink( jQuery('.author-twitter'), 'Clicked Author Twitter', function( el ){
+      return {
+        link: jQuery(el).text(),
+        category: 'Navigation',
+        url: window.location.href,
+        property: vbSettings.property
+      };
+    });
+
+    // Click tracking on boilerplates
+    analytics.trackLink( jQuery('.boilerplate-after a'), 'Clicked Boilerplate Link', function( el ){
+      return {
+        link: jQuery(el).text(),
+        category: 'Boilerplate',
+        url: window.location.href,
+        property: vbSettings.property
+      };
+    });
+
+    // Track social icon clicks
+    analytics.trackLink( jQuery('.facebook-social'), 'Clicked Social Share', function(el) {
+      return {
+        link: 'facebook',
+        category: 'Social',
+        url: window.location.href
+      };
+    });
+
+    analytics.trackLink( jQuery('.twitter-social'), 'Clicked Social Share', function(el) {
+      return {
+        link: 'twitter',
+        category: 'Social',
+        url: window.location.href
+      };
+    });
+
+    analytics.trackLink( jQuery('.linkedin-social'), 'Clicked Social Share', function(el) {
+      return {
+        link: 'linkedin',
+        category: 'Social',
+        url: window.location.href
+      };
+    });
+
+    analytics.trackLink( jQuery('.googleplus-social'), 'Clicked Social Share', function(el) {
+      return {
+        link: 'google plus',
+        category: 'Social',
+        url: window.location.href
+      };
+    });
+
+    analytics.trackLink( jQuery('.rss-feed'), 'Clicked Social Share', function(el) {
+      return {
+        link: 'RSS',
+        category: 'Social',
+        url: window.location.href
+      };
+    });
+
+
+    // Form submission tracking
+
+    // Universal search form
+    analytics.trackForm( jQuery('form[role="search"]'), 'Searched', function( el ){
+      return {
+        category: 'User Actions',
+        label: 'page',
+        url: window.location.href,
+        search_term: jQuery(el).find('input[name="s"]').val(),
+        property: vbSettings.property
+      };
+    });
+
+
+    // Form submission tracking for Newsletter Subscriptions
+    analytics.trackForm(jQuery('form#mc-embedded-subscribe-form'), 'Subscribed to Newsletters', {
+      category: 'User Actions',
+      label: 'page',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+
+
+    // User Service related
+    analytics.trackForm( jQuery('#form-edit-account'), 'Updated Profile', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackForm( jQuery('#form-change-password'), 'Changed Password', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackForm( jQuery('#form-add-card'), 'Added Credit Card', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackForm( jQuery('#form-update-card'), 'Updated Credit Card', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackForm( jQuery('#form-remove-card'), 'Removed Credit Card', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackForm( jQuery('#form-reset-password-request'), 'Requested Password Reset', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+    analytics.trackForm( jQuery('#form-reset-password'), 'Reset Password', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+
+  },
+
+
+  /**
+   * Perform a Segment 'identify' for the given user object
+   */
+  doIdentify: function( user ) {
+    // If for some reason there is no user object, return now
+    if( 'undefined' === typeof user ) {
+      return false;
+    }
+
+    // Only identify the user if they are logged in
+    if( user.status !== 'OK' ) {
+      return false;
+    }
+
+    // Make sure we don't identify a user more than once on a page
+    if( vbTracking.identified ) {
+      return false;
+    }
+
+    analytics.identify(user.UID, {
+      firstName: user.profile.firstName,
+      lastName: user.profile.lastName,
+      email: user.profile.email,
+      age: user.profile.age,
+      username: user.data.username
+    });
+
+    // Mark that we've identified the user
+    vbTracking.identified = true;
+
+  },
+
+
+  /**
+   * Identify the user on page load
+   *
+   * This helps ensure that all actions triggered on a page are linked properly.
+   */
+  trackIdentify: function( eventObject, user ) {
+
+    vbTracking.doIdentify( user );
+
+  },
+
+
+  /**
+   * Track Register actions
+   */
+  trackRegister: function() {
+
+    /**
+     * All we do is mark that the user just registered,
+     * since Gigya logs a user in immediately upon registration
+     * the Login call will run and we change it to a 'Register' call.
+     */
+    vbTracking.registered = true;
+
+  },
+
+
+  /**
+   * Track Login actions
+   */
+  trackLogin: function( eventObject, user ) {
+    // Define a default 'login provider'
+    var provider = 'email';
+
+    // By default this is a login action
+    var action = 'Logged In';
+
+    // If for some reason there is no user object, return now
+    if( 'undefined' === typeof user ) {
+      return false;
+    }
+
+    /*
+     * Unset our identify track so we can re-identify on-login
+     * Set the 'status' value for the user object so the user is properly identified
+     * Lastly. Identify the user with their account
+     */
+    vbTracking.identified = false;
+    user.status = 'OK';
+    vbTracking.doIdentify( user );
+
+    // If Gigya provided us a login provider, use that
+    if( user.provider.length > 0 ) {
+      provider = user.provider;
+    }
+
+    /**
+     * If the user just registered,
+     * track that action instead of a login
+     */
+    if( vbTracking.registered ) {
+      action = 'Signed Up';
+
+      // Unset our flag now that we've used it
+      vbTracking.registered = false;
+    }
+
+    // Track the Login action
+    analytics.track( action, {
+      category: 'User Actions',
+      label: provider,
+      url: window.location.href,
+      property: vbSettings.property
+    });
+
+  },
+
+
+  /**
+   * Track Logout actions
+   */
+  trackLogout: function() {
+
+    // Track the Logout action
+    analytics.track('Logged Out', {
+      category: 'User Actions',
+      url: window.location.href,
+      property: vbSettings.property
+    });
+
+    // Reset Segment identified user
+    if( typeof( analytics.reset ) !== 'undefined' ) {
+      analytics.reset();
+    }
+
+    /**
+     * Since the user logged out
+     * allow them to be identified on login again
+     */
+    vbTracking.identified = false;
+
+  }
+
+};
+
+/**
+ * Initialize our vbTracking object and handlers 'onReady'
+ */
+jQuery(document).ready(function() {
+  if(typeof analytics !== 'undefined') {
+    vbTracking.onReady();
+  }
+  
+
+});
+;/* global FreshWidget */
+'use strict';
+/*
+ * VB Frontend JS
+ *
+ * All of the javascript required to operate the main components of our frontend redesign
+ */
+
+(function($) {
+
+  function mobileNavBarToggle() {
+    var prevScroll = 0;
+    var minimumScroll = 60;
+    var $window = $(window);
+    var navbar = $('#omni-navbar');
+
+    $window.on('scroll', function(){
+      var scrollTop = $window.scrollTop();
+      navbar.toggleClass('omni-navbar-hidden', scrollTop > prevScroll && scrollTop > minimumScroll);
+      prevScroll = scrollTop;
+    });
+  }
+
+  // Find correct domain for vbstatic
+  function buildStaticUrl() {
+    if (document.location.href.indexOf('venturebeat.dev') !== -1) {
+      return '//vbstatic.dev';
+    } else if (document.location.href.indexOf('vbstaging.co') !== -1) {
+      return '//staging.vbstatic.co';
+    } else {
+      return '//vbstatic.co';
+    }
+  }
+
+  // Mobile Navigation Switch, Invoked Once DOM is Ready
+  function mobileNav(navClick) {
+    $(navClick).click(mobileNavigation);
+  }
+
+  // Navigation Collapse Function
+  function mobileNavigation(e) {
+    var mobileDrop = $('.navbar-collapse');
+    var width = $('body').innerWidth();
+    var margin = 0 - parseInt(mobileDrop.css('margin-left').replace('px', ''));
+    e.preventDefault();
+    if(mobileDrop.is(':visible')) {
+      mobileDrop.slideUp('fast');
+    } else {
+      mobileDrop.show().css({width: '100%', left: width}).animate({left: margin}, 300);
+    }
+  }
+
+
+  // Chanels Menu Switch, Invoked Once DOM is Ready
+  function channelsMenu(chanClick) {
+
+    $(chanClick).click(function( e ) {
+      var width = $(window).width();
+      var channelsDropdown = $(this).parent('li').find('.dropdown-menu');
+      var topPosition = $(chanClick).position().top + $(chanClick).height() + 8;
+
+      // If this has a channels dropdown menu
+      if( channelsDropdown.length ) {
+        e.preventDefault();
+
+        var margin = 0 - parseInt(channelsDropdown.css('margin-left').replace('px', ''));
+        if(width > 768) {
+          if (channelsDropdown.hasClass('opened')) {
+            channelsDropdown.slideUp('fast').toggleClass('opened');
+          } else {
+            channelsDropdown.slideDown('fast').toggleClass('opened');
+          }
+        } else {
+          if(channelsDropdown.is(':visible')) {
+
+            channelsDropdown.animate({left: width}, 300, function(){
+              channelsDropdown.css({left: 0, width: '100%'}).hide();
+            });
+          } else {
+
+            channelsDropdown.show().css({width: '100%', left: width, top: topPosition}).animate({left: margin}, 300);
+          }
+        }
+      }
+    });
+
+  } // End channelsMenu
+
+  // Helper to build a user service URL with the appripriate endpoint path and a referrer if need be
+  function buildUserServiceUrl( path, referrer ) {
+    var userURL;
+
+    if (document.location.href.indexOf('venturebeat.dev') !== -1) {
+      userURL = 'https://users.venturebeat.dev:3443';
+    } else if (document.location.href.indexOf('vbstaging.co') !== -1) {
+      userURL = 'https://users.vbstaging.co';
+    } else {
+      userURL = 'https://users.venturebeat.com';
+    }
+
+    // Append the provided path to our URL
+    userURL += path;
+
+    // If we want to provide the referrer, append that
+    if( referrer ) {
+      userURL += '?ref='+ encodeURIComponent( window.location.href );
+    }
+
+    // Return the generated URL
+    return userURL;
+  }
+
+
+  function navbar() {
+    // Hide Search on Events (prod and staging)
+    if (  window.location.href.indexOf('events.venturebeat.dev') === -1 &&
+          window.location.href.indexOf('events.vbstaging.co') === -1 &&
+          window.location.href.indexOf('events.venturebeat.com') === -1 &&
+          window.location.href.indexOf('insight.venturebeat.dev') === -1 &&
+          window.location.href.indexOf('insight.vbstaging.co') === -1 &&
+          window.location.href.indexOf('insight.venturebeat.com') === -1
+    ) {
+      $('#search-parent').css('display', 'block');
+      $('#mobile-search-container').css('display', 'block');
+    }
+
+    // Navbar Brand Image Clickthrough
+    $('#brand-img').on('click', function(e) {
+      e.preventDefault();
+      window.location.href = window.location.origin;
+    });
+
+    // Desktop tab toggle
+    $('.dropdown').on('mouseover', function() {
+      var dataId = $(this).attr('data-id');
+
+      $(this).children('a').addClass('active');
+      $('#' + dataId).css('display', 'inline-block');
+    });
+
+    $('.dropdown').on('mouseout', function() {
+      var dataId = $(this).attr('data-id');
+
+      $(this).children('a').removeClass('active');
+      $('#' + dataId).css('display', 'none');
+    });
+
+
+    // Form submission!
+
+    // Desktop search form submission
+    $('#desktop-search-form').on('submit', function(e) {
+      e.preventDefault();
+      var $searchInput = $('#search-input');
+
+      if ($searchInput.val() !== '') {
+        window.location.href = document.location.origin + '?s=' + $searchInput.val();
+      }
+    });
+    $('.search-icon').on('click', function(e) {
+      e.preventDefault();
+      var $searchInput = $('#search-input');
+
+      if ($searchInput.val() !== '') {
+        window.location.href = document.location.origin + '?s=' + $searchInput.val();
+      }
+    });
+
+    // Mobile search form submission
+    $('#mobile-search-form').on('submit', function(e) {
+      e.preventDefault();
+      var $searchInput = $('#mobile-search-input');
+
+      if($searchInput.val() !== '') {
+        window.location.href = document.location.origin + '?s=' + $searchInput.val();
+        $searchInput.val('').attr('placeholder', 'What can we help you find?');
+      } else {
+        $searchInput.attr('placeholder', 'Please type something here before submitting!');
+      }
+    });
+
+    // Make list items in desktop navbar have href
+    $('.list-item-link').on('click', function(e) {
+      e.preventDefault();
+      window.location.href = $(this).children().attr('href');
+    });
+
+    // Toggle mobile toggle button class 'active'
+    $('#nav-toggle').on( 'click', function(e) {
+      e.preventDefault();
+      $(this).toggleClass( 'active' );
+    });
+
+    // Mobile navbar toggle
+    $('#nav-toggle').on('click', function(e) {
+      e.preventDefault();
+      var $mobileNav = $('#mobile-nav');
+
+      if ($mobileNav.css('display') === 'none') {
+        $mobileNav.css('display', 'inline-block');
+      } else {
+        $mobileNav.css('display', 'none');
+        resetMobileNav();
+      }
+    });
+
+    // Reset state of mobile nav to initial
+    function resetMobileNav() {
+      $('#mobile-lower').css('display', 'initial');
+      $('.mobile-nav-row').css('display', 'list-item').css('border-bottom', '1px solid #e7e7e8');
+      $('.mobile-main-subnav').css('display', 'none');
+      $('.left-caret').css('display', 'none');
+      $('.right-caret').css('display', 'initial');
+    }
+
+    // Mobile nav Javascript
+    $('.mobile-nav-link').on('click', function(e) {
+      e.preventDefault();
+      var dataId = $(this).attr('data-id');
+      var $dropdown = $('#' + dataId);
+      var $leftCaret = $('#' + dataId + '-left-caret');
+      var $rightCaret = $('#' + dataId + '-right-caret');
+
+      if ($dropdown.css('display') === 'none') {
+        $('#mobile-lower').css('display', 'none');
+        $('#' + dataId + '-row').css('border', '0');
+        $dropdown.css('display', 'inline');
+        $rightCaret.css('display', 'none');
+        $leftCaret.css('display', 'inline');
+        switch (dataId) {
+        case 'mobile-news':
+          $('#mobile-events-row').css('display', 'none');
+          $('#mobile-research-row').css('display', 'none');
+          $('#mobile-venturebeat-row').css('display', 'none');
+          break;
+        case 'mobile-events':
+          $('#mobile-news-row').css('display', 'none');
+          $('#mobile-research-row').css('display', 'none');
+          $('#mobile-venturebeat-row').css('display', 'none');
+          break;
+        case 'mobile-research':
+          $('#mobile-events-row').css('display', 'none');
+          $('#mobile-news-row').css('display', 'none');
+          $('#mobile-venturebeat-row').css('display', 'none');
+          break;
+        case 'mobile-venturebeat':
+          $('#mobile-events-row').css('display', 'none');
+          $('#mobile-research-row').css('display', 'none');
+          $('#mobile-news-row').css('display', 'none');
+          break;
+        default:
+          return true;
+        }
+      } else {
+        $('.mobile-nav-row').css('display', 'list-item').css('border-bottom', '1px solid #e7e7e8');
+        $('#mobile-lower').css('display', 'inline');
+        $('.dropdown').css('display', 'none');
+        $dropdown.css('display', 'none');
+        $rightCaret.css('display', 'inline');
+        $leftCaret.css('display', 'none');
+      }
+    });
+  }
+
+
+  // Once the DOM has loaded, activate everything
+  $( document ).ready( function() {
+
+    // Activate the Mobile Navigation Dropdown
+    mobileNav('.navbar-toggle');
+
+    // Activate the Channels Dropdown
+    channelsMenu('.main-links li.dropdown a');
+
+    // Activate search dropdown
+    channelsMenu('.navbar-right li.dropdown a');
+
+    // Initialize navbar
+    navbar();
+
+    if ( screen.width <= 480 ) {
+      mobileNavBarToggle();
+    }
+
+  }); // End Doc Ready
+
+})(jQuery);
+;/**
+ * Cookie plugin
+ *
+ * Copyright (c) 2006 Klaus Hartl (stilbuero.de)
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ *
+ */
+
+/**
+ * Create a cookie with the given name and value and other optional parameters.
+ *
+ * @example $.cookie('the_cookie', 'the_value');
+ * @desc Set the value of a cookie.
+ * @example $.cookie('the_cookie', 'the_value', { expires: 7, path: '/', domain: 'jquery.com', secure: true });
+ * @desc Create a cookie with all available options.
+ * @example $.cookie('the_cookie', 'the_value');
+ * @desc Create a session cookie.
+ * @example $.cookie('the_cookie', null);
+ * @desc Delete a cookie by passing null as value. Keep in mind that you have to use the same path and domain
+ *       used when the cookie was set.
+ *
+ * @param String name The name of the cookie.
+ * @param String value The value of the cookie.
+ * @param Object options An object literal containing key/value pairs to provide optional cookie attributes.
+ * @option Number|Date expires Either an integer specifying the expiration date from now on in days or a Date object.
+ *                             If a negative value is specified (e.g. a date in the past), the cookie will be deleted.
+ *                             If set to null or omitted, the cookie will be a session cookie and will not be retained
+ *                             when the the browser exits.
+ * @option String path The value of the path atribute of the cookie (default: path of page that created the cookie).
+ * @option String domain The value of the domain attribute of the cookie (default: domain of page that created the cookie).
+ * @option Boolean secure If true, the secure attribute of the cookie will be set and the cookie transmission will
+ *                        require a secure protocol (like HTTPS).
+ * @type undefined
+ *
+ * @name $.cookie
+ * @cat Plugins/Cookie
+ * @author Klaus Hartl/klaus.hartl@stilbuero.de
+ */
+
+/**
+ * Get the value of a cookie with the given name.
+ *
+ * @example $.cookie('the_cookie');
+ * @desc Get the value of a cookie.
+ *
+ * @param String name The name of the cookie.
+ * @return The value of the cookie.
+ * @type String
+ *
+ * @name $.cookie
+ * @cat Plugins/Cookie
+ * @author Klaus Hartl/klaus.hartl@stilbuero.de
+ */
+jQuery.cookie = function(name, value, options) {
+    if (typeof value != 'undefined') { // name and value given, set cookie
+        options = options || {};
+        if (value === null) {
+            value = '';
+            options.expires = -1;
+        }
+        var expires = '';
+        if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+            var date;
+            if (typeof options.expires == 'number') {
+                date = new Date();
+                date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+            } else {
+                date = options.expires;
+            }
+            expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+        }
+        // CAUTION: Needed to parenthesize options.path and options.domain
+        // in the following expressions, otherwise they evaluate to undefined
+        // in the packed version for some reason...
+        var path = options.path ? '; path=' + (options.path) : '';
+        var domain = options.domain ? '; domain=' + (options.domain) : '';
+        var secure = options.secure ? '; secure' : '';
+        document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+    } else { // only name given, get cookie
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+};;// Sticky Plugin v1.0.2 for jQuery
+// =============
+// Author: Anthony Garand
+// Improvements by German M. Bravo (Kronuz) and Ruud Kamphuis (ruudk)
+// Improvements by Leonardo C. Daronco (daronco)
+// Created: 2/14/2011
+// Date: 16/04/2015
+// Website: http://labs.anthonygarand.com/sticky
+// Description: Makes an element on the page stick on the screen as you scroll
+//       It will only set the 'top' and 'position' of your element, you
+//       might need to adjust the width in some cases.
+
+(function($) {
+    var slice = Array.prototype.slice; // save ref to original slice()
+    var splice = Array.prototype.splice; // save ref to original slice()
+
+  var defaults = {
+      topSpacing: 0,
+      bottomSpacing: 0,
+      className: 'is-sticky',
+      wrapperClassName: 'sticky-wrapper',
+      center: false,
+      getWidthFrom: '',
+      widthFromWrapper: true, // works only when .getWidthFrom is empty
+      responsiveWidth: false
+    },
+    $window = $(window),
+    $document = $(document),
+    sticked = [],
+    windowHeight = $window.height(),
+    scroller = function() {
+      var scrollTop = $window.scrollTop(),
+        documentHeight = $document.height(),
+        dwh = documentHeight - windowHeight,
+        extra = (scrollTop > dwh) ? dwh - scrollTop : 0;
+
+      for (var i = 0; i < sticked.length; i++) {
+        var s = sticked[i],
+          elementTop = s.stickyWrapper.offset().top,
+          etse = elementTop - s.topSpacing - extra;
+
+        if (scrollTop <= etse) {
+          if (s.currentTop !== null) {
+            s.stickyElement
+              .css({
+                'width': '',
+                'position': '',
+                'top': ''
+              });
+            s.stickyElement.parent().removeClass(s.className);
+            s.stickyElement.trigger('sticky-end', [s]);
+            s.currentTop = null;
+          }
+        }
+        else {
+          var newTop = documentHeight - s.stickyElement.outerHeight()
+            - s.topSpacing - s.bottomSpacing - scrollTop - extra;
+          if (newTop < 0) {
+            newTop = newTop + s.topSpacing;
+          } else {
+            newTop = s.topSpacing;
+          }
+          if (s.currentTop != newTop) {
+            var newWidth;
+            if ( s.getWidthFrom ) {
+                newWidth = $(s.getWidthFrom).width() || null;
+            }
+            else if(s.widthFromWrapper) {
+                newWidth = s.stickyWrapper.width();
+            }
+            if ( newWidth == null ) {
+                newWidth = s.stickyElement.width();
+            }
+            s.stickyElement
+              .css('width', newWidth)
+              .css('position', 'fixed')
+              .css('top', newTop);
+
+            s.stickyElement.parent().addClass(s.className);
+
+            if (s.currentTop === null) {
+              s.stickyElement.trigger('sticky-start', [s]);
+            } else {
+              // sticky is started but it have to be repositioned
+              s.stickyElement.trigger('sticky-update', [s]);
+            }
+
+            if (s.currentTop === s.topSpacing && s.currentTop > newTop || s.currentTop === null && newTop < s.topSpacing) {
+              // just reached bottom || just started to stick but bottom is already reached
+              s.stickyElement.trigger('sticky-bottom-reached', [s]);
+            } else if(s.currentTop !== null && newTop === s.topSpacing && s.currentTop < newTop) {
+              // sticky is started && sticked at topSpacing && overflowing from top just finished
+              s.stickyElement.trigger('sticky-bottom-unreached', [s]);
+            }
+
+            s.currentTop = newTop;
+          }
+        }
+      }
+    },
+    resizer = function() {
+      windowHeight = $window.height();
+
+      for (var i = 0; i < sticked.length; i++) {
+        var s = sticked[i];
+        var newWidth = null;
+        if ( s.getWidthFrom ) {
+            if ( s.responsiveWidth === true ) {
+                newWidth = $(s.getWidthFrom).width();
+            }
+        }
+        else if(s.widthFromWrapper) {
+            newWidth = s.stickyWrapper.width();
+        }
+        if ( newWidth != null ) {
+            s.stickyElement.css('width', newWidth);
+        }
+      }
+    },
+    methods = {
+      init: function(options) {
+        var o = $.extend({}, defaults, options);
+        return this.each(function() {
+          var stickyElement = $(this);
+
+          var stickyId = stickyElement.attr('id');
+          var stickyHeight = stickyElement.outerHeight();
+          var wrapperId = stickyId ? stickyId + '-' + defaults.wrapperClassName : defaults.wrapperClassName
+          var wrapper = $('<div></div>')
+            .attr('id', wrapperId)
+            .addClass(o.wrapperClassName);
+
+          stickyElement.wrapAll(wrapper);
+
+          var stickyWrapper = stickyElement.parent();
+
+          if (o.center) {
+            stickyWrapper.css({width:stickyElement.outerWidth(),marginLeft:"auto",marginRight:"auto"});
+          }
+
+          if (stickyElement.css("float") == "right") {
+            stickyElement.css({"float":"none"}).parent().css({"float":"right"});
+          }
+
+          stickyWrapper.css('height', stickyHeight);
+
+          o.stickyElement = stickyElement;
+          o.stickyWrapper = stickyWrapper;
+          o.currentTop    = null;
+
+          sticked.push(o);
+        });
+      },
+      update: scroller,
+      unstick: function(options) {
+        return this.each(function() {
+          var that = this;
+          var unstickyElement = $(that);
+
+          var removeIdx = -1;
+          var i = sticked.length;
+          while ( i-- > 0 )
+          {
+            if (sticked[i].stickyElement.get(0) === that)
+            {
+                splice.call(sticked,i,1);
+                removeIdx = i;
+            }
+          }
+          if(removeIdx != -1)
+          {
+            unstickyElement.unwrap();
+            unstickyElement
+              .css({
+                'width': '',
+                'position': '',
+                'top': '',
+                'float': ''
+              })
+            ;
+          }
+        });
+      }
+    };
+
+  // should be more efficient than using $window.scroll(scroller) and $window.resize(resizer):
+  if (window.addEventListener) {
+    window.addEventListener('scroll', scroller, false);
+    window.addEventListener('resize', resizer, false);
+  } else if (window.attachEvent) {
+    window.attachEvent('onscroll', scroller);
+    window.attachEvent('onresize', resizer);
+  }
+
+  $.fn.sticky = function(method) {
+    if (methods[method]) {
+      return methods[method].apply(this, slice.call(arguments, 1));
+    } else if (typeof method === 'object' || !method ) {
+      return methods.init.apply( this, arguments );
+    } else {
+      $.error('Method ' + method + ' does not exist on jQuery.sticky');
+    }
+  };
+
+  $.fn.unstick = function(method) {
+    if (methods[method]) {
+      return methods[method].apply(this, slice.call(arguments, 1));
+    } else if (typeof method === 'object' || !method ) {
+      return methods.unstick.apply( this, arguments );
+    } else {
+      $.error('Method ' + method + ' does not exist on jQuery.sticky');
+    }
+
+  };
+  $(function() {
+    setTimeout(scroller, 0);
+  });
+})(jQuery);
+;
+/* jshint onevar: false */
+
+(function($){
+	/**
+	 * For images lacking explicit dimensions and needing them, try to add them.
+	 */
+	var restore_dims = function() {
+		$( 'img[data-recalc-dims]' ).each( function recalc() {
+			var $this = $( this );
+			if ( this.complete ) {
+
+				// Support for lazy loading: if there is a lazy-src
+				// attribute and it's value is not the same as the current src we
+				// should wait until the image load event
+				if ( $this.data( 'lazy-src' ) && $this.attr( 'src' ) !== $this.data( 'lazy-src' ) ) {
+					$this.load( recalc );
+					return;
+				}
+
+				var width = this.width,
+					height = this.height;
+
+				if ( width && width > 0 && height && height > 0 ) {
+					$this.attr( {
+						width: width,
+						height: height
+					} );
+
+					reset_for_retina( this );
+				}
+			}
+			else {
+				$this.load( recalc );
+			}
+		} );
+	},
+
+	/**
+	 * Modify given image's markup so that devicepx-jetpack.js will act on the image and it won't be reprocessed by this script.
+	 */
+	reset_for_retina = function( img ) {
+		$( img ).removeAttr( 'data-recalc-dims' ).removeAttr( 'scale' );
+	};
+
+	/**
+	 * Check both when page loads, and when IS is triggered.
+	 */
+	$( document ).ready( restore_dims );
+
+	if ( 'on' in $.fn ) {
+		$( document.body ).on( 'post-load', restore_dims );
+	} else {
+		$( document ).delegate( 'body', 'post-load', restore_dims );
+	}
+})(jQuery);
+;

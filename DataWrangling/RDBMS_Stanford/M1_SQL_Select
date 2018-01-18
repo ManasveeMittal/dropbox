@@ -1,0 +1,304 @@
+This is the first of seven
+videos where we're going to learn the SQL language.
+The videos are largely going to
+be live demos of SQL queries
+and updates running on an actual database.
+The first video is going
+to focus on the basics of the SELECT statement.
+As a reminder, the SELECT statement
+selects a set of attributes from
+a set of relations satisfying a particular condition.
+We will see in the demo that
+even with the these three clauses,
+we can write quite powerful queries.
+All of the seven demos are
+going to be using the simple
+college admissions database that we
+learned about in the relational algebra videos.
+As a reminder, we have three relations.
+We have the college relation: college
+relation contains information about the
+name of the colleges, the state, and the enrollment of those colleges.
+We have the student relation, which
+contains student IDs, their names,
+their GPA, and the size of the high school that they come from.
+And finally, the application information, that
+tells us that a particular student
+applied to a particular college
+for a particular major and there
+was a decision of that application
+Now as a reminder, in the
+relational model, when we underline
+attributes, that means we're designating a key for the relation.
+So, the underlying attributes in
+our example say that the
+knowledge name is going to be unique within the college relation.
+The student's idea is unique within
+the student relation and in
+the applied relation, the combination of these three attributes is unique.
+That means that student can, if
+he or she wishes, apply to a
+college many times, or apply
+for a major many times, but
+can only apply to a
+college for a particular major once.
+Let's turn to the demo.
+Let's start by looking at the actual data that we're going to be querying over.
+We have a set of four
+colleges: Stanford, Berkeley, MIT and Cornell.
+We have a bunch of students.
+And a reminder, each student has an
+ID, a name, a GPA, and a size of high school.
+And finally, we have a set
+of application records where a
+student with a particular ID
+applies to a college for a
+particular major, and there's a
+yes or no decision on that application.
+So let's go to our first SQL query.
+This query is going to find
+the ID, name, and GPA of
+students whose GPA is greater than 3.6.
+So, very simple, it's the
+basic SELECT FROM WHERE structure.
+The SELECT gives our table name,
+the WHERE gives our filtering condition
+and the SELECT tells us what we want to get out of the query.
+We'll execute that query and
+we will find here all of
+our students with a GPA greater than 3.6.
+Now, it's not necessary
+to include the GPA in
+the result to the query even if we filter on the GPA.
+So, I could just take GPA away
+from the SELECT clause, run the
+query again and now, we
+see the same result but without the GPA.
+Okay.
+Let's go to our second query.
+Our second query is going to combine two relations.
+In this query, we're going to
+find the names of the students
+and the majors for which they've applied.
+So, now, we're involving both the
+student table and the
+apply table and the
+condition we see here is the
+join condition that tells us
+we want to combine students with
+apply records that have the same student ID.
+This is what would happen automatically in
+a natural join of the
+relational algebra, but in SQL
+we need to always write the
+join condition explicitly, and finally
+we get the student name and the major.
+And if we execute the
+query, we get, expectedly, a
+bunch of students and the majors that they've applied for.
+Now, we do notice here that we have several duplicate values.
+We have two copies of Amy
+applying to CS and two copies of Craig applying to Bio-Engineering.
+As we discussed in the relational
+algebra video, in relational algebra
+which underlies SQL, it's by
+default the set model; we don't have duplicates.
+But in the SQL language we
+do have duplicates, it's based on a multi-set model.
+If we don't like the duplicates in
+our results SQL provides us a convenient way to get rid of them.
+We simply add the keyword,
+"distinct", to our query after
+the word, "select", we execute, and
+now we get the same result
+but with the duplicate values eliminated.
+Our next query is going
+to be a little more complicated; it's
+going to find the names
+and GPAs of students whose
+size high school is less
+than a thousand, they've applied to
+CS at Stanford, and we're going
+to get the decision associated with that.
+So again we have two
+relations, two tables involved, the student and the apply.
+We have the join condition, making
+sure we're talking about the same
+student and the student and apply tuples.
+Very important to remember that one.
+We are going to filter the result
+based on size high school, major,
+and the college to which they're applying.
+So let's run this query and
+we will see the result that
+we have two students who
+have applied to CS at Stanford from a small high school.
+Our next query is again a join of two relations.
+This time we're going to find all large
+campuses that have someone applying to that campus in CS.
+So this time we're going to join the college table and the apply table.
+And again, we need to
+be careful to make sure we
+only join tuples that are talking about the same college.
+So we have college.cname
+equals apply.cname.
+We have an enrollment that's greater
+than 20,000 and a major that equals CS.
+Let's run this query.
+Oops, we got an error!
+Well, actually I knew that was
+coming, but I wanted to show you what happens here.
+So the error is that we
+have an ambiguous column name,
+and that's the one right here, the C name.
+So I haven't pointed it
+out explicitly, but whenever I've
+referred to attributes where there's
+an attribute from both of
+the relations we're querying, I prefaced
+it with the name of
+the relation that we cared about, the college here in the apply.
+So the attribute name here
+in the select clause is actually
+ambiguous because there's a
+C name attribute in college and there's one there in apply.
+Now we happen to set those equal,
+but in order for the query to
+actually run we have to choose
+So let's just say we're
+going to take that C name from college.
+Now, everything should be fine, and here we go.
+So those are the colleges where we
+have at least one
+CS major and their enrollment is greater than 20,000.
+Again, we see duplicates
+so if we don't like
+the two copies of Berkeley, we
+simply add distinct and we run the query again.
+And now we have Berkeley and Cornell.
+Now, let's do a query with a bigger result.
+This time we're finally going to join all three of our relations.
+Student, college and apply.
+And we're going to apply the
+joint conditions that ensure that
+we're talking about the same student and the same college.
+And then from the result
+of that big cross-product, that
+big join, we're going to
+get the student ID, their name,
+their GPA, the college that
+they're applying to and the enrollment of that college.
+So just a whole bunch of
+information associated with this students' applications.
+And we execute this and here
+we get the result with all the attributes that we asked for.
+Now, one thing I haven't
+mentioned yet is the order
+of the results that we get when we run SQL queries.
+SO SQL is, at its heart, an unordered model.
+That means that we can get
+the results of our queries in
+any order, and in fact,
+we could run a query today
+and get our results in a particular order.
+And then run the query tomorrow and get a different order.
+And that's permitted with the
+specification of SQL on relational databases.
+If we care about the order
+of our result SQL provides a
+clause that we can ask for a
+result to be sorted by
+a particular attribute or set of attributes. So
+let's say we want our application information here
+sorted by descending GPA.
+Then we add another clause called the order by clause.
+We tell the attribute we'd like
+to be ordering by and then
+if we want it to be descending we write DESC.
+The default behavior is actually ascending.
+So if we run this query
+now we get our results by
+descending the GPA we
+see all the 3.9's, 3.8, 3.7, and so forth.
+Now we might still want
+to further sort within all the
+3.9s if we want
+to do that we can specify another
+attribute to sort each group by.
+So, for example, if we
+decide from that we
+want to sort by enrollment
+and ascending, we won't put
+anything because ascending is the default.
+And we execute.
+Now we still have GPA
+as descending as our primary
+sort order and then within each
+of those will be sorting by ascending enrollment.
+This query introduces the like predicate.
+Like is a built-in operator
+in SQL that allows us
+to do simple string matching on attribute values.
+Let's suppose, for example, that we
+wanted to find all students
+who were applying for a major that had to do with bio.
+Instead of listing all the
+biology majors we can
+simply pattern match the major
+against the special string here
+which says, match any major
+where there's some set of characters,
+followed by bio, followed by
+some set of characters we execute
+the query, and we'll find the
+students who have applied for various
+bio type majors.
+Now, I want to introduce another construct.
+I'm going to use the same query to
+do it, which is the construct select star.
+So far, we've always listed
+explicitly the attributes that we
+want to get in the result of a query.
+But if we simply want to get
+all attributes, then we can just write select star.
+And when we do that, we
+don't project away any attributes,
+but we get all the attributes in the result of the from and where expression.
+While we're at it, let's do a gigantic query.
+We'll just do the cross-product
+and student college without any
+combination, and we'll do
+select star to get all the attributes out.
+So, here goes, and you can
+see, we get all the attributes
+and we get a whole lot of tuples as well.
+Our last query is going to
+demonstrate the ability to use
+arithmetic within SQL clauses.
+So we see here a query
+that selects all the information
+from the student relation but adds
+to it a scaled GPA where
+we're going to boost the student's
+GPA if they're from a big
+high school and reduce it if they're from a small one.
+Specifically, we'll take their GPA, multiply
+it by the size high school divided by a thousand.
+So, let's run this
+query and you can see
+that we have the whole student table
+here with an additional column that
+has scaled their GPA based on the size of their high school.
+Now, if we don't like the
+label on this column, we
+could change it and so
+I'll use this query as an
+example to demonstrate the 'as'
+feature which allows us
+to change the labeling of the schema in a query result.
+Let's say as scaled GPA,
+and we should get the same
+result with a more nicely labeled attribute.
+That concludes our video introducing the basic select statement.
+We'll see many other features in
+the upcoming six videos on SQL.

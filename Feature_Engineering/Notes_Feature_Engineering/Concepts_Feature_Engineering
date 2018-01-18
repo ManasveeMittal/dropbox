@@ -1,0 +1,123 @@
+FEATURE ENGINEERING: https://www.analyticsvidhya.com/blog/2016/01/guide-data-exploration/
+	
+	Defination:
+		-art of extracting more information from existing data 
+		-i.e making the available data more useful
+		
+	Steps/Process:
+		-Data Mungings/exploration/Munging steps:
+
+			-Variable Identification:
+			 	-Predictor (Input) and Target (output) variables
+			 	-data types
+			 	-category of the variables (categorical/continuous)
+			 	
+			-Univariate Analysis:
+			 	-Continuous varibales:
+			 		-central tendency
+			 		-spread of the variable
+			 		-highlight missing and outlier values
+			 		-visualization : Disribution plot
+
+			 	-Categorical Variables:
+			 		-Count: use frequency table to understand distribution of each category
+			 		-Count% : percentage of values under each category
+			 		-visualization: Bar chart
+
+			-Bivariate Analysis:
+			 	-Determine association and disassociation between variables at a pre-defined significance level
+
+			 	-Continuous & Continuous:
+			 		-linear or non-linear
+			 		-Correlation
+			 		-visualization : scatter plot
+
+			 	-Categorical & Categorical:
+			 		-Two-way table:
+			 			-The rows represents the category of one variable and the columns represent the categories of the other variable and cell repress count and/or count%
+			 		-Visualization: Stacked Column Chart
+			 		-Cramer’s V for Nominal Categorical Variable
+					-Mantel-Haenszed Chi-Square for ordinal categorical variable
+			 		-Chi-Square Test: cleaning TOBEDONE
+			 			This test is used to derive the statistical significance of relationship between the variables. Also, it tests whether the evidence in the sample is strong enough to generalize that the relationship for a larger population as well. Chi-square is based on the difference between the expected and observed frequencies in one or more categories in the two-way table. It returns probability for the computed chi-square distribution with the degree of freedom 
+			 			Probability of 0: It indicates that both categorical variable are dependent
+			 			Probability of 1: It shows that both variables are independent
+
+			 	-Categorical & Continuous:
+			 		-we can draw box plots for each level of categorical variables
+			 		-statistical significance: 
+			 			
+			 			Z-Test/ T-Test: 
+			 			 -Either test assess whether mean of two groups are statistically different from each other or not
+			 			 -z=| mean_x1 - mean_x2 |/[( variance_x1/n1 +variance_x2/n2)**(1/2) ]
+			 			 -If the probability of Z is small then the difference of two averages is more significant
+			 			 -The T-test is very similar to Z-test but it is used when number of observation for both categories is less than 30
+
+			 			ANOVA:
+			 				- It assesses whether the average of more than two groups is statistically different.
+
+			-Missing Values Imputation:
+			 	-Why treatment:
+			 		Missing data in the training data set can reduce the power / fit of a model or can lead to a biased model
+			 		because we have not analysed the behavior and relationship with other variables correctly
+
+			 	-Why my data has missing values:
+
+
+			 -Outliers Treatment
+
+		-Feature Engeering Steps:
+			-Variablet transformation:
+				-Definition:
+					-In data modelling, transformation refers to the replacement of a variable by a function
+					-changes the distribution or relationship of a variable with others
+
+				-When to utilize
+					
+					-change the scale
+						-standardize the values of a variable for better understanding
+						-does not change the shape of the variable distribution
+						-example: Linear Regression
+					
+					-transform complex non-linear relationships into linear relationships
+						-scatter plot can be used to find the relationship between two continuous variables
+						-example: Log transformation is one of the commonly used transformation technique
+
+
+					-Skewness Reduction:
+						-Symmetric distribution is preferred over skewed distribution as it is easier to interpret and generate inferences
+						-Some modeling techniques requires normal distribution of variables
+						-Right skewed distribution : we take square / cube root or logarithm of variable
+						-Left skewed distribution : we take square / cube or exponential of variables
+
+					-Implementation point of view:
+						-example: Binning of Variables by week for programming related search queries as google trends show that less queries are made over weekends
+
+				- Techniques of Variable Transformation:
+					-Logarithm:
+						 -change the shape of distribution of the variable on a distribution plot
+						 -generally used for reducing right skewness of variables. Though, It can’t be applied to zero or negative values as well.
+					-Square / Cube root:
+						-sound effect on variable distribution
+						-Cube root can be applied to negative values including zero
+						-Square root can be applied to positive values including zero
+					-Binning:
+						-perform categorization of variables on original values, percentile or frequency
+						-Decision of categorization technique is based on business understanding
+						-co-variate binning which depends on the value of more than one variables
+					-Reciprocal , Tranformations over Transformation etc. 
+
+			-Variable/Feature Creation:
+
+				-Definition and Benefits:
+					-generate new variables / features based on existing variable(s)
+					-highlight the hidden relationship in a variable
+					-example: input data(dd-mm-yyyy) to day, quarter, month, year, week, weekday 
+
+				-Techniques:
+					-Creating derived variables:
+						-depends on business understanding of the analyst, curiosity and the set of hypothesis of the problem
+
+					-Creating dummy/Indicator variables:
+						-convert categorical variable into numerical variables
+					

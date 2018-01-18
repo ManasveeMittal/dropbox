@@ -1,0 +1,28 @@
+Statistical Tests for  Assumptions:
+	Assumption: Equality of Variances
+		Levene's Test for Equality of Variances
+			Hlink:
+				http://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm
+			Python:
+				Hlink:https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.stats.levene.html
+				scipy.stats.levene(*args, **kwds)
+				Parameters:
+					sample1, sample2, ... : array_like
+				Returns:
+					W:the test statistic
+					p-value
+			fail to reject the null hypothesis when
+				at the 0.05 significance level when the value of the Levene test statistic is less than the critical value OR
+				If the significance (p value) of Levene's test is greater than 5% level of significance (.05)
+
+			W= {(N-k)/(k-1)}*{SUM_overI(Ni*(mean(Zi)-mean(Z)))/SUM_overI_overJ(mean(Zij)-mean(Zi))}
+				variable Y 
+				sample of size N
+				divided into k subgroups,
+				Ni is the sample size of the ith subgroup
+				mean(Yi) : mean/median/trimmed mean of ith subgroup
+				Zij = absolute(Yij - mean(Yij))
+				mean(Zi): group mean of Zij by i
+
+
+			Technically speaking, The Levene test rejects the hypothesis that the variances are equal if W > F(α, k-1, N-k) where F(α, k-1, N-k) is the upper critical value of the F distribution with k-1 and N-k degrees of freedom at a significance level of α.

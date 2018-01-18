@@ -1,0 +1,39 @@
+Business Analytics
+
+Hlink                       : www.edx.org/micromasters/business-analytics
+Average Length              : 12 weeks per course
+Effort                      : 8-10 hours per week, per course
+Number Of Courses           : 4 Courses in Program
+Subject                     : Business & Management
+Institution                 : Columbia University
+Institution Offering Credit : Columbia University
+Language                    : English
+Video Transcripts           : English 
+Subcourse_1 :               : Analytics in Python
+HLink_1                     : www.edx.org/course/analytics-python-columbiax-bamm-101x
+Subcourse_2 :               : Data, Models and Decisions in Business Analytics
+HLink_2		                : www.edx.org/course/data-models-decisions-business-analytics-columbiax-bamm-102x
+Subcourse_3                 : Business Analytics: Theory and Practice
+HLink_3                     : www.edx.org/course/business-analytics-theory-practice-columbiax-bamm-103x
+Subcourse_4 		        : Marketing Analytics
+HLink_4                     : www.edx.org/course/marketing-analytics-columbiax-bamm-104x
+
+DATA SCIENCE
+
+Hlink                       : www.edx.org/micromasters/data-science
+Average Length              : 10 weeks per course
+Effort                      : 8-10 hours per week, per course
+Number Of Courses           : 4 Courses in Program
+Subject                     : Computer Science, Data Analysis & Statistics, Math
+Institution                 : The University of California, San Diego
+Institution Offering Credit : Curtin University
+Language                    : English
+Video Transcripts           : English 
+Subcourse_1 :               : Python for Data Science
+HLink_1                     : www.edx.org/course/python-data-science-uc-san-diegox-dse200x
+Subcourse_2 :               : Statistics and Probability in Data Science using Python :
+HLink_2		                : www.edx.org/course/statistics-probability-data-science-uc-san-diegox-dse210x
+Subcourse_3                 : Machine Learning for Data Science
+HLink_3                     : www.edx.org/course/machine-learning-data-science-uc-san-diegox-ds220x
+Subcourse_4 		        : Big Data Analytics Using Spark
+HLink_4                     : www.edx.org/course/big-data-analytics-using-spark-uc-san-diegox-dse230x

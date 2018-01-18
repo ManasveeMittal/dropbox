@@ -1,0 +1,513 @@
+The next set of queries will show introduced the concept of the aggregation in SQL.
+Once again we start with the basic select from where construct,
+and this time we're going to introduce what are known as aggregate or aggregation
+functions.
+These are function that will appear in the select clause initially
+and what they do is they perform computations over
+sets of values in multiple rows of our relations,
+and the basic aggregation functions supported by every SQL system are
+minimum, maximum, some, average and count.
+Now once we've introduced the aggregation functions
+we can also add two new clasues to the SQL select from where statement,
+the group by and having clause.
+The group by allows us to partition our relations into groups
+and then will compute aggregated aggregate functions over each group independently.
+The having condition allows us to test
+filters on the results of aggregate values.
+The where condition applies to single rows at a time.
+The having condition will apply to the groups that we generate from the group
+by clause.
+All of these constructs will become very clear when we show some examples.
+As usual our examples we use are simple college admissions database,
+that has a table of colleges,
+a table of students
+and information about students applying to colleges.
+As usual we have four colleges,
+a bunch of students,
+and applications of students to colleges for specific majors.
+Our first aggregation query is a very simple one computes the average GPA of
+the students in the database.
+Here is the query, but just to explain the query let me first replace the aggregation
+with star.
+When we run select star from students we get our result here.
+Specifically when we look at the GPA column, what the aggregation is going to
+do is perform a computation over all values in the column,
+and then produce just one tuple
+in the results that has that value.
+So we'll write average GPA.
+We'll run the query,
+and we see now the average GPA in the database.
+Our second querie is a bit more complicated. It involves a join.
+What it finds is the minimum GPA of students who have applied for a 
+CS major.
+So we do the join of student and apply on student ID.
+Filter for major equal CS.
+Once again let me just remove the aggregation first, so we can see the
+result without aggregation.
+Here we see all of the information about students who've applied to a 
+CS major.
+The aggregation is going to look at the GPA column and it's going to take the
+lowest value in that column.
+So we write min GPA.
+Run the query,
+and we discover that the lowest GPA is three point four.
+Now let's go back to the average aggregate function again. So let's compute
+the average GPA of the students who have applied to computer science,
+run the query and we see the result is about three point seven.
+In fact this result is probably not precisely what we were looking for.
+In a previous video we talked in some detail about this particular form of query
+versus using a sub query
+to find the GPA of students who have applied to CS.
+The issue with this particular query, and let's go back to select star version,
+is that if a student
+applied to CS
+multiple times for example student 123 Amy applied to both Stanford
+and Berkeley.
+Then When we compute their average GPA we're going to be counting their GPA twice.
+Presumaly what we actually want is to count the GPA once for
+each student who applied to CS, no matter how many times they applied.
+so in order to do that we use the sub query form where we select from student
+and then we just check for each student whether their ID is among those who
+apply to CS.
+So let's just do a bit of editing here,
+from apply where major equals CS.
+I'm not a very good typist.
+Let's just first take the sub query form,
+and we see that we made a mistake here,
+and it
+says that we forgot a word here which is in.
+Apologize for that.
+Okay, now we have the
+students who applied to CS
+and in this case we only have one instance of each student. So now if
+we run the aggregation
+when we compute the average GPA we'll correctly count students GPA only
+one time.
+So remember with three point seven approximately before
+now we run the query and we see that the correct result is three point six eight
+not that different but this one is the numerically correct result.
+So far we've seen the average and min aggregate functions.
+This query shows the count function.
+So not surprisingly the count function just returns the number of tuples
+in the result.
+So this
+particular query finds the number of colleges in our database whose enrollment
+is greater than fifteen thousand, just for it to be thorough let's run the
+query without the aggregate function
+and we see that there are two of them
+and the aggregate function simply counts those number of tuples.
+We run the query
+and the result is two as expected.
+Let's do another count query that looks very similar.
+In this case we are counting the number of students who have applied to Cornell.
+So the query looks the same
+will run the query and we discover that six students have applied to Cornell.
+Well in reality what we've actually counted in the number of applications to
+Cornell,
+not the number of students who have applied to Cornell. If a student applied
+three times, then we're counting them three times in this result.
+So in some sense
+this is similar the previous one we saw, we were over counting, and we
+could try to fix it with the sub query and the in and so forth but actually SQL
+provides a very nice way for us to perform the query that we want.
+In the count function
+we can put a special keyword distinct and then the name of one or more
+attributes
+and in this case what the count will do, is will look at the result
+and then it will count the distinct values for the particular attribute so we run the
+query and we are find that there are
+three distinct
+student IDs. If we ran it without
+just like this.
+When we see, we would look and again we would find that there are three distinct
+student IDs.
+So count distinct actually turnes out to be a very useful feature in SQL.
+Here's a rather complicated looking query and I have to admit it computes
+something fairly obscure but it does demonstrate some features.
+What this query computes
+is, it gives us back all students
+where the number of other students who have the same GPA as the student
+is equal to the number of other student that have the same high school size at
+the student.
+Again I admit it's a little bit of obscure but let's take a look at how it works.
+So it looks at the student relation and for each student it counts
+the number of other students, that's by testing that the ID is different,
+that have the same GPA.
+It also counts the number of other students that have the same size 
+high school
+and if those two values,
+and the sub queries both produce a single value which is why would contest
+equality, if those two values are the same then the student comes out in the
+result.
+Let's run the query.
+We get our answer.
+I'll leave it to you to verify by looking at the data that this is indeed
+the correct result.
+Here's another complicated looking query although this one computes something
+quite a bit more intuitive.
+What this query computes is the amount by which the average GPA of students
+who apply to computer science exceeds the average GPA of students who don't
+apply to computer science and we are going to assume it does in fact exceed.
+So we are using in this example sub queries in the from clause which I hope
+you remember from the previous video.
+A sub query in the from clause allows you to write a select from where expression
+and then use the result of that expression as if it were an actual table in the
+database.
+So we are going to compute two sub queries in the from clause, one of them which
+is the average GPA of
+CS applicants
+and one the average GPA of non CS applicants. Let's look a little closer
+here so this query here says let's find
+the students
+who have applied to major in CS,
+let's compute their average GPA and we'll call it average GPA.
+We'll take the whole result and we'll name it CS.
+Similarly the second
+new relation that were computing in the from clause
+computes the average GPA
+of students who did not apply to CS so their student ID is not in
+the set of students who applied to CS.
+We'll call that one non CS.
+So now with this from clause we have a relation called CS with an attribute
+called average GPA
+and a relation called non CS
+with an attribute called average GPA
+and in the select clause we'll simply do the subtraction of
+the non CS GPA from the CS GPA.
+We run the query
+and we discover that the CS applicants exceed on average
+the non CS by point one nine.
+Now just for demonstration purposes let me show that we can write the same query
+but using sub queries and the select clause.
+You might remember from the previous video
+that in a select clause we can write a sub query as long as it returns a single
+value. We're going to go even further we're going to write two sub queries that
+return single values and subtract them.
+So I'm going to replace this from with select.
+I'm going to take up this whole first line here.
+And then I'm going to...
+Let's see. What else do I need to do? I'm going to take out the as here
+and I'm going to replace it with a minus.
+I'm going to take out the as here. So now
+what we've got is we've got the average GPA of CS student in the select clause
+producing a value.
+The average GPA of non CS students. We perform the subtraction as part of the
+select clause.
+The last thing we need is something in the from clause so we'll say from
+student
+will call the result of this subtraction d as in for difference we run the
+query and we get
+almost the same result except for a bunch of duplicates.
+The reason for the duplicates is that we compute this result once for each tuple in
+student.
+We can add distinct,
+and now we get the single result.
+Now let's learn about the group by clause
+which is only used in conjunction with aggregation.
+Our first query is going to find the number of applicants to each college and
+it's going to do so
+by using grouping.
+Effectively what grouping does, is it takes a relation
+and it partitions it by values of a given attribute or set of attributes.
+Specifically in this query we're taking the apply relation
+and we're breaking into groups
+where each group has one of the college names, so it'll be the Stanford group, the
+Berkeley group and so forth
+and then for each group we will return one tuple in the result
+containing the
+college name for that group and the number of tuples in the group.
+So to illustrate what's happening with grouping very clearly, let me start by
+replacing the select clause with
+uh... select star, removing the aggregation
+and doing an order by
+on the college name. So that illustrates the groups that we're going
+to be using in in the actual query
+so we see there are three tuples for Berkeley
+there six tuples for Cornell and so forth.
+Within each group then for the particular query we're doing we're simply going to
+count the number of tuples
+ So going back to the group by form
+we return the college name
+and we return the count of a number of tuples.
+Now before I actually run the query
+one thing to notice is what it makes sense to put in that select clause here.
+We're grouping by the college name so the college name is going to be the same for all of
+the tuples of the group so it's sensible to include that, but it wouldn't
+really be sensible to include when the other attributes that differs although
+we'll see an example later
+where we include that and interesting things happen.
+For now we'll just put the name of the grouping attribute and then we can
+perform aggregation over that. In this case count.
+We run the query
+and we see that there are three applicants to Berkeley, six to Cornell
+and so forth.
+Here's a very similar query, just as a second example,
+and this example we're finding the total enrollment of college students
+for each state.
+Now we only happen to have three states and four colleges in our database
+but what this query does is it takes the college relation it
+breaks it up into partitions by state
+and then within each partition or group it will return the state for that
+partition and the sum of the enrollment.
+We run the query
+and we see
+the expected result.
+Here is a more complicated group by query.
+In this case we're grouping by two attributes.
+We also have a join involved
+and we're going to compute two aggregate functions in our result.
+What this query computes is for each college and major combination
+the minimum and maximum GPAs for the students who've applied to that college.
+As usual before we do the aggregation let's replace the query with one where
+we can see the groups explicitly. So I'll put GPA here
+and instead of grouping I'll order by
+and we run the query
+and we see for Berkeley biology we actually only have one applicant
+for Berkeley CS we have two.
+I think Stanford CS has the largest number of applicants at three.
+So once we put the aggregation back each of these combinations of college and
+major is going to be considered individually
+and for each one will compete the minimum and maximum GPA. So let's go
+ahead and do that.
+All those parentheses.
+Ok, change this to group by.
+Run the query
+and here we see
+for Berkeley biology the minimum and maximum are the same because we saw that there
+was only one
+uh... student uh... who applied to Berkeley biology.
+Stanford CS we had three we can see the spread of their GPA's and so
+forth for each college major combination.
+Now what if we were interested in finding information about the spread of
+GPAs for each college and major
+uh... what the differences between the minimum and the maximum.
+So let's suppose in fact what we wanted to find was largest spread, but let's take that
+in steps.
+I'm going to take this current query here and I'm just gonna slap it into the from
+clause.
+So now in the from clause I'm going to have a relation, we'll call it M,
+that's going to have the
+college major combinations and the minimum and maximum GPA. This M
+is going to now have the result that we see below.
+Now once we have that result to work with
+in the select clause
+we can access the attributes here. Let me call this one
+mn and this one 
+mx and if we write
+just mx minus mn here
+what we're going to get is a list of the spreads
+of the min and max GPA for 
+each collage and major.
+So we see many of them are zero. Those are all of the combination that had just
+one student, but
+in some cases we actually have a spread,
+but what we want to find it is the largest spread, watch this it's very
+cute, we just simply put a max function right here.
+Run the query and
+we find that the largest spread between min and max is approximately one.
+Our next sequence of queries introduces some subtleties of the group by clause.
+What our query finds is the number of colleges that have been applied for the
+number of colleges that have been applied to
+by each student.
+So the query join student and apply.
+It groups the result for the student in the student ID
+and then for each student ID finds the number of distinct colleges in that
+group.
+So once again just to illustrate let's take away the aggregation,
+let's replace the group by by an order by, just so we can see the data that
+we're working on,
+and run the query and we see that student one two three has four
+applications to Stanford, Berkeley and Cornell. Three distinct colleges.
+Two three four has one,
+and so forth.
+So now let's return to our original query group by student
+we'll count the
+distinct college names.
+Run the query,
+and we get the expected answer
+student one two three applied to three
+distinct colleges two three four to one
+and so forth.
+Maybe we'd like to have the student's name in the result as well.
+That's easy to do. We just add the student name to the select clause
+and we run query
+and now we've added Amy is one two three, Bob is two three four and so forth.
+That worked out fine in this case but we're gonna see in a moment where simply
+adding an attributes to the select clause in the case of a group by does something a
+little strange.
+In fact the only reason that it worked nicely in this case is that when we
+group buy the student ID
+within each group
+we have the same student name. Let's see that...
+Let's just take a look at that.
+Again we'll replace
+the group by with an order by.
+We're sorting by student ID
+and we see for the first group which is one two three we have all Amys
+for the three four five group we have all Craigs
+and so on. So when we put student name in
+the select clause for our group by query it was ok because for each group
+we had the same name of the student.
+When that's not the case
+we should
+presumably get an error
+but let's see what happens.
+So let's say that we're interested now not only in finding the uh... student
+name in our query but we're further gonna add a college name. So let's go back to
+the original query.
+Distinct college name. Let's add college name in our result
+and let's go back to grouping by student. So now for each student
+we're gonna return the I.. for each group,
+which is identified by the student ID,
+we're gonna return the ID, the name,
+the number of distinct colleges and then
+a college.
+Let's run the query
+and we do get a result we don't get an error. So we've got
+Amy one two three.
+She applied to three distinct colleges but for whatever reason the system
+decided to tell us about Stanford.
+Craig applied to two colleges and the system tells us about MIT.
+Let's go back again, revert now to our order by form of this query
+and take away
+the aggregation
+and when we run the query we see there's Amy and she did apply to
+four different colleges but when we put the college name in the grouping query
+it chose to tell us about Stanford.
+What this system is actually doing
+is when we include in the select clause of a grouping query, again if we go back to group
+by, and we put in the select clause an attribute that's not one of the grouping
+attributes.
+It actually chooses a random value from the group to include
+in the case of the student name the random value was always the same because the
+student name is always the same for the same student ID.
+In the case of the college it shows a random value among the colleges.
+I'm personally not crazy about this behavior. Among
+three open-source database systems that we've been using for our demos
+two of them allow this behavior,
+SQLite and MySQL. I happen to be using MySQL today.
+If we were using Postgre it would actually throw an error in this case.
+Let's go back to the original query that finds a number of colleges applied to
+by each student. Here it is as we originally wrote it,
+and here is the result.
+Now there are may some students in the database who haven't applied to any
+college at all and they're not going to be represented in our result because
+they're not going to be in the results of the join and we don't see any zero
+counts here.
+What if we wanted to actually lift the student IDs of students who haven't
+applied anywhere and include a zero in the result.
+This is actually one of my favorite queries to give as an exercise or an exam
+question in my class
+because it takes a little innovation to figure out how to write it.
+The way we write it, actually, is by using the union operator, which I hope you
+remember from a previous video.
+We're going to take the union of the students who have applied somewhere and the number of
+places they've applied
+together with the students who haven't applied anywhere and for those students
+we're going to
+put a cero in the result directly.
+So let me just write the beginnings of this so we're going to find those
+students who haven't applied anywhere at all so those are the students whose
+sID is not in at all
+the set of sIDs in the apply relation.
+So that finds the students who didn't apply anywhere for each student will
+return their student ID
+and then we want to have a zero in the result.
+Very simple to do, we simply write zero.
+We run the query,
+and now we scroll down we'll see that in addition to all the students
+who have applied somewhere
+we get zeros in the result for the students who haven't applied anywhere.
+The last clause that we're going to introduce in this video is the having clause and the
+having clause is also only used in conjunction with aggregation.
+What the having clause allows us to do is apply conditions to the results of
+aggregate functions.
+So the having clause is applied
+after the group by clause and it allows us to check conditions that involve the
+entire group.
+In contrast the where clause applies to one tuple at a time.
+So this particular query is finding colleges that have
+fewer than five applicant.
+So we look at the apply relation we group it by college name so we're going to
+have one group
+for each college.
+Then we're only going to keep those groups
+were the number of tuples in the group is less than five indicating that we
+have fewer than five applicants to the college.
+We'll run the query,
+and we'll see that Berkeley and MIT each have fewer than five applicants.
+So presumably Cornell and Stanford
+have greater than or equal to five applicants and you can check that by
+examining the data.
+Now it is
+possible to write the same query
+without that having clause and in fact without the grouping clause
+and let me show you how that's done.
+We're going to select again the cName from apply
+and here's what we're going to do. We're going to add
+an attribute there, sorry a table variable.
+We're gonna erase this whole business,
+and we're going to find all
+applicants, so all applications where
+let me just type this out for you
+five is greater than the count
+from apply A2 
+where A2 dot cName equals A1 dot cName and let's take a look at what
+this is doing.
+So what we're doing here
+is we're looking at each application record and we're checking
+whether the number of other applications to the same college, were gonna find all
+the applications to the same college, we're going to count them
+and we're going to
+see if that number is less than five. So it's a little bit non intuitive. 
+Now remember the result should be Berkeley MIT. Let's run the query
+and we do get Berkeley MIT. We again get duplicates however.
+The reason is that we're running
+uh... we're checking this condition for each application record.
+So for each application to Berkeley we checked the condition that will be
+many of them and for each one to MIT and so on.
+Of course as usual we can add distinct.
+We can run the query and now we get the result.
+It does happen actually
+that uh... every query that can be written with the group by and a having
+clause can be written in another form sometime it can be in extremely
+contorted
+but another sort of
+complicated exercise I like to give sometimes in my classes to prove the
+fact
+that you can write every group by having query
+without using those clauses.
+Now let's go back to our original form of the query were we used the group by and
+the having.
+So we'll just get rid of all this.
+I'm sorry I'm such a terrible typist.
+Group by college name
+having count star less than
+five
+and we'll run the query will get the same result.
+What if we were interested not in those colleges that have fewer than five
+applications but rather those colleges that have fewer than five applicants?
+It's a subtle point but instead of counting the 
+number of apply tuples for each college
+what we want count is the number of 
+distinct student ID's
+that appear in the group of apply tuples for that college.
+So again, now we're looking for the number of colleges who have fewer than five
+distinct people, distinct students applying to them, and now we see that one
+more college joins the group so Cornell had more than five applications
+but at least five applications but it has fewer than five applicants.
+Here's our grand finale query
+it has a having clause and group by
+and in addition to that is has a sub query within the having clause
+that also uses aggregation.
+What this query finds is all majors represented in the database where the
+maximum GPA of a student applying for that major is lower than the average
+GPA in the database.
+So we join student and apply and we group by the major so we can look at each major
+one-at-a-time.
+Within the major we find the maximum GPA of a student applying for that major
+and we check whether it's lower than the average GPA in the student relation.
+We run the query
+and we discover that bioengineering and psychology, at this point in time, are
+garnering applicants whose uh... highest GPA is lower than the average
+in the database. Of course that does not represent reality.

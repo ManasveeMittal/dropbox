@@ -1,0 +1,61 @@
+Decision tree learning:
+	-uses a decision tree as a predictive model which maps observations about an item to conclusions about the item's target value
+	-used in data mining also
+		- where it describes data but not decisions
+		- the resulting classification tree can be an input for decision making.
+
+Basic Algoritms:
+	-Using a decision algorithm, we start at the tree root and split the data on the feature that results in the largest information gain (IG)
+	-We repeat this splitting procedure at each child node down to the empty leaves i.e the samples at each node all belong to the same class
+
+Limitation:
+	-this can result in a very deep tree with many nodes, which can easily lead to overfitting
+
+Improvised Algorithm:
+	-we typically want to prune the tree by setting a limit for the maximum depth of the tree
+	-using Information Gain, we want to determine which attribute in a given set of training feature vectors is most useful
+
+
+
+
+Classification Trees:
+	-Tree models where the target variable can take a finite set of values
+	-leaves represent class labels
+	-branches represent conjunctions of features that lead to those class labels
+
+Regression Trees:
+
+Decision Analysis:
+	-using a decision tree to visually and explicitly represent decisions and decision making
+
+Impurity measures: 
+	-Entropy:
+		-a way to measure impurity
+		-Entropy=−∑(over j) p(j)* [log(base 2)( p(j))]
+		-minimal value = 0 if all samples of a node belong to the same class
+		-maximal if we have a uniform class distribution
+		-
+		-the entropy attempts to maximize the mutual information (by constructing a equal probability node) in the decision tree
+
+	-Gini index:
+		-a criterion to minimize the probability of misclassification
+		-Gini= 1 − ∑(over j) p(j)**2
+		-maximal if the classes are perfectly mixed example binry class
+
+	-Classification Error:
+		-1 - max{ p(j) }
+		-p(j) is the probability of class j
+
+Information Gain (IG):
+	- used to split the data on the feature that results in the largest information gain (IG)
+	-decide the ordering of attributes in the nodes of a decision tree
+	-Formula
+		- IG(D(p))= I(D(p)) − { N(left) / N(p) }*I( D(left) ) - { N(right) / N(p) }*I( D(right) )
+			-I -> entropy, Gini index, or classification error
+			-D(p) -> parent dataset
+			-N(p) -> number of observation in D(p)
+			-D(left) -> left dataset
+			-N(left) -> number of observation in D(left)
+			-D(right) -> right dataset
+			-N(right) -> number of observation in D(right)
+			

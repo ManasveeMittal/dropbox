@@ -1,0 +1,16 @@
+postgreSQL vs ANS-SQL
+
+>> SORT:
+	>ANS-SQL: sort only on predefined columns 
+	>postgreSQL: sort on query-result based as well as pre-defined columns
+
+>> decribing tables
+	>ANS-SQL:
+	>postgreSQL :select column_name, data_type, character_maximum_length from 
+	INFORMATION_SCHEMA.COLUMNS where table_name = 'inner1';
+                  OR
+    SELECT * FROM information_schema.columns WHERE table_name = 'inner1';
+>> auto-increasing value in columns
+	>`category_id` int(11) AUTO_INCREMENT
+	> category_id int(11) serial 
+

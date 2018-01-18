@@ -1,0 +1,195 @@
+https://discourse.looker.com/t/customer-lifetime-value-part-1-survival-analysis/1781
+https://stats.stackexchange.com/questions/251506/is-it-possible-to-understand-pareto-nbd-model-conceptually
+https://www.datascience.com/blog/intro-to-predictive-modeling-for-customer-lifetime-value
+
+What is Customer Lifetime Value?
+
+	Customer Lifetime Value (CLV) describes the amount of revenue or profit a customer generates over his or her entire lifetime.
+
+
+	Many retailers optimize their customer acquisition strategies by trying to minimize how much they spend to acquire each customer (“cost per acquisition” or CAC”). When you understand the lifetime value of different customers, however, you can optimize more effectively for the long run. Rather than simply optimizing for CAC, you can look at the difference between CAC and CLV. After all, if one customer is 10x more valuable than another, it’s certainly worth spending a little more to acquire him!
+
+
+
+What can you do with Customer Lifetime Value?
+
+	CLV helps you make important business decisions about sales, marketing, product development, and customer support. For example:
+		Marketing: How much should I spend to acquire a customer?
+		Product: How can I offer products and services tailored for my best customers?
+		Customer Support: How much should I spend to service and retain a customer?
+		Sales: What types of customers should sales reps spend the most time on trying to acquire?
+
+
+The difference between Historical and Predictive CLV
+
+	Retailers often refer to two forms of lifetime value analysis:
+
+	Historical lifetime value simply sums up revenue or profit per customer.
+
+	Predictive lifetime value projects what new customers will spend over their entire lifetime.
+
+	If we are interested in using CLV to help optimize our advertising campaigns, we likely are more interested in predictive CLV analysis. For example, imagine you’re interested in optimizing your adwords spending by looking at both the cost per conversion along with the CLV of customers from a given campaign.
+
+With historical CLV analysis, you’ll need to wait a couple years to know the CLV of those customers. With predictive CLV analysis, you’ll know the long-term value of those new customers right away.
+
+Of course, predictive CLV is only useful in so far as the projections are accurate!
+
+
+How CLV is calculated makes all the difference
+
+CLV calculations vary wildly based on methodology. After all, the metric is a complex one to calculate – it includes not only the profits obtained so far from a customer, but expected profits in the future as well.
+
+For this reason, it is important to “test” the metric. If we predict a customer will be worth $X in a year, we can check up on that and see how well the numbers perform.
+
+Our approach: probabilistic marketing techniques
+
+Over the past five years, academics have made profound strides in calculating lifetime value. Newer algorithms utilize the latest Bayesian probabilistic theories.
+
+These new approaches of modeling recognize that all customers are different – and it is this recognition of what academics call “customer heterogeneity” that makes all the difference.
+
+At a high level, the models work as follows:
+
+Observe various individual-level buying patterns from the past – find the various customer stories in the data set.
+Understand which patterns correspond with valuable customers and which patterns correspond with customers who are leaving for good.
+As new customers join, match them to these patterns accordingly.
+
+
+REQUEST A DEMO 
+
+
+How our numbers stack up 
+
+We’ve run CLV numbers on millions and millions of customers, and we constantly test how our projections hold up.
+
+Here we compare how three approaches to calculate CLV stand the test of time:
+
+A historical, average revenue per customer per month metric (ARPU). For two-year value, multiply that number by 24.
+A linear regression model that latches onto how cohorts of users are changing over time and extrapolates to project CLV.
+Our own approach, based on the latest techniques in the field (more on these below).
+% Margin of Error
+Margin of Error in CLV calculations
+ARPU-based
+Regression-based
+Our Probabilistic Models
+0
+50
+100
+150
+200
+250
+300
+Every business is unique, but the graph on the right is an example of a story we see frequently. On a consistent basis, our CLV numbers have margins of error significantly lower than those obtained from other methodologies.
+
+CLV is the metric at the heart of our marketing platform. We take pride in pushing the field of predictive customer modeling forward. We take care of the PhD-powered analytics on our side, so you can launch actions on our platform and optimize around timely, accurate CLV numbers.
+
+
+
+REQUEST A DEMO 
+
+
+What are some use cases of CLV analysis?
+
+Compare CLV across channels and ads within channels.
+Roll out the red carpet for your high value customers.
+Find your lower value customers and work on improving their value.
+
+/____________________________________________________________/
+
+
+What is CLV (Customer Lifetime Value)? Why Should I Care?
+CLV (Customer Lifetime Value) is a prediction of all the value a business will derive from their entire relationship with a customer. Because we don't know how long each relationship will be, we make a good estimate and state CLV as a periodic value — that is, we usually say “this customer's 12-month (or 24-month, etc) CLV is $x”.
+
+
+The Pareto Principle states that, for many events, roughly 80% of the effects come from 20% of the causes. When applied to e-commerce, this means that 80% of your revenue can be attributed to 20% of your customers. While the exact percentages may not be 80/20, it is still the case that some customers are worth a whole lot more than others, and identifying your “All-Star” customers can be extremely valuable to your business.
+
+Taking CLV into account can shift how you think about customer acquisition. Rather than thinking about how you can acquire a lot of customers and how cheaply you can do so, CLV helps you think about how to optimize your acquisition spending for maximum value rather than minimum cost
+
+
+eg-Let's Go Fishing!
+Consider that acquiring customers is like fishing. You might go fishing in the Adwords Ocean, Facebook River, or Lake Microsoft. Under a cost minimization strategy, the results of your strategy might look like this
+
+Location	Total Spend	Customers	CAC*
+Adwords Ocean	$100	100	$1
+Facebook River	$150	50	$3
+Lake Microsoft	$250	25	$10
+
+* Customer Acquisition Cost; also known as “Cost Per Acquisition (CPA)”
+
+
+You might think that the Adwords Ocean is the best because it gets you customers for the lowest cost, but looking at Customer Acquisition Cost is only half the equation. We also need to consider that the lifetime revenue of customers from each of these channels might be different.
+
+Location	Total Spend	Customers	CAC	CLV	Revenue	Profit *
+Adwords Ocean	$100	100	$1	$10	$1000	$900
+Facebook River	$150	50	$3	$30	$1500	$1350
+Lake Microsoft	$250	25	$10	$100	$2500	$2250
+* Profit is defined as Revenue – (number of customers × CAC). For the sake of this exercise, it does not take into account other costs.
+
+When you consider not just the acquisition cost, but also the value the customer will bring to your business, your acquisition strategy can be fine-tuned and result in better customers for less money. In that case, you may prefer to fish in Lake Microsoft since it has the highest overall profit of the three channels.
+
+
+Introduction to Historical CLV
+The simplest approach for calculating CLV is Historical CLV, which computes a customer‘s lifetime value based on what they have previously spent with you. There are two popular approaches for computing historical CLV, one using Average Revenue Per User and the other using Cohort Analysis, both of which are described below. But first, let's discuss some caveats associated with taking a backward-looking approach to customer lifetime value analysis.
+
+The main thing to keep in mind when looking at historical CLVs is that it does not account for time. That is, it puts all of your customers—new and old—into the same bucket when in fact they may behave substantially differently. For example, you may have launched a new product line or tried alternative advertising approaches that brought you customers with different characteristics and behaviors than your previous customers, differences that could result in changing CLVs. Similarly, if you plan to take a different approach in the future, or your customer base begins to shift, prior CLVs may no longer accurately predict future CLVs.
+
+
+
+
+
+
+
+
+
+Applications & Use Cases
+One particular application of CLV is to look at CLV by acquisition medium, source, channel, and campaign. That is, to look at the CLVs of customers acquired through CPC, Facebook, or display advertising, for example. As before, you want to measure CLV in order to determine whether you are underspending or overspending to acquire customers. By looking at individual CLV by acquisition channel, you can do a better job of assessing whether you should spend more or less on that channel. For example, a marketer may focus on finding undervalued keywords to acquire customers very cheaply, when instead there may be overpriced keywords that attract customers that are worth far more than the extra cost of a keyword.
+
+This CLV analysis can be applied to other metrics, such as coupon codes, Groupons, or landing pages. In particular, you want to think about the different “levers” your marketing team has, the types of things you can change in order to drive different consumer behaviors. In addition to acquisition sources and spending, you can also compute segment CLVs by which product was first purchased or most popular product category, to name a few. This type of CLV analysis can lead to many insights; for example, a customer who first buys a low-margin item might appear to be low value on the surface, but if it turns out those customers are more likely to become repeat purchasers of high-margin products than those who initially bought high-margin products, you may change how you think about what you show on your homepage or what products you feature in advertisements.
+
+
+
+
+Introduction to Predictive CLV
+
+As mentioned in the Intermediate Lesson, there are limitations to Historical CLV. Since the analysis is backward-looking, historical customer lifetime value analysis can produce misleading results when the company, the market, or both have changed. In addition, historical CLV is limited when trying to measure the CLV of customers acquired using new channels or tactics. Luckily, there are several methods that can be used to predict CLV, including extrapolation, supervised learning algorithms, and probabilistic modeling.
+
+
+Moving Averages
+
+Extrapolation, or forecasting, can take many forms. One such form is a simple moving average, in which you forecast a customer's future spending based on a customer's spending over a past period. Moving averages can be more useful than simple averages because it takes into account any possible trends in a customer's spending. Be careful in choosing the moving average period, though, because the longer the period, the more the prediction is smoothed (an extreme case of this would be to take an average of all customer months); the shorter the period, the more variation there is in the results.
+
+Note that moving averages with short periods can hide seasonality. For example, using a three-month moving average from August to October to predict November and December sales might cause you to underestimate CLV and underinvest in customer acquisition. Conversely, using holiday sales data to predict January and February sales might cause you to overestimate CLV and overinvest in customer acquisition.
+
+Regressions
+
+Straight-line extrapolation, also known as a simple linear regression, offers similar trade-offs to moving averages but can also be useful. Since the extrapolation is a straight line, it does not take into account seasonality. However, a simple linear regression does produce a line of best fit, which minimizes the overall difference between predicted values and actual values. Polynomial regressions can be used to fit data that have non-linear shapes to produce more accurate predictions. A big advantage to both linear and polynomial regressions are that they are available in Excel and do not require a data science team to create them.
+
+Advanced statistical methods can provide even more accurate predictive CLVs. Two popular methods used by Custora are Bayesian Inference and Pareto/NBD, both of which are described in the follow sections. These summaries will give you context into how these advanced predictive methods work. You will also find links to more rigorous treatments of these topics interspersed in the text.
+
+
+Bayesian Inference
+Bayesian inference allows you to make predictions about what a particular customer will do based on what you know about the whole population and what that customer has done up until now. In short, Bayesian inference derives from Bayes theorem, which states that the probability of a hypothesis H being true given the existence of some evidence E is equal to the probability that the evidence exists given that the hypothesis is true times the probability that the hypothesis is true before the evidence is observed divided by the probability that the evidence exists. In mathematical terms:
+
+P(H|E) = P(E|H) * P(H) / P(E)
+
+where:
+P(H|E)	= the probability of H given E (posterior probability)
+P(E|H)	= the probability of E given H (likelihood)
+P(H)	= the probability of H before any evidence is available (prior probability)
+P(E)	= the probability of E (marginal likelihood)
+Note that when comparing the relative probabilities of two hypotheses (such as whether H occurs or does not occur), the marginal likelihood can be ignored.
+
+This type of analysis, in the form of a naïve Bayesian classifier, is what email applications use to determine spam from legitimate messages. To apply this to lifetime value analysis, we would consider many possible CLV values, each one forming a different hypothesis. By looking at the occurrences of various pieces of evidence (such as recency and frequency of purchase), we can then determine the relative probabilities of the hypotheses and develop a more accurate customer lifetime value.
+
+Pareto/NBD
+Pareto/NBD (negative binomial distribution) is another type of model used to predict the future activity of customers. The Pareto/NBD model uses order history as the primary input, and in particular takes into account the frequency and the recency of orders. While the basic Pareto/NBD model only uses order history, the results become more rich and more accurate when covariates are layered into the model.
+
+The basic Pareto/NBD model simulates two events. It uses a “coin” to determine whether a customer churns and then it uses “dice” to determine how many items a customer will order. The coin is modeled using a Pareto distribution and the dice are modeled using a negative binomial distribution. The more information you have on a customer, the better the models can fit them to a specific distribution and the more accurate the predictions end up being.
+
+Pareto/NBD and related models have seen much discussion in academic literature. The foundation was laid by Schmittlein et al in a 1987 paper and expanded upon in 2003 by Fader et al. For more practical information, Bruce Hardie provides a multitude of tutorials and Excel spreadsheets for using probabilistic models in a marketing context. 874
+
+
+What is Churn Rate? What i Churn Impact?
+ churn rate is the amount of customers or subscribers who cut ties with our service or company during a given time period i.e Churn is a growth decelerator.
+
+How to calculrte Churn rate?
+ For a given period,we can  calculate churn based on the percentage of customers lost, number customers lost, the value of recurring business lost, or the percent of recurring value lost. However determination of the period i a bit tricky and varies industry to industry

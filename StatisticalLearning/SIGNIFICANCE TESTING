@@ -1,0 +1,16 @@
+SIGNIFICANCE TESTING
+	INDEPENDENT T-TEST
+		evaluates whether the means for two independent groups are significantly different from each other
+		for more than 2 groups of samples,use ANOVA
+	ASSUMPTIONS
+		Each score is sampled independently and randomly. 
+		The scores are normally distributed within each of the two groups.
+		The variance in each of the groups is equal. 
+	Null Hypothesis:
+		states that there is no relationship between the two variables
+	Alternate Hypothesis:
+		relationship exists
+	Type I and II Errors:
+		False positive: reject null hypothesis when true
+		False Negative: Accept null hypothesis when false
+

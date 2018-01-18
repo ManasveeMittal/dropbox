@@ -1,0 +1,147 @@
+The standard approach to carrying out a statistical test involves the following steps:
+● specify the hypothesis to be tested
+● select a suitable statistical model
+● design and carry out an experiment/study
+● calculate a test statistic
+● calculate the probability value
+● determine the conclusion of the test.
+
+hypothesis is a statement about the value of an
+unknown parameter in the model
+
+H0, null : "status quo” hypothesis
+H1 :alternative hypothesis,  
+
+Focus of test: “Do the data provide sufficient
+evidence to justify our rejecting H0 ?”
+
+One-sided and two-sided tests
+
+
+One_sided
+H 0 : smoking makes no difference to life expectancy| l(smoking)=l0
+H 1 : smoking reduces life expectancy	| l(smoking)< lo
+
+Two-sided
+H 0 : smoking makes no difference to life expectancy | l(smoking)=l0
+H 1 : smoking affects life expectancy|  l(smoking) != lo
+
+
+Test statistics
+
+Def:P-value i.e standardized value calculated from sample data
+		degree of agreement between smaple of data and null hypothesis
+		
+
+Errors:
+	type I error: rejecting H0 when it is in fact true
+		P(type I) = α = “size” of the test
+	type II error: accepting H0 when it is false
+		P(type II) = β |power of a test = 1-β
+
+
+Q-Probabilities of testing error
+	PF(X) ~ Exp(λ)
+	H0 : λ=1/20
+	H1 : λ=1/30
+
+Testing criteria: X<28 => accepted, else rejected.
+	P(Type1) = P(X>28| λ=1/20)
+	P(Type2) = P(X<28| λ=1/30)
+
+Neyman-Pearson test: 
+	For given α,find such a test for which the other error probability, β , is as small as possible for every value of the parameter specified by the alternative hypothesis
+
+Q-1> TEST STATISTIC VS SIZE OF TEST
+eg alpha = 0.1, p-value =0.07 => reject H0
+	 alpha = 0.05, p-value= 0.07 => accept(do not reject) H0
+
+////////////////////////////////////////////////////////////////////////////////
+	 
+TESTING MEAN WHEN POPULATION VARIANCE IS UNKNOWN, USE t-test:
+(sample mean- population mean)  /  (sqrt(sample variance) / sqrt(n)) ~ t (n-1)
+TESTING MEAN WHEN POPULATION VARIANCE IS KNOWN, USE z-test:
+z = (sample mean- population mean)  /  (sqrt(sample variance) / sqrt(n)) ~ N(0,1)
+TESTING POPULATION VARIANCE, use Chi-square test:
+(n-1)*(sample variance)/(population variance) ~ Chi-square(n-1)
+
+
+
+Critical values:
+	Z i.e standard normal distribution
+		tail area	two-sided 	one-sided
+		0.1						1.28
+		0.05					1.645
+		0.025		            1.96
+		0.01					2.33
+		0.005					2.58
+
+	t i.e students t distribution
+
+Q-2	 
+sum(Xi) =120
+Sum(Square(Xi)) = 1693.33
+size of test = 5%
+sum(i)=10
+
+i> Var(X) = unknown
+H0 := u=15
+H1 := u<>15
+t = -1.792 > -2.262 (t(9) critical value)
+Hence, HO is not rejected.
+
+ii> Var(X) = 15
+H0 := u=15
+H1 := u<>15
+
+z = -2.108 < -1.96 (=z at 5% two sided)
+	OR 
+P(Z<z) = 0.0175 <(0.05/2) 
+Hence HO is rejected
+
+iii> H0 : Var(X) = 20
+	 H1 : Var(X) <>20
+c = 12.45,
+two sided critical values = 2.7 and 19.02
+Hence, H0 can't be rejected.
+
+CONTINUITY CORRECTION:
+	We need to provide for continiuty when we estimate discrete distribution using continuous distribution:
+		x >  13 	<=>		 x > 13.5
+		x >= 13 	<=>		 x > 12.5
+		x <  13 	<=>		 x < 12.5
+		x <= 13 	<=>		 x < 13.5
+
+		x <  -9		<=>		 x <-9.5
+		x <= -9		<=>		 x <-8.5
+		x >  -9		<=> 	 x > -8.5
+		x >= -9		<=>  	 x > -9.5
+
+TESTING DIFFERENCE BETWEEN POPULATION MEANS
+
+H0: u1  = u2
+H1: u1 <> u2
+
+Let u1 = population mean of A
+	u2 = population mean of B
+	U1 = sample mean of A
+	U2 = sample mean of B
+	nA = no. of sample observations of A
+	nB = no. of sample observations of B
+	S1 = Sample variance of population A
+	S2 = Sample variance of population B
+	square(Sp) = pooled variance of A and B
+
+square(Sp) = ((nA -1)*S1 + (nB - 1)*S2) / (nA + nB -2))
+
+test_statistic =( (u1 -u2) - (U1 - U2) / Sp*( sqrt(1/nA + 1/nB)) )
+ 
+test_statistic ~ t(nA + nB -2)
+
+
+F-test
+
+precision or positive predictive value (PPV)=TP/(TP+FP) = true positive/predicted positives 
+recall or sensitivity= TP/(TP+FN) = true positives/actual positives
+specificity = TN/(TN+FP)
+F1 score= HarmonicMean(precison,recall)

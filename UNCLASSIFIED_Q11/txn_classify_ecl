@@ -1,0 +1,71 @@
+IMPORT Std.Str;
+
+Layout := RECORD
+	STRING TRAN_DATE;
+	STRING TRAN_PARTICULAR;
+	STRING ENTRY_USER_ID;
+END;
+
+file := DATASET('~::output_data.csv', Layout , CSV(SEPARATOR('|'), HEADING(1)));
+
+filedump := Table(choosen(file,1000000));
+choosen(filedump, 100);
+
+
+F := PROJECT(filedump, TRANSFORM(RECORDOF(LEFT) OR {STRING P1, STRING P2, STRING P3}, 
+                                SELF.P1 := Str.splitwords(Str.splitwords(LEFT.TRAN_PARTICULAR, ',')[1], '_')[1];
+                                SELF.P2 := Str.splitwords(Str.splitwords(LEFT.TRAN_PARTICULAR, ',')[2], '_')[1];
+                                SELF.P3 := Str.splitwords(Str.splitwords(LEFT.TRAN_PARTICULAR, ',')[3], '_')[1];
+                                SELF := LEFT));
+CHOOSEN(F, 100);
+//filedump;
+
+layout2 := record
+	string tran;
+	string keyword;
+end;
+
+usecase := DATASET('~::usecase_input.csv',layout2, csv(separator('|')));
+//usecase;
+//choosen(usecase, 100);
+
+
+U := PROJECT(usecase, TRANSFORM(RECORDOF(LEFT) OR {STRING P1, STRING P2, STRING P3}, 
+                                SELF.P1 := Str.splitwords(Str.splitwords(LEFT.tran, ',')[1], '_')[1];
+                                SELF.P2 := Str.splitwords(Str.splitwords(LEFT.tran, ',')[2], '_')[1];
+                                SELF.P3 := Str.splitwords(Str.splitwords(LEFT.tran, ',')[3], '_')[1];
+                                SELF := LEFT));
+CHOOSEN(U, 100);
+
+
+
+/*
+
+mapped_output := Join(filedump,usecase,
+                      MAP(F.P1 = U.P1 => IF(F.P2 = U.P2,
+                                                    IF(F.P3 = U.P3,
+                                                       U.keyword, //*p1 p2 p3
+                                                       U.keyword), //p1 p2
+                                                    U.keyword), //p1
+                         F.P2 = U.P2 => IF(F.P3 = U.P3,
+                         							U.keyword, //p2 p3
+                         							U.keyword), //p2
+                         F.P3 = U.P3 => U.Keyword, //p3
+                         'NA'),			
+                      left outer, hash);
+mapped_output;
+
+*/
+
+  
+
+/*
+
+N := COUNT(mapped_output);
+PROJECT(
+  TABLE(mapped_output, {keyword, tot := count(group)}, keyword, unsorted, merge),
+  TRANSFORM(RECORDOF(LEFT) OR {REAL perc}, SELF.perc := LEFT.tot / N; SELF := LEFT));
+
+*/
+
+output('hello'+'-'+'world'+' !!!');

@@ -1,0 +1,48 @@
+Basic Role of data analyst
+ Collecting Data from various sources
+ Wrangling Data to make it more reliable
+ Exploring Data using statistics and visualizations
+ Transforming Data to prepare it for modeling
+ Modeling Data using the right machine learning algorithms
+ Evaluating the results of the data models
+
+Classification falls into the realm of supervised learning because in order for it to work, you have to guide the computer by proving it with examples of correctly labeled records.
+
+Regression falls into the realm of supervised learning because you have to provide the computer with labeled samples. It then attempts to fit an equation to the samples' features.
+
+Dimensionality reduction falls into the realm of unsupervised learning because you don't instruct the computer which features you want it to build; the computer infers this information automatically by examining your unlabeled data.
+
+Reinforcement Learning
+
+The goal of reinforcement learning is to maximize a cumulative reward function (or equivalently, minimize a cumulative cost function), given a set of actions and results. Reinforcement learning is modeled to mimic the way we learn in the real world. We try to solve problems using different techniques. Most of the time, nothing of merit results from our experiments. But occasionally, we stumble upon a set of actions that result in a sweet reward. When this happens, we attempt to repeat those actions that result in our getting rewarded. If we are rewarded yet again, we further associate those actions with the reward, and that is known as the reinforcement cycle. The entire process is also known as performance maximization.
+
+
+    Collecting: Have a data driven question.
+    Collecting: The types of questions and problems solvable with machine learning.
+    Collecting: Collect as much data as you possibly can, focusing on samples.
+    Modeling: Unsupervised, and supervised learning, and how they're different.
+
+Features are those quantitative traits that describe your samples. They might be numeric or textual
+
+Determining Features
+
+Once you've collected your data, the next step is learning how to manipulate it efficiently. Knowing how to do some basic operations, such as slicing your dataset with conditionals, aggregating entries, and properly searching for values will save you a lot of time when you have to parse through thousands of records.
+
+from sqlalchemy import create_engine
+engine = create_engine('sqlite:///:memory:')
+
+sql_dataframe  = pd.read_sql_table('my_table', engine, columns=['ColA', 'ColB'])
+xls_dataframe  = pd.read_excel('my_dataset.xlsx', 'Sheet1', na_values=['NA', '?'])
+
+json_dataframe = pd.read_json('my_dataset.json', orient='columns')
+
+csv_dataframe  = pd.read_csv('my_dataset.csv', sep=',')
+table_dataframe= pd.read_html('http://page.com/with/table.html')[0]
+
+Note the return type of .read_html(), it is a Python list of dataframes, one per HTML table found on the webpage
+
+View Column DataTypes '''df.dtypes'''
+
+When you load up a dataframe, it's always a good idea to see what data type Pandas assigned each column:
+
+The reason why its important to reshape your 2D array images into one dimensional ones is because each image will represent a single sample, and SKLearn expects your dataframe to be shapes [num_samples, num_features].

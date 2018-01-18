@@ -1,0 +1,22 @@
+TIPS:
+        a> create a meta file for each file
+        b> always open file in new tab using nano/vim
+	c> meta-info file must have 1> purpose 2> significant contents 3> future plans of usage/edition of file
+        d> git diff is green for new line, standard for old, red for deleted..
+1> Copy HTTPS url from github account
+2> move to your preferred directory using cd <path>/
+3> git clone https://github.com/LifeGuide/life_guide.git
+4> Remove unnecessary directories using rm -rf <dirname>/
+
+a> a new folder needs to be git-added before committing any files present wthin.
+        git add <folder> #adding a file to git, essentially new files
+        git status #optional #checking sync differences
+        git commit -m 'message' #comment on the committed changes
+        git pull #to avoid any conflit with editions by others
+        git push #to merge changes
+
+	cd ~/<git_repository_path>
+	nano <file_name> #creating/editing a file using nano editor
+	git diff <path>/<file1_name>  #to check changes in local and master repository file
+	git log #all commit-logs in latest order
+	git log #commit-log specific file    

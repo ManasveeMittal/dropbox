@@ -1,0 +1,33 @@
+we simplify things by specifying a set of hypotheses that are
+Mutually exclusive: At most one hypothesis in the set can be true, and
+Collectively exhaustive: There are no other possibilities; at least one of the
+hypotheses has to be true.
+I use the word suite for a set of hypotheses that has these properties
+
+1.5
+The diachronic interpretation
+There is another way to think of Bayes’s theorem: it gives us a way to update
+the probability of a hypothesis, H, in light of some body of data, D.
+
+This way of thinking about Bayes’s theorem is called the diachronic inter-
+pretation. “Diachronic” means that something is happening over time; in
+this case the probability of the hypotheses changes, over time, as we see
+new data.
+
+Rewriting Bayes’s theorem with H and D yields:
+p ( H | D ) =[p ( H ) p ( D | H )]/[p ( D )]
+
+
+In this interpretation, each term has a name:
+H: Hypotheis
+D: Data
+• p ( H ) is the probability of the hypothesis before we see the data, called
+the prior probability, or just prior.
+• p ( H | D ) is what we want to compute, the probability of the hypothesis
+after we see the data, called the posterior.
+• p ( D | H ) is the probability of the data under the hypothesis, called the
+likelihood.
+• p ( D ) is the probability of the data under any hypothesis, called the
+normalizing constant.
+
+

@@ -1,0 +1,39 @@
+jinja generated simply a text file
+
+jinja contains
+- variable, expressions are replaced with values
+- tags controls template logic
+
+sample_template = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Webpage</title>
+</head>
+<body>
+    <ul id="navigation">
+    {% for item in navigation %}
+        <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <h1>My Webpage</h1>
+    {{ a_variable }}
+
+    {# a comment #}
+</body>
+</html>
+"""
+Default jinja delimiters
+
+    {% ... %} for Statements
+    {{ ... }} for Expressions to print to the template output
+    {# ... #} for Comments not included in the template output
+    #  ... ## for Line Statements
+
+Variables
+{{foo.bar}}
+{{foo[bar]}}
+
+Filters: to modify variables
+

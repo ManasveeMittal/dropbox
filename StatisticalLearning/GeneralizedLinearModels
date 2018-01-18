@@ -1,0 +1,67 @@
+Generalized Linear Models
+The generalized linear model expands the general linear model so that the dependent variable is linearly related to the factors and covariates via a specified link function. Moreover, the model allows for the dependent variable to have a non-normal distribution. It covers widely used statistical models, such as linear regression for normally distributed responses, logistic models for binary data, loglinear models for count data, complementary log-log models for interval-censored survival data, plus many other statistical models through its very general model formulation.
+
+Examples. A shipping company can use generalized linear models to fit a Poisson regression to damage counts for several types of ships constructed in different time periods, and the resulting model can help determine which ship types are most prone to damage. Show me
+
+A car insurance company can use generalized linear models to fit a gamma regression to damage claims for cars, and the resulting model can help determine the factors that contribute the most to claim size. Show me
+
+Medical researchers can use generalized linear models to fit a complementary log-log regression to interval-censored survival data to predict the time to recurrence for a medical condition. Show me
+Generalized Linear Models Data Considerations
+Data. The response can be scale, counts, binary, or events-in-trials. Factors are assumed to be categorical. The covariates, scale weight, and offset are assumed to be scale.
+
+Assumptions. Cases are assumed to be independent observations.
+
+To Obtain a Generalized Linear Model
+This feature requires the Advanced Statistics option.
+From the menus choose:
+Analyze > Generalized Linear Models > Generalized Linear Models...
+Specify a distribution and link function (see below for details on the various options).
+On the Response tab, select a dependent variable.
+On the Predictors tab, select factors and covariates for use in predicting the dependent variable.
+On the Model tab, specify model effects using the selected factors and covariates.
+The Type of Model tab allows you to specify the distribution and link function for your model, providing short cuts for several common models that are categorized by response type.
+Model Types
+Scale Response. The following options are available:
+Linear. Specifies Normal as the distribution and Identity as the link function.
+Gamma with log link. Specifies Gamma as the distribution and Log as the link function.
+Ordinal Response. The following options are available:
+Ordinal logistic. Specifies Multinomial (ordinal) as the distribution and Cumulative logit as the link function.
+Ordinal probit. Specifies Multinomial (ordinal) as the distribution and Cumulative probit as the link function.
+Counts. The following options are available:
+Poisson loglinear. Specifies Poisson as the distribution and Log as the link function.
+Negative binomial with log link. Specifies Negative binomial (with a value of 1 for the ancillary parameter) as the distribution and Log as the link function. To have the procedure estimate the value of the ancillary parameter, specify a custom model with Negative binomial distribution and select Estimate value in the Parameter group.
+Binary Response or Events/Trials Data. The following options are available:
+Binary logistic. Specifies Binomial as the distribution and Logit as the link function.
+Binary probit. Specifies Binomial as the distribution and Probit as the link function.
+Interval censored survival. Specifies Binomial as the distribution and Complementary log-log as the link function.
+Mixture. The following options are available:
+Tweedie with log link. Specifies Tweedie as the distribution and Log as the link function.
+Tweedie with identity link. Specifies Tweedie as the distribution and Identity as the link function.
+Custom. Specify your own combination of distribution and link function.
+Distribution
+This selection specifies the distribution of the dependent variable. The ability to specify a non-normal distribution and non-identity link function is the essential improvement of the generalized linear model over the general linear model. There are many possible distribution-link function combinations, and several may be appropriate for any given dataset, so your choice can be guided by a priori theoretical considerations or which combination seems to fit best.
+Binomial. This distribution is appropriate only for variables that represent a binary response or number of events.
+Gamma. This distribution is appropriate for variables with positive scale values that are skewed toward larger positive values. If a data value is less than or equal to 0 or is missing, then the corresponding case is not used in the analysis.
+Inverse Gaussian. This distribution is appropriate for variables with positive scale values that are skewed toward larger positive values. If a data value is less than or equal to 0 or is missing, then the corresponding case is not used in the analysis.
+Negative binomial. This distribution can be thought of as the number of trials required to observe k successes and is appropriate for variables with non-negative integer values. If a data value is non-integer, less than 0, or missing, then the corresponding case is not used in the analysis. The value of the negative binomial distribution's ancillary parameter can be any number greater than or equal to 0; you can set it to a fixed value or allow it to be estimated by the procedure. When the ancillary parameter is set to 0, using this distribution is equivalent to using the Poisson distribution.
+Normal. This is appropriate for scale variables whose values take a symmetric, bell-shaped distribution about a central (mean) value. The dependent variable must be numeric.
+Poisson. This distribution can be thought of as the number of occurrences of an event of interest in a fixed period of time and is appropriate for variables with non-negative integer values. If a data value is non-integer, less than 0, or missing, then the corresponding case is not used in the analysis.
+Tweedie. This distribution is appropriate for variables that can be represented by Poisson mixtures of gamma distributions; the distribution is "mixed" in the sense that it combines properties of continuous (takes non-negative real values) and discrete distributions (positive probability mass at a single value, 0). The dependent variable must be numeric, with data values greater than or equal to zero. If a data value is less than zero or missing, then the corresponding case is not used in the analysis. The fixed value of the Tweedie distribution's parameter can be any number greater than one and less than two.
+Multinomial. This distribution is appropriate for variables that represent an ordinal response. The dependent variable can be numeric or string, and it must have at least two distinct valid data values.
+Link Functions
+The link function is a transformation of the dependent variable that allows estimation of the model. The following functions are available:
+Identity. f(x)=x. The dependent variable is not transformed. This link can be used with any distribution.
+Complementary log-log. f(x)=log(−log(1−x)). This is appropriate only with the binomial distribution.
+Cumulative Cauchit. f(x) = tan(π (x – 0.5)), applied to the cumulative probability of each category of the response. This is appropriate only with the multinomial distribution.
+Cumulative complementary log-log. f(x)=ln(−ln(1−x)), applied to the cumulative probability of each category of the response. This is appropriate only with the multinomial distribution.
+Cumulative logit. f(x)=ln(x / (1−x)), applied to the cumulative probability of each category of the response. This is appropriate only with the multinomial distribution.
+Cumulative negative log-log. f(x)=−ln(−ln(x)), applied to the cumulative probability of each category of the response. This is appropriate only with the multinomial distribution.
+Cumulative probit. f(x)=Φ−1(x), applied to the cumulative probability of each category of the response, where Φ−1 is the inverse standard normal cumulative distribution function. This is appropriate only with the multinomial distribution.
+Log. f(x)=log(x). This link can be used with any distribution.
+Log complement. f(x)=log(1−x). This is appropriate only with the binomial distribution.
+Logit. f(x)=log(x / (1−x)). This is appropriate only with the binomial distribution.
+Negative binomial. f(x)=log(x / (x+k −1)), where k is the ancillary parameter of the negative binomial distribution. This is appropriate only with the negative binomial distribution.
+Negative log-log. f(x)=−log(−log(x)). This is appropriate only with the binomial distribution.
+Odds power. f(x)=[(x/(1−x))α−1]/α, if α ≠ 0. f(x)=log(x), if α=0. α is the required number specification and must be a real number. This is appropriate only with the binomial distribution.
+Probit. f(x)=Φ−1(x), where Φ−1 is the inverse standard normal cumulative distribution function. This is appropriate only with the binomial distribution.
+Power. f(x)=x α, if α ≠ 0. f(x)=log(x), if α=0. α is the required number specification and must be a real number. This link can be used with any distribution

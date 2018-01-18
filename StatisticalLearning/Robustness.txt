@@ -1,0 +1,27 @@
+Robustness	
+Tukey and Mosteller defined two types of robustness where robustness is a lack of susceptibility to the effects of nonnormality.
+
+Robustness of validity means that the confidence intervals for a measure of the population spread (e.g., the standard deviation) have a 95 % chance of covering the true value (i.e., the population value) of that measure of spread regardless of the underlying distribution.
+Robustness of efficiency refers to high effectiveness in the face of non-normal tails. That is, confidence intervals for the measure of spread tend to be almost as narrow as the best that could be done if we knew the true shape of the distribution.
+
+
+The mean is an example of an estimator that is the best we can do if the underlying distribution is normal. However, it lacks robustness of validity. That is, confidence intervals based on the mean tend not to be precise if the underlying distribution is in fact not normal.
+The median is an example of a an estimator that tends to have robustness of validity but not robustness of efficiency.
+
+The alternative measures of location try to balance these two concepts of robustness. That is, the confidence intervals for the case when the data are normal should be almost as narrow as the confidence intervals based on the mean. However, they should maintain their validity even if the underlying data are not normal. In particular, these alternatives address the problem of heavy-tailed distributions.
+
+
+Alternative Measures of Location:
+	Mid-Mean
+	Trimmed Mean
+	Winsorized Mean 
+
+
+The standard deviation is an example of an estimator that is the best we can do if the underlying distribution is normal. However, it lacks robustness of validity. That is, confidence intervals based on the standard deviation tend to lack precision if the underlying distribution is in fact not normal.
+The median absolute deviation and the interquartile range are estimates of scale that have robustness of validity. However, they are not particularly strong for robustness of efficiency.
+
+If histograms and probability plots indicate that your data are in fact reasonably approximated by a normal distribution, then it makes sense to use the standard deviation as the estimate of scale. However, if your data are not normal, and in particular if there are long tails, then using an alternative measure such as the median absolute deviation, average absolute deviation, or interquartile range makes sense. The range is used in some applications, such as quality control, for its simplicity. In addition, comparing the range to the standard deviation gives an indication of the spread of the data in the tails.
+
+Since the range is determined by the two most extreme points in the data set, we should be cautious about its use for large values of N.
+
+Tukey and Mosteller give a scale estimator that has both robustness of validity and robustness of efficiency. However, it is more complicated and we do not give the formula here.

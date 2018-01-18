@@ -1,0 +1,10 @@
+http://www.itl.nist.gov/div898/handbook/eda/section4/eda422.htm
+
+Block plot: Dose a factor have an effect
+DOE mean plot and the DOE interaction effects plot 
+box plot 
+http://www.itl.nist.gov/div898/handbook/eda/section4/eda42a.htm
+
+Can we separate signal from noise in time dependent data?
+Spectral anlaysis
+http://www.itl.nist.gov/div898/handbook/eda/section4/eda425.htm

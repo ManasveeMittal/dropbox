@@ -1,0 +1,75 @@
+	-Frequently Used Regular Expressions:
+		-^ matches the beginning of a string
+		-$ matches the end of a string
+		-\b matches a word boundary
+		-\d matches any numeric digit
+		-\D matches any non-numeric character
+		-(x|y|z) matches exactly one of x, y or z
+		-(x) in general is a remembered group. We can get the value of what matched by using the groups() method of the object returned by re.search
+		-x? matches an optional x character (in other words, it matches an x zero or one times)
+		-x* matches x zero or more times
+		-x+ matches x one or more times
+		-x{m,n} matches an x character at least m times, but not more than n times
+		-?: matches an expression but do not capture it. Non capturing group
+		-?= matches a suffix but exclude it from capture. Positive look ahead
+		-a(?=b) will match the "a" in "ab", but not the "a" in "ac" 
+		-In other words, a(?=b) matches the "a" which is followed by the string 'b', without consuming what follows the a
+		-?! matches if suffix is absent. Negative look ahead
+		-a(?!b) will match the "a" in "ac", but not the "a" in "ab"
+		-?<= positive look behind
+		-?<! negative look behind
+		-[] mean match exactly one of these charactersm :
+			-[sxz] means s, or x, or z, but only one of them
+			-[^aeiou] means any single character except a,e,i,o,u
+			-[^aeiou]y$ means any single character except a,e,i,o,u, then followed by y and then end of string
+
+	-Function of Regular Expressions:
+		-sub(pattern, repl, string, count=0, flags=0):
+			-replacing the leftmost non-overlapping occurrences of the pattern in string by the replacement repl
+			-re.sub('[abc]', 'in', 'Space'):
+				-Does the string Space contain a, b, or c? Yes, it contains a and c.
+				-find a, b, or c, and replace it with 'in'
+				-output is 'Spinine'
+		-search(pattern, string, flags=0):
+    		-Scan through string looking for a match to the pattern, returning a match object, or None if no match was found
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def pluralize(noun): 
+	if re.search('[sxz]$', noun): 
+		return re.sub('$', 'es', noun)
+	elif re.search('[^aeioudgkprt]h$', noun):
+		return re.sub('$', 'es', noun) 
+	elif re.search('[^aeiou]y$', noun): 
+		return re.sub('y$', 'ies', noun) 
+	else:
+		return noun + 's'
+
+The four branches of if statements are the implementation of the following four rules of pluralization described below:
+
+If a word ends in s, x, or z, add es. Bass becomes basses, fax becomes faxes, and waltz becomes waltzes.
+If a word ends in a noisy h, add es; if it ends in a silent h, just add s. What's a noisy h? One that gets combined with other letters to make a sound that we can hear. So coach becomes coaches and rash becomes rashes, because we can hear the ch and sh sounds when we say them. But cheetah becomes cheetahs, because the h is silent.
+If a word ends in y that sounds like i, change the y to ies; if the y is combined with a vowel to sound like something else, just add s. So vacancy becomes vacancies, but day becomes days.
+If all else fails, just add s.

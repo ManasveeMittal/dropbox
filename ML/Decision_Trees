@@ -1,0 +1,28 @@
+Decision Trees (DTs) 
+	non-parametric supervised learning method
+	used for classification and regression
+	The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from the data features.
+	PICture: http://scikit-learn.org/stable/auto_examples/tree/plot_tree_regression.html
+	approximate a sine curve with a set of if-then-else decision rules
+	The deeper the tree, the more complex the decision rules and the fitter the model.
+	cost of predicting data
+		log(num_obs)
+	Data type:
+		numerical
+		categorical
+	multi-output problems
+		True
+	WHITE box model
+	minor deviation from assumptions
+		still perform well
+	DISADVANTAGES(and how to avoid)
+		overfitting
+			set minimum number of samples required at a leaf node 
+			set the maximum depth of the tree
+		unstable on small variations in the data
+			using decision trees within an ensemble
+	Python refernce:
+		sklearn.tree.DecisionTreeClassifier :http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier
+		inputs 
+			an array X, sparse or dense, of size [n_samples, n_features] holding the training samples
+			array Y of integer values, size [n_samples], holding the class labels for the training samples

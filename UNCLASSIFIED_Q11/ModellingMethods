@@ -1,0 +1,39 @@
+How It Works
+Predictive models use known results to develop (or train) a model that can be used to predict values for different or new data. Modeling provides results in the form of predictions that represent a probability of the target variable (for example, revenue) based on estimated significance from a set of input variables.
+
+This is different from descriptive models that help you understand what happened, or diagnostic models that help you understand key relationships and determine why something happened. Entire books are devoted to analytical methods and techniques. Complete college curriculums delve deeply into this subject. But for starters, here are a few basics.
+
+There are two types of predictive models. Classification models predict class membership. For instance, you try to classify whether someone is likely to leave, whether he will respond to a solicitation, whether he’s a good or bad credit risk, etc. Usually, the model results are in the form of 0 or 1, with 1 being the event you are targeting. Regression models predict a number – for example, how much revenue a customer will generate over the next year or the number of months before a component will fail on a machine.
+
+Three of the most widely used predictive modeling techniques are decision trees, regression and neural networks.
+
+Predictive analytics decision trees
+Regression (linear and logistic) is one of the most popular method in statistics. Regression analysis estimates relationships among variables. Intended for continuous data that can be assumed to follow a normal distribution, it finds key patterns in large data sets and is often used to determine how much specific factors, such as the price, influence the movement of an asset. With regression analysis, we want to predict a number, called the response or Y variable. With linear regression, one independent variable is used to explain and/or predict the outcome of Y. Multiple regression uses two or more independent variables to predict the outcome. With logistic regression, unknown variables of a discrete variable are predicted based on known value of other variables. The response variable is categorical, meaning it can assume only a limited number of values. With binary logistic regression, a response variable has only two values such as 0 or 1. In multiple logistic regression, a response variable can have several levels, such as low, medium and high, or 1, 2 and 3.
+
+Predictive analytics neural networks
+Decision trees are classification models that partition data into subsets based on categories of input variables. This helps you understand someone's path of decisions. A decision tree looks like a tree with each branch representing a choice between a number of alternatives, and each leaf representing a classification or decision. This model looks at the data and tries to find the one variable that splits the data into logical groups that are the most different. Decision trees are popular because they are easy to understand and interpret. They also handle missing values well and are useful for preliminary variable selection. So, if you have a lot of missing values or want a quick and easily interpretable answer, you can start with a tree.
+
+Predictive analytics neural networks
+Neural networks are sophisticated techniques capable of modeling extremely complex relationships. They’re popular because they’re powerful and flexible. The power comes in their ability to handle nonlinear relationships in data, which is increasingly common as we collect more data. They are often used to confirm findings from simple techniques like regression and decision trees. Neural networks are based on pattern recognition and some artificially intelligent processes that graphically “model” parameters. They work well when no mathematical formula is known that relates inputs to outputs, prediction is more important than explanation or there is a lot of training data. Artificial neural networks were originally developed by researchers who were trying to mimic the neurophysiology of the human brain.
+
+Other Popular Techniques You May Hear About
+
+Bayesian analysis. Bayesian methods treat parameters as random variables and define probability as "degrees of belief" (that is, the probability of an event is the degree to which you believe the event is true). When performing a Bayesian analysis, you begin with a prior belief regarding the probability distribution of an unknown parameter. After learning information from data you have, you change or update your belief about the unknown parameter.
+
+Ensemble models. Ensemble models are produced by training several similar models and combining their results to improve accuracy, reduce bias, reduce variance and identify the best model to use with new data.
+
+Gradient boosting. This is a boosting approach that resamples your data set several times to generate results that form a weighted average of the resampled data set. Like decision trees, boosting makes no assumptions about the distribution of the data. Boosting is less prone to overfitting the data than a single decision tree, and if a decision tree fits the data fairly well, then boosting often improves the fit. (Overfitting data means you are using too many variables and the model is too complex. Underfitting means the opposite – not enough variables and the model is too simple. Both reduce prediction accuracy.)
+
+Incremental response (also called net lift or uplift models). These model the change in probability caused by an action. They are widely used to reduce churn and to discover the effects of different marketing programs.
+
+K-nearest neighbor (knn). This is a nonparametric method for classification and regression that predicts an object’s values or class memberships based on the k-closest training examples.
+
+Memory-based reasoning. Memory-based reasoning is a k-nearest neighbor technique for categorizing or predicting observations.
+
+Partial least squares. This flexible statistical technique can be applied to data of any shape. It models relationships between inputs and outputs even when the inputs are correlated and noisy, there are multiple outputs or there are more inputs than observations. The method of partial least squares looks for factors that explain both response and predictor variations.
+
+Principal component analysis. The purpose of principal component analysis is to derive a small number of independent linear combinations (principal components) of a set of variables that retain as much of the information in the original variables as possible.
+
+Support vector machine. This supervised machine learning technique uses associated learning algorithms to analyze data and recognize patterns. It can be used for both classification and regression.
+
+Time series data mining. Time series data is time-stamped and collected over time at a particular interval (sales in a month, calls per day, web visits per hour, etc.). Time series data mining combines traditional data mining and forecasting techniques. Data mining techniques such as sampling, clustering and decision trees are applied to data collected over time with the goal of improving predictions.

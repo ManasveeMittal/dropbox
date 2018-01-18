@@ -1,0 +1,18 @@
+anonymous functions (i.e. functions that are not bound to a name)
+The lambda's general form is 
+lambda arg1, arg2, ...argN : expression using arguments
+ often used in conjunction with typical functional concepts like filter(), map() and reduce().
+
+  lambda definition does not include a return statement -- it always contains an expression which is returned
+ 	-lambda is an expression, not a statement
+ 		-Because of this, a lambda can appear in places a def is not allowed
+ 		- As an expression, lambda returns a value that can optionally be assigned a name
+ 		-def statement always assigns the new function to the name in the header, instead of returning is as a result.
+ 	-lambda's body is a single expression, not a block of statements
+
+ Properties vs Getters/Setters: 
+ 	-http://www.bogotobogo.com/python/python_classes_instances.php#properties
+ 	-properties are more flexible than attributes
+ 	-with peoperties, we can define functions that describe what is supposed to happen when we need setting, getting or deleting them
+ 	-
+

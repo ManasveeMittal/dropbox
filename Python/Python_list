@@ -1,0 +1,387 @@
+
+Python Home 
+
+Introduction 
+
+Running Python Programs (os, sys, import) 
+
+Modules and IDLE (Import, Reload, exec) 
+
+Object Types - Numbers, Strings, and None 
+
+Strings - Escape Sequence, Raw String, and Slicing 
+
+Strings - Methods 
+
+Formatting Strings - expressions and method calls 
+
+Files and os.path 
+
+Traversing directories recursively 
+
+Subprocess Module 
+
+Regular Expressions with Python 
+
+Object Types - Lists 
+
+Object Types - Dictionaries and Tuples 
+
+Functions def, *args, **kargs
+
+Functions lambda 
+
+Built-in Functions 
+
+map, filter, and reduce 
+
+Decorators 
+
+List Comprehension 
+
+Sets (union/intersection) and itertools - Jaccard coefficient and shingling to check plagiarism 
+
+Hashing (Hash tables and hashlib) 
+
+Dictionary Comprehension with zip 
+
+The yield keyword 
+
+Generator Functions and Expressions 
+
+generator.send() method 
+
+Iterators 
+
+Classes and Instances (__init__, __call__, etc.) 
+
+if__name__ == '__main__' 
+
+argparse 
+
+Exceptions 
+
+@static method vs class method 
+
+Private attributes and private methods 
+
+bits, bytes, bitstring, and constBitStream 
+
+json.dump(s) and json.load(s) 
+
+Python Object Serialization - pickle and json 
+
+Python Object Serialization - yaml and json 
+
+Priority queue and heap queue data structure 
+
+Graph data structure 
+
+Dijkstra's shortest path algorithm 
+
+Prim's spanning tree algorithm 
+
+Closure 
+
+Functional programming in Python 
+
+Remote running a local file using ssh 
+
+SQLite 3 - A. Connecting to DB, create/drop table, and insert data into a table 
+
+SQLite 3 - B. Selecting, updating and deleting data 
+
+MongoDB with PyMongo I - Installing MongoDB ... 
+
+Python HTTP Web Services - urllib, httplib2 
+
+Web scraping with Selenium for checking domain availability 
+
+REST API : Http Requests for Humans with Flask 
+
+Blog app with Tornado 
+
+Multithreading ... 
+
+Python Network Programming I - Basic Server / Client : A Basics 
+
+Python Network Programming I - Basic Server / Client : B File Transfer 
+
+Python Network Programming II - Chat Server / Client 
+
+Python Network Programming III - Echo Server using socketserver network framework 
+
+Python Network Programming IV - Asynchronous Request Handling : ThreadingMixIn and ForkingMixIn 
+
+Python Interview Questions I
+
+Python Interview Questions II 
+
+Python Interview Questions III 
+
+Python Interview Questions IV 
+
+Python Interview Questions V 
+
+Image processing with Python image library Pillow 
+
+Python and C++ with SIP 
+
+PyDev with Eclipse 
+
+Matplotlib 
+
+Redis with Python 
+
+NumPy array basics A 
+
+NumPy Matrix and Linear Algebra 
+
+Pandas with NumPy and Matplotlib 
+
+Celluar Automata 
+
+Batch gradient descent algorithm 
+
+Longest Common Substring Algorithm 
+
+Python Unit Test - TDD using unittest.TestCase class 
+
+Simple tool - Google page ranking by keywords 
+
+Google App Hello World 
+
+Google App webapp2 and WSGI 
+
+Uploading Google App Hello World 
+
+Python 2 vs Python 3 
+
+virtualenv and virtualenvwrapper 
+
+Uploading a big file to AWS S3 using boto module 
+
+Scheduled stopping and starting an AWS instance 
+
+Cloudera CDH5 - Scheduled stopping and starting services 
+
+Removing Cloud Files - Rackspace API with curl and subprocess 
+
+Checking if a process is running/hanging and stop/run a scheduled task on Windows 
+
+Apache Spark 1.3 with PySpark (Spark Python API) Shell 
+
+Apache Spark 1.2 Streaming 
+
+bottle 0.12.7 - Fast and simple WSGI-micro framework for small web-applications ... 
+
+Flask app with Apache WSGI on Ubuntu14/CentOS7 ... 
+
+Selenium WebDriver 
+
+Fabric - streamlining the use of SSH for application deployment 
+
+Ansible Quick Preview - Setting up web servers with Nginx, configure enviroments, and deploy an App 
+
+Neural Networks with backpropagation for XOR using one hidden layer 
+
+NLP - NLTK (Natural Language Toolkit) ... 
+
+RabbitMQ(Message broker server) and Celery(Task queue) ... 
+
+OpenCV3 and Matplotlib ... 
+
+Simple tool - Concatenating slides using FFmpeg ... 
+
+iPython - Signal Processing with NumPy 
+
+iPython and Jupyter - Install Jupyter, iPython Notebook, drawing with Matplotlib, and publishing it to Github 
+
+iPython and Jupyter Notebook with Embedded D3.js 
+
+Downloading YouTube videos using youtube-dl embedded with Python 
+
+Machine Learning : scikit-learn ... 
+
+Django 1.6/1.8 Web Framework ...
+
+
+Sponsor Open Source development activities and free contents for everyone.
+
+PayPal - The safer, easier way to pay online!
+Thank you.
+
+- K Hong
+
+
+
+
+
+
+OpenCV 3 image and video processing with Python
+
+
+OpenCV 3 with Python 
+
+Image - OpenCV BGR : Matplotlib RGB 
+
+Basic image operations - pixel access 
+
+iPython - Signal Processing with NumPy 
+
+Signal Processing with NumPy I - FFT and DFT for sine, square waves, unitpulse, and random signal 
+
+Signal Processing with NumPy II - Image Fourier Transform : FFT & DFT 
+
+Inverse Fourier Transform of an Image with low pass filter: cv2.idft() 
+
+Image Histogram 
+
+Video Capture and Switching colorspaces - RGB / HSV 
+
+Adaptive Thresholding - Otsu's clustering-based image thresholding 
+
+Edge Detection - Sobel and Laplacian Kernels 
+
+Canny Edge Detection 
+
+Hough Transform - Circles 
+
+Watershed Algorithm : Marker-based Segmentation I 
+
+Watershed Algorithm : Marker-based Segmentation II 
+
+Image noise reduction : Non-local Means denoising algorithm 
+
+Image object detection : Face detection using Haar Cascade Classifiers 
+
+Image segmentation - Foreground extraction Grabcut algorithm based on graph cuts 
+
+Image Reconstruction - Inpainting (Interpolation) - Fast Marching Methods 
+
+Video : Mean shift object tracking 
+
+Machine Learning : Clustering - K-Means clustering I 
+
+Machine Learning : Clustering - K-Means clustering II 
+
+Machine Learning : Classification - k-nearest neighbors (k-NN) algorithm 
+
+
+
+
+Machine Learning with scikit-learn
+
+
+scikit-learn installation 
+
+scikit-learn : Features and feature extraction - iris dataset 
+
+scikit-learn : Machine Learning Quick Preview 
+
+scikit-learn : Data Preprocessing I - Missing / Categorical data 
+
+scikit-learn : Data Preprocessing II - Partitioning a dataset / Feature scaling / Feature Selection / Regularization 
+
+scikit-learn : Data Preprocessing III - Dimensionality reduction vis Sequential feature selection / Assessing feature importance via random forests 
+
+Data Compression via Dimensionality Reduction I - Principal component analysis (PCA) 
+
+scikit-learn : Data Compression via Dimensionality Reduction II - Linear Discriminant Analysis (LDA) 
+
+scikit-learn : Data Compression via Dimensionality Reduction III - Nonlinear mappings via kernel principal component (KPCA) analysis 
+
+scikit-learn : Logistic Regression, Overfitting & regularization 
+
+scikit-learn : Supervised Learning & Unsupervised Learning - e.g. Unsupervised PCA dimensionality reduction with iris dataset 
+
+scikit-learn : Unsupervised_Learning - KMeans clustering with iris dataset 
+
+scikit-learn : Linearly Separable Data - Linear Model & (Gaussian) radial basis function kernel (RBF kernel) 
+
+scikit-learn : Decision Tree Learning I - Entropy, Gini, and Information Gain 
+
+scikit-learn : Decision Tree Learning II - Constructing the Decision Tree 
+
+scikit-learn : Random Decision Forests Classification 
+
+scikit-learn : Support Vector Machines (SVM) 
+
+scikit-learn : Support Vector Machines (SVM) II 
+
+Flask with Embedded Machine Learning I : Serializing with pickle and DB setup 
+
+Flask with Embedded Machine Learning II : Basic Flask App 
+
+Flask with Embedded Machine Learning III : Embedding Classifier 
+
+Flask with Embedded Machine Learning IV : Deploy
+
+Flask with Embedded Machine Learning V : Updating the classifier 
+
+scikit-learn : Sample of a spam comment filter using SVM - classifying a good one or a bad one 
+
+
+
+MACHINE LEARNING ALGORITHMS AND CONCEPTS
+Batch gradient descent algorithm 
+
+Single Layer Neural Network - Perceptron model on the Iris dataset using Heaviside step activation function 
+
+Batch gradient descent versus stochastic gradient descent 
+
+Single Layer Neural Network - Adaptive Linear Neuron using linear (identity) activation function with batch gradient descent method 
+
+Single Layer Neural Network : Adaptive Linear Neuron using linear (identity) activation function with stochastic gradient descent (SGD) 
+
+Logistic Regression 
+
+VC (Vapnik-Chervonenkis) Dimension and Shatter 
+
+Bias-variance tradeoff 
+
+Maximum Likelihood Estimation (MLE) 
+
+Neural Networks with backpropagation for XOR using one hidden layer 
+
+minHash 
+
+tf-idf weight 
+
+Natural Language Processing (NLP): Sentiment Analysis I (IMDb & bag-of-words) 
+
+Natural Language Processing (NLP): Sentiment Analysis II (tokenization, stemming, and stop words) 
+
+Natural Language Processing (NLP): Sentiment Analysis III (training & cross validation) 
+
+Natural Language Processing (NLP): Sentiment Analysis IV (out-of-core) 
+
+Locality-Sensitive Hashing (LSH) using Cosine Distance (Cosine Similarity) 
+
+
+
+ARTIFICIAL NEURAL NETWORKS (ANN)
+[Note] Sources are available at Github - Jupyter notebook files 
+
+1. Introduction 
+
+2. Forward Propagation 
+
+3. Gradient Descent 
+
+4. Backpropagation of Errors
+
+5. Checking gradient 
+
+6. Training via BFGS 
+
+7. Overfitting & Regularization 
+
+8. Deep Learning I : Image Recognition (Image uploading) 
+
+9. Deep Learning II : Image Recognition (Image classification) 
+
+10 - Deep Learning III : Deep Learning III : Theano, TensorFlow, and Keras 
+
+
+

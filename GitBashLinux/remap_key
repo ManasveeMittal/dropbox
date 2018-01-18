@@ -1,0 +1,49 @@
+For remapping certain keys you need two tools. First xev (command-line tool) and second xmodmap (also command-line tool). Both should be available in Ubuntu without extra installing them.
+
+Start terminal window and run xev. Now it's active and waits for you to press a key. Then press the key whose behaviour you want to change. i.e. PgUp.
+xev will output some information about the pressed key. The third line is important. It should look similar to:
+
+state 0x10, keycode 110 (keysym 0xff55, Prior), same_screen YES,
+in this example Prior is the name of the behaviour the key is assigned to at the moment, the number keycode is the internal id to recognize the key. Now do this with another key i.e. PgDown give this output
+
+state 0x10, keycode 115 (keysym 0xff56, Next), same_screen YES,
+Here again the interesting part for us is keycode 115 and Next - the name of the behaviour.
+now when you want to swap the two keys use xmodmap.
+
+ xmodmap -e "keycode 110 = Next"
+This changes the key with keycode 110 on your keyboard to the action Next. It's pretty simple.
+
+Note that if the key you are mapping should have a different meaning when used with the Shift key (for example for British keyboard layouts, Shift+2 gives quotation marks) then you can simply list the secondary command after the first. For example if you want the key with code 53 to map to backslash normally, but to the bar symbol when used with shift, you might do:
+ xmodmap -e "keycode 53 = backslash bar"
+Additional information: The sequence of these mappings is Key, Shift+Key, mode_switch+Key, mode_switch+Shift+Key, AltGr+Key, AltGr+Shift+Key. To skip a column use NoSymbol. Moreover, here is a comprehensive list of all keysyms.
+
+Note: These change are for the active X session only and will be lost after reboot. When you want to save the changes permanently you have to run the following commands after the ones above:
+
+xmodmap -pke >~/.Xmodmap
+(it creates a file named .Xmodmap in your home directory (~))
+
+Then you have to create a file named .xinitrc in your home directory where you put command xmodmap .Xmodmap in.
+
+You can now modify .Xmodmap and run xmodmap .Xmodmap from console to see the changes immediately. The changes in .Xmodmap will persist.
+
+source: Ubuntu Foruns
+
+Bonus stuff:
+
+If the key you are remapping has different behavior depending on a state ( like how the keys in the numeric keyboard depend on NumLock) you simply have to do xmodmap -pm to get a list of modifiers and then do:
+
+xmodmap -e "KEYCODE MODIFIER = behaviour behaviour_with_modifier"
+
+Suppose, for example, that you want to get a period instead of a comma on the numeric keyboard (useful for most programmers), but you want to keep the "delete" behavior when NumLock is off.
+
+xmodmap -e "keycode 91 mod2 = KP_Delete period"
+mod2, because xmodmap -pm tells us that mod2 is Num_Lock, the other names are obtained by pressing the keys in xev.
+
+
+state 0x14, keycode 40 (keysym 0x64, d), same_screen YES,
+state 0x14, keycode 38 (keysym 0x61, a), same_screen YES,
+state 0x11, keycode 10 (keysym 0x21, exclam), same_screen YES,
+state 0x11, keycode 25 (keysym 0x57, W), same_screen YES,
+state 0x10, keycode 25 (keysym 0x77, w), same_screen YES,
+
+xmodmap -e "keycode 10 = s"

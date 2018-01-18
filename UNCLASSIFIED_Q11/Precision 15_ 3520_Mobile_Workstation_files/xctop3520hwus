@@ -1,0 +1,177 @@
+recs_results({
+  "Data": [
+    {
+      "country_code": "us",
+      "customer_segment_code": "04",
+      "language_code": "en",
+      "segment_code": "bsd",
+      "product_id": "xctop3520hwus",
+      "product_variant": "precision-15-3520-laptop",
+      "model_id": "precision-15-3520-laptop",
+      "model_name": "Precision 3520 Mobile Workstation",
+      "model_url": "http://www.dell.com/us/business/p/precision-15-3520-laptop/pd?oc=xctop3520hwus&model_id=precision-15-3520-laptop",
+      "manufacturer_name": "DELL",
+      "manufacturer_part_num": "xctop3520hwus",
+      "product_url": "http://www.dell.com/us/business/p/precision-15-3520-laptop/pd?oc=xctop3520hwus&model_id=precision-15-3520-laptop",
+      "add_to_cart_url": "http://configure.dell.com/dellstore/config.aspx?c=us&cs=04&l=en&oc=xctop3520hwus&s=bsd&opcode=add",
+      "remove_from_cart_url": "",
+      "upc_eam": "",
+      "product_name": "Precision 3520 Mobile Workstation",
+      "short_description": "<b>Fully customizable:</b> Affordable 15\" mobile workstation in a new design with enhanced performance features",
+      "long_description": "Affordable 15-inch mobile workstation with enhanced performance features. New Intel® processors, faster memory speeds, and NVIDIA® Quadro® professional graphics.",
+      "msrp": 1437.14,
+      "msrp_formatted": "$1,437.14",
+      "list_price": 1437.14,
+      "list_price_formatted": "$1,437.14",
+      "starting_at_price": 879.0,
+      "starting_at_price_formatted": "$879.00",
+      "sale_price": 879.0,
+      "sale_price_formatted": "$879.00",
+      "in_stock": true,
+      "currency": "$",
+      "ratings": 0.0,
+      "num_reviews": 0,
+      "pictures": [
+        {
+          "image_url": "http://i.dell.com/das/xa.ashx/global-site-design%20web/00000000-0000-0000-0000-000000000000/1/SmallPNG?id=Dell/Product_Images/Dell_Client_Products/Notebooks/Latitude_Notebooks/15_5580/Non_Touch/notebook-latitude-15-5580-non-touch-front-windows-relativesize-ss-imperial-500-ng.psd",
+          "isdefault": false,
+          "image_type": "image1"
+        },
+        {
+          "image_url": "http://i.dell.com/is/image/DellContent//content/dam/global-site-design/product_images/dell_client_products/workstations/mobile_workstations/precision/15_3520/workstation-precision-15-3520-nt-bestof-500-ng.psd?fmt=png-alpha",
+          "isdefault": false,
+          "image_type": "image2"
+        },
+        {
+          "image_url": "http://i.dell.com/is/image/DellContent//content/dam/global-site-design/product_images/dell_client_products/workstations/mobile_workstations/precision/15_3520/workstation-precision-15-3520-nt-bestof-500-ng.psd?fmt=png-alpha",
+          "isdefault": false,
+          "image_type": "image3"
+        },
+        {
+          "image_url": "http://i.dell.com/sites/imagecontent/products/PublishingImages/precision-m3520-workstation/workstation-precision-3520-pol-mag-pdp_hero_504x350.jpg",
+          "isdefault": false,
+          "image_type": "image4"
+        },
+        {
+          "image_url": "http://i.dell.com/das/xa.ashx/global-site-design%20web/00000000-0000-0000-0000-000000000000/1/SmallPNG?id=Dell/Product_Images/Dell_Client_Products/Notebooks/Latitude_Notebooks/15_5580/Non_Touch/notebook-latitude-15-5580-non-touch-front-windows-relativesize-ss-imperial-500-ng.psd",
+          "isdefault": false,
+          "image_type": "image5"
+        },
+        {
+          "image_url": "http://i.dell.com/sites/imagecontent/products/PublishingImages/precision-m3520-workstation/workstation-precision-3520-pol-mag-pdp_hero_504x350.jpg",
+          "isdefault": true,
+          "image_type": "large"
+        }
+      ],
+      "categories": [
+        {
+          "category_id": "laptops",
+          "category_name": "Laptops & Notebooks",
+          "level": 1,
+          "is_leaf": false,
+          "is_bizCat": false
+        },
+        {
+          "category_id": "precision-laptops",
+          "category_name": "Precision Mobile Workstations",
+          "level": 2,
+          "is_leaf": false,
+          "is_bizCat": false
+        },
+        {
+          "category_id": "precision-15-3000-series",
+          "category_name": "3000 Series",
+          "level": 3,
+          "is_leaf": true,
+          "is_bizCat": false
+        },
+        {
+          "category_id": "precision-15-3000-series-ms",
+          "category_name": "15\"",
+          "level": 4,
+          "is_leaf": true,
+          "is_bizCat": false
+        }
+      ],
+      "techSpecs": [
+        {
+          "tech_spec_title": "Processor ",
+          "tech_spec_desc": "Intel Core i5-7440HQ (Quad Core 2.80GHz, 3.80GHz Turbo, 6MB 35W, w/Intel HD Graphics 630)"
+        },
+        {
+          "tech_spec_title": "Operating System  (Dell recommends Windows 10 Pro.)",
+          "tech_spec_desc": "Windows 10 Pro 64bit English, French, Spanish"
+        },
+        {
+          "tech_spec_title": "Display",
+          "tech_spec_desc": "15.6\" HD TN (1366x768) Non-Touch  LED-backlit (45% color gamut) with Mic and Camera, No WWAN Support"
+        },
+        {
+          "tech_spec_title": "Memory<a class=\"technote microcontent\" rel=\"technotes:1-gb\">*</a>",
+          "tech_spec_desc": "4GB, DDR4-2400MHz SDRAM, 1 DIMMS, Non-ECC"
+        },
+        {
+          "tech_spec_title": "Hard Drive",
+          "tech_spec_desc": "500GB 2.5\" 7mm SATA (7200 RPM) Hard Drive"
+        },
+        {
+          "tech_spec_title": "Graphics Card",
+          "tech_spec_desc": "Intel HD Graphics"
+        },
+        {
+          "tech_spec_title": "Broadband",
+          "tech_spec_desc": "No Wireless WAN Card"
+        },
+        {
+          "tech_spec_title": "Warranty<a class=\"technote microcontent\" rel=\"technotes:warranty-and-onsite-service\">*</a>",
+          "tech_spec_desc": "3 Years Hardware Service with Onsite/In-Home Service After Remote Diagnosis"
+        },
+        {
+          "tech_spec_title": "System Weight",
+          "tech_spec_desc": "4.63 lbs"
+        },
+        {
+          "tech_spec_title": "Microsoft Office",
+          "tech_spec_desc": "Microsoft Office 30 Day Trial"
+        },
+        {
+          "tech_spec_title": "Security Software",
+          "tech_spec_desc": "&nbsp;"
+        },
+        {
+          "tech_spec_title": "Ports",
+          "tech_spec_desc": "3 USB 3.0<br />1 USB-C Port<br />1 VGA Port<br />1 Security Lock<br />1 RJ45 Port<br />1 HDMI Port<br />1 Power Adapter Port<br />1 Memory Card Reader<br />1 Headphone Jack<br />1 SIM Card Slot<br />1 Smart Card Reader (Optional)<br />"
+        },
+        {
+          "tech_spec_title": "Dimensions",
+          "tech_spec_desc": "Dimensions: Width: 14.61”/377.1mm x Depth: 9.94”/252.6mm x Height: (Front 0.97”/24.55mm) <br />Weight: Starting at 4.79 pounds with a 4-cell battery and HD non-touch panel​<br />"
+        },
+        {
+          "tech_spec_title": "Wireless",
+          "tech_spec_desc": "Qualcomm QCA61x4A 802.11ac Dual Band (2x2) Wireless Adapter+ Bluetooth 4.1"
+        },
+        {
+          "tech_spec_title": "Primary Battery",
+          "tech_spec_desc": "68 Whr ExpressCharge Capable (4-cell) (polymer)"
+        },
+        {
+          "tech_spec_title": "Regulatory",
+          "tech_spec_desc": "<a href=\"http://www.dell.com/learn/product-info-datasheets-safety-emc-environmental?s=corp\">Product Safety, EMC and Environmental Datasheets</a> <br style=\"font-size: 11px; font-family: verdana; white-space: normal; word-spacing: 0px; text-transform: none; font-weight: normal; color: #000000; font-style: normal; orphans: 2; widows: 2; letter-spacing: normal; text-indent: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px;\" /><a href=\"http://www.dell.com/learn/us/en/aucorp1/regulatory-compliance?s=corp\">Dell Regulatory Compliance Home Page</a> <br style=\"font-size: 11px; font-family: verdana; white-space: normal; word-spacing: 0px; text-transform: none; font-weight: normal; color: #000000; font-style: normal; orphans: 2; widows: 2; letter-spacing: normal; text-indent: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px;\" /><a href=\"http://www.dell.com/learn/us/en/aucorp1/dell-environment?s=corp\">Dell and the Environment</a>"
+        },
+        {
+          "tech_spec_title": "Connectivity",
+          "tech_spec_desc": "Integrated Intel® i218LM 10/100/1000 Gigabit Ethernet Controller"
+        }
+      ],
+      "dell_product_type": "System",
+      "ancestor": "laptops",
+      "is_configurable": false,
+      "recommendable": false,
+      "csb_add_to_cart_url": "http://www.dell.com/en-us/work/shop/serviceselection/xctop3520hwus",
+      "csb_product_detail_url": "http://www.dell.com/en-us/work/shop/dell-laptops-and-notebooks/new-precision-3520/spd/precision-15-3520-laptop/xctop3520hwus",
+      "end_of_life": false
+    }
+  ],
+  "Count": 1,
+  "LapTime": 3
+})

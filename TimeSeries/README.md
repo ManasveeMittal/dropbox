@@ -1,0 +1,12 @@
+ts_arimaTaks
+
+ts_detrendAndRemoveSeasonality
+ts_filtering_alternative
+ts_filtering
+ts_handlingData_alternative
+ts_handlingData
+ts_seasonalDecomposition
+ts_smoothing_alternative
+ts_smoothing
+ts_timeSeriesFunctions_alternative
+ts_timeSeriesFunctions
