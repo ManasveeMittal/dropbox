@@ -418,13 +418,52 @@ wget http://cdn.hpccsystems.com/releases/CE-Candidate-6.4.4/docs/ECLStandardLibr
 
 
 #------------------------------------------------------------
-# Robomongo installation
-wget https://download.robomongo.org/1.1.1/linux/robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz
-tar -xvzf robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz
-sudo mkdir /usr/local/bin/robomongo
-sudo cp -rf robo3t-1.1.1-linux-x86_64-c93c6b0/* /usr/local/bin/robomongo
+#install mongo 
+# https://docs.mongodb.com/manual/administration/install-enterprise-linux/
+# https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-linux/
+#Import the public key used by the package management system
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
 
-# Further help -> https://askubuntu.com/questions/739297/how-to-install-robomongo-on-ubuntu/781793
+#Create the /etc/apt/sources.list.d/mongodb-org-3.6.list  list file using the command appropriate for your version of Ubuntu
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list
+
+#Install the latest stable version of MongoDB
+sudo apt update && sudo apt install -y mongodb-org=3.6.2 mongodb-org-server=3.6.2 mongodb-org-shell=3.6.2 mongodb-org-mongos=3.6.2 mongodb-org-tools=3.6.2
+#for latest stable version, use sudo apt install -y mongodb-org
+
+#Pin a specific version of MongoDB to avoid unintended upgrade
+echo "mongodb-org hold" | sudo dpkg --set-selections
+echo "mongodb-org-server hold" | sudo dpkg --set-selections
+echo "mongodb-org-shell hold" | sudo dpkg --set-selections
+echo "mongodb-org-mongos hold" | sudo dpkg --set-selections
+echo "mongodb-org-tools hold" | sudo dpkg --set-selections
+
+#Uninstall MongoDB Community Edition
+
+#stop mongodb
+sudo service mongod stop
+#Remove Packages
+sudo apt-get purge mongodb-org*
+#Remove MongoDB databases and log files
+sudo rm -r /var/log/mongodb
+sudo rm -r /var/lib/mongodb
+
+#Start MongoDB 
+sudo service mongod start
+#Verify that MongoDB has started successfully
+head /var/log/mongodb/mongod.log
+#Start a mongo shell
+mongo --host 127.0.0.1:27017
+#Later, to stop MongoDB, press Control+C 
+
+# Robomongo installation
+sudo tar -xzf robo3t-1.1.1-linux-x86_64-c93c6b0.tar.gz -C /opt
+sudo mv /opt/robo3t-1.1.1-linux-x86_64-c93c6b0/lib/libstdc++* ~/Desktop/  
+sudo ln -s /opt/robo3t-1.1.1-linux-x86_64-c93c6b0/bin/robo3t /usr/local/bin/robo3t
+#run from terminal
+robo3t
+
+# Further help -> https://askubuntu.com/questions/739297/how-to-install-robomongo-on-ubuntu/781793  
 #------------------------------------------------------------
 # APACHE MESOS download
 wget http://redrockdigimark.com/apachemirror/mesos/1.4.1/mesos-1.4.1.tar.gz
@@ -599,3 +638,48 @@ pip install lightgbm
 
 
 #-----------------------------------------------------------
+#apache mahout 0.13
+wget http://mirror.stjschools.org/public/apache/mahout/0.13.0/apache-mahout-distribution-0.13.0.tar.gz
+
+#----------------------------------------------------------
+#root user activation
+Enable super user account password on Ubuntu
+
+First, set a password for root user as shown below.
+
+https://www.thegeekstuff.com/2009/09/ubuntu-tips-how-to-login-using-su-command-su-gives-authentication-failure-error-message/
+
+$ sudo passwd root
+[sudo] password for ramesh:
+Enter new UNIX password:
+Retype new UNIX password:
+passwd: password updated successfully
+
+Now with the new password you can login as super user with su command
+
+$ su -
+Password:
+#
+
+Disable super user account password on Ubuntu
+
+Later if you don’t want to use su anymore, you can lock the root user password using one of the methods shown below
+
+$ sudo passwd -l root
+
+#----------------------------------------------------------
+#hadoop 2.9 standalone mode
+sudo apt install ssh -y
+sudo apt install rsync
+wget http://www-us.apache.org/dist/hadoop/common/hadoop-2.9.0/hadoop-2.9.0.tar.gz
+tar -xzvf hadoop-2.9.0.tar.gz hadoop-2.9.0/
+sudo mv hadoop-2.9.0 /usr/local/hadoop
+readlink -f /usr/bin/java | sed "s:bin/java::"
+sudo nano /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+rm -r ~/grep_example/ 
+mkdir -p ~/input
+cp /usr/local/hadoop/etc/hadoop/*.xml ~/input
+/usr/local/hadoop/bin/hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar grep ~/input ~/grep_example 'principal[.]*'
+/usr/local/hadoop/bin/hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.0.jar grep ~/input ~/grep_example 'principal[.]*'
+cat ~/grep_example/*
+
